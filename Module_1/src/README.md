@@ -32,14 +32,14 @@ strace ./main
 strace -c ./main
 ```
 
-E para obtenção das chamadas de sistema e dos tempos de execução dos que utilizam fork() e kill() foram usados, respectivamente:
+E para obtenção das chamadas de sistema e dos tempos de execução dos que utilizam fork() e kill() foram usados, respectivamente, os comandos abaixo.
+Observe que o “-f” é usado para também catalogar a execução dos processos filhos que surgirem.
 ```
 strace -f ./main
 ```
 ```
 strace -c -f ./main
 ```
-Observe que o “-f” é usado para também catalogar a execução dos processos filhos que surgirem.
 
 
 
