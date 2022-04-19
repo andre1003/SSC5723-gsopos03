@@ -1,0 +1,73 @@
+execve("./main", ["./main"], 0x7ffc176b8918 /* 33 vars */) = 0
+brk(NULL)                               = 0x55564d9b0000
+arch_prctl(0x3001 /* ARCH_??? */, 0x7ffe03705960) = -1 EINVAL (Invalid argument)
+access("/etc/ld.so.preload", R_OK)      = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=29103, ...}) = 0
+mmap(NULL, 29103, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7fd660100000
+close(3)                                = 0
+openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\360A\2\0\0\0\0\0"..., 832) = 832
+pread64(3, "\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784
+pread64(3, "\4\0\0\0\20\0\0\0\5\0\0\0GNU\0\2\0\0\300\4\0\0\0\3\0\0\0\0\0\0\0", 32, 848) = 32
+pread64(3, "\4\0\0\0\24\0\0\0\3\0\0\0GNU\0\237\333t\347\262\27\320l\223\27*\202C\370T\177"..., 68, 880) = 68
+fstat(3, {st_mode=S_IFREG|0755, st_size=2029560, ...}) = 0
+mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7fd6600fe000
+pread64(3, "\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784
+pread64(3, "\4\0\0\0\20\0\0\0\5\0\0\0GNU\0\2\0\0\300\4\0\0\0\3\0\0\0\0\0\0\0", 32, 848) = 32
+pread64(3, "\4\0\0\0\24\0\0\0\3\0\0\0GNU\0\237\333t\347\262\27\320l\223\27*\202C\370T\177"..., 68, 880) = 68
+mmap(NULL, 2037344, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7fd65ff0c000
+mmap(0x7fd65ff2e000, 1540096, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x22000) = 0x7fd65ff2e000
+mmap(0x7fd6600a6000, 319488, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x19a000) = 0x7fd6600a6000
+mmap(0x7fd6600f4000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1e7000) = 0x7fd6600f4000
+mmap(0x7fd6600fa000, 13920, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7fd6600fa000
+close(3)                                = 0
+arch_prctl(ARCH_SET_FS, 0x7fd6600ff540) = 0
+mprotect(0x7fd6600f4000, 16384, PROT_READ) = 0
+mprotect(0x55564c40e000, 4096, PROT_READ) = 0
+mprotect(0x7fd660135000, 4096, PROT_READ) = 0
+munmap(0x7fd660100000, 29103)           = 0
+fstat(1, {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0x4), ...}) = 0
+brk(NULL)                               = 0x55564d9b0000
+brk(0x55564d9d1000)                     = 0x55564d9d1000
+write(1, "------------------- \n", 21------------------- 
+)  = 21
+write(1, " Iniciando execucao \n", 21 Iniciando execucao 
+)  = 21
+write(1, "------------------- \n", 21------------------- 
+)  = 21
+clock_nanosleep(CLOCK_REALTIME, 0, {tv_sec=3, tv_nsec=0}, 0x7ffe037058d0) = 0
+clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0x7fd6600ff810) = 18444
+getpid()                                = 18422
+write(1, " [PAI]: Meu PID e -> 18422 \n", 28 [PAI]: Meu PID e -> 18422 
+) = 28
+write(1, " [PAI]: Tenho o numero 10 que es"..., 66 [PAI]: Tenho o numero 10 que esta no endereço '0x7ffe0370592c' 
+) = 66
+write(1, " [PAI]: Agora vou esperar a exec"..., 51 [PAI]: Agora vou esperar a execucao de meu filho 
+) = 51
+wait4(-1, strace: Process 18444 attached
+ <unfinished ...>
+[pid 18444] getpid()                    = 18444
+[pid 18444] write(1, " [FILHO]: Meu PID e -> 18444 \n", 30 [FILHO]: Meu PID e -> 18444 
+) = 30
+[pid 18444] getppid()                   = 18422
+[pid 18444] write(1, " [FILHO]: Meu Pai tem PID -> 184"..., 36 [FILHO]: Meu Pai tem PID -> 18422 
+) = 36
+[pid 18444] write(1, " [FILHO]: Usei a posicao '0x7ffe"..., 65 [FILHO]: Usei a posicao '0x7ffe0370592c', mas meu numero e: 20 
+) = 65
+[pid 18444] write(1, " [FILHO]: Vou dormir por 3 segun"..., 55 [FILHO]: Vou dormir por 3 segundos antes de encerrar 
+) = 55
+[pid 18444] clock_nanosleep(CLOCK_REALTIME, 0, {tv_sec=3, tv_nsec=0}, 0x7ffe037058d0) = 0
+[pid 18444] write(1, " [FILHO]: Encerrando... \n", 25 [FILHO]: Encerrando... 
+) = 25
+[pid 18444] exit_group(0)               = ?
+[pid 18444] +++ exited with 0 +++
+<... wait4 resumed>NULL, 0, NULL)       = 18444
+--- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=18444, si_uid=1000, si_status=0, si_utime=0, si_stime=0} ---
+write(1, " [PAI]: Meu numero ainda e -> 10"..., 34 [PAI]: Meu numero ainda e -> 10 
+) = 34
+write(1, " [PAI]: Como agora meu filho ter"..., 61 [PAI]: Como agora meu filho terminou, vou encerrar tambem! 
+) = 61
+clock_nanosleep(CLOCK_REALTIME, 0, {tv_sec=3, tv_nsec=0}, 0x7ffe037058d0) = 0
+exit_group(0)                           = ?
++++ exited with 0 +++

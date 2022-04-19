@@ -1,0 +1,36 @@
+------------------- 
+ Iniciando execucao 
+------------------- 
+strace: Process 18754 attached
+ [FILHO]: Meu PID e -> 18754 
+ [FILHO]: Meu Pai tem PID -> 18732 
+ [FILHO]: Usei a posicao '0x7fff3fc020ec', mas meu numero e: 20 
+ [FILHO]: Vou dormir por 3 segundos antes de encerrar 
+ [PAI]: Meu PID e -> 18732 
+ [PAI]: Tenho o numero 10 que esta no endereço '0x7fff3fc020ec' 
+ [PAI]: Agora vou esperar a execucao de meu filho 
+ [FILHO]: Encerrando... 
+ [PAI]: Meu numero ainda e -> 10 
+ [PAI]: Como agora meu filho terminou, vou encerrar tambem! 
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+ 44.81    0.000108          36         3           clock_nanosleep
+ 33.20    0.000080           6        13           write
+ 21.99    0.000053          53         1           wait4
+  0.00    0.000000           0         1           read
+  0.00    0.000000           0         2           close
+  0.00    0.000000           0         3           fstat
+  0.00    0.000000           0         7           mmap
+  0.00    0.000000           0         3           mprotect
+  0.00    0.000000           0         1           munmap
+  0.00    0.000000           0         3           brk
+  0.00    0.000000           0         6           pread64
+  0.00    0.000000           0         1         1 access
+  0.00    0.000000           0         2           getpid
+  0.00    0.000000           0         1           clone
+  0.00    0.000000           0         1           execve
+  0.00    0.000000           0         1           getppid
+  0.00    0.000000           0         2         1 arch_prctl
+  0.00    0.000000           0         2           openat
+------ ----------- ----------- --------- --------- ----------------
+100.00    0.000241                    53         2 total

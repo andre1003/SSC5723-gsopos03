@@ -18,7 +18,7 @@ int main(int argc, char const *argv[])
     int num = 10;
     
     printf("------------------- \n");
-    printf(" Iniciando execução \n");
+    printf(" Iniciando execucao \n");
     printf("------------------- \n");
     sleep(sec);
 
@@ -32,9 +32,9 @@ int main(int argc, char const *argv[])
             É exibido em tela algumas informações que identifique isso, como: 
             PID do PAI, espaço de endereçamento usado por "num" e o valor lá contido.
         */
-        printf(" [PAI]: Meu PID é -> %i \n", getpid());
-        printf(" [PAI]: Tenho o numero %i que está no endereço '%p' \n", num, &num);
-        printf(" [PAI]: Agora vou esperar a execução de meu filho \n");
+        printf(" [PAI]: Meu PID e -> %i \n", getpid());
+        printf(" [PAI]: Tenho o numero %i que esta no endereço '%p' \n", num, &num);
+        printf(" [PAI]: Agora vou esperar a execucao de meu filho \n");
         
         /*
             O wait() também é uma primitiva de chamada de sistema! 
@@ -48,8 +48,8 @@ int main(int argc, char const *argv[])
             Mas antes de encerrar, é exibido em tela o valor que o pai contém no espaço de endereçamento.
             É observado que o valor não sofre mudança apesar da execução e manipulação do valor pelo filho.
         */
-        printf(" [PAI]: Meu numero ainda é -> %i \n", num);
-        printf(" [PAI]: Como agora meu filho terminou, vou encerrar também! \n");
+        printf(" [PAI]: Meu numero ainda e -> %i \n", num);
+        printf(" [PAI]: Como agora meu filho terminou, vou encerrar tambem! \n");
         sleep(sec);
     }
 
@@ -61,7 +61,7 @@ int main(int argc, char const *argv[])
             PID do FILHO, PID do PAI do processo FILHO, espaço de endereçamento usado ao 
             manipular "num" (mesmo que o PAI) e o valor dele após alteração.
         */
-        printf(" [FILHO]: Meu PID é -> %i \n", getpid());
+        printf(" [FILHO]: Meu PID e -> %i \n", getpid());
         printf(" [FILHO]: Meu Pai tem PID -> %i \n", getppid());
 
         /* 
@@ -70,7 +70,7 @@ int main(int argc, char const *argv[])
             processado pelo PAI.
         */
         num += 10;
-        printf(" [FILHO]: Usei a posicao '%p', mas meu numero é: %i \n", &num, num);
+        printf(" [FILHO]: Usei a posicao '%p', mas meu numero e: %i \n", &num, num);
 
         // Espera alguns segundos e sinaliza o encerramento do processo FILHO
         printf(" [FILHO]: Vou dormir por %i segundos antes de encerrar \n", sec);
@@ -83,7 +83,7 @@ int main(int argc, char const *argv[])
         então não foi possivel executar o fork() e o novo processo (filho) não foi criado.
     */
     else{
-        printf("Falha: não foi possivel executar o fork() ! \n");
+        printf("Falha: nao foi possivel executar o fork() ! \n");
         exit(1);
     }
 

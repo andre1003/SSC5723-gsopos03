@@ -15,7 +15,7 @@ int main(int argc, char const *argv[])
     int sec = 3;
     
     printf("------------------- \n");
-    printf(" Iniciando execução \n");
+    printf(" Iniciando execucao \n");
     printf("------------------- \n");
     sleep(sec);
 
@@ -29,14 +29,14 @@ int main(int argc, char const *argv[])
             É exibido em tela algumas informações que identifique isso, como: 
             PID do FILHO e PID do PAI do processo FILHO.
         */
-        printf(" [FILHO]: Meu PID é -> %i \n", getpid());
+        printf(" [FILHO]: Meu PID e -> %i \n", getpid());
         printf(" [FILHO]: Meu Pai tem PID -> %i \n", getppid());
 
         /*
             Exibe em tela indicação sobre o loop infitino implementado 
             para manter o processo sempre em execução (a menos que seja forçadamente encerrado)
         */
-        printf(" [FILHO]: Vou ficar executando eternamente até me encerrarem (loop infinito) ! \n");
+        printf(" [FILHO]: Vou ficar executando eternamente ate me encerrarem (loop infinito) ! \n");
         for (;;);
 
     }
@@ -47,8 +47,8 @@ int main(int argc, char const *argv[])
             O código aqui é executado pelo processo PAI.
             É exibido em tela algumas informações que identifique isso, como: PID do PAI
         */
-        printf(" [PAI]: Meu PID é -> %i \n", getpid());
-        printf(" [PAI]: Vou esperar por %i segundos a execução de meu filho. \n", sec);
+        printf(" [PAI]: Meu PID e -> %i \n", getpid());
+        printf(" [PAI]: Vou esperar por %i segundos a execucao de meu filho. \n", sec);
         sleep(sec);
 
         // Exibe em tela a indicação de que encerrará o processo FILHO
@@ -62,7 +62,7 @@ int main(int argc, char const *argv[])
         wait(NULL);
         
         // Exibe em tela que o processo pai também terminará sua execução.
-        printf(" [PAI]: Como agora finalizei meu filho, vou encerrar também! \n");
+        printf(" [PAI]: Como agora finalizei meu filho, vou encerrar tambem! \n");
         sleep(sec);
 
     }

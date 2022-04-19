@@ -11,7 +11,7 @@ int main(int argc, char const *argv[])
 {
 
     // Caminho onde está o novo programa
-    char pathname[] = "./novo.out";
+    char pathname[] = "./novo";
 
     /* 
        Parametro passado para a execução do novo processo.
@@ -50,7 +50,7 @@ int main(int argc, char const *argv[])
         e esses últimos prints não foram exibidos em tela (não foram executados).
     */
     printf("--------------------------------------------------------------\n");
-    printf(" Se o execve der certo, esse print nao deverá aparecer !!! \n");
+    printf(" Se o execve der certo, esse print nao devera aparecer !!! \n");
     printf("--------------------------------------------------------------\n");
 
     return 0;
