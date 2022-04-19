@@ -50,7 +50,7 @@ int main(int argc, char const *argv[])
         e esses últimos prints não foram exibidos em tela (não foram executados).
     */
     printf("--------------------------------------------------------------\n");
-    printf(" Se o execve der certo, esse print nao deveria aparecer !!! \n");
+    printf(" Se o execve der certo, esse print nao deverá aparecer !!! \n");
     printf("--------------------------------------------------------------\n");
 
     return 0;
