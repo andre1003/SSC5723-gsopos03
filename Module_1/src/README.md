@@ -9,13 +9,16 @@ Objetivo: identificar na prática alguns conceitos abordados em aula, como: cham
 
 Foram selecionadas 3 primitivas de chamada de sistema disponíveis no Linux para cada categoria (gerenciamento de memória, processos, E/S e arquivos), devendo totalizar 9 para serem analisadas com a construção de programas.
 As selecionadas foram:
+
 Arquivos: creat(), open() e chmod()
+
 Memória: brk(), mmap() e munmap()
+
 Processos: execve(), fork() e kill()
 
 Execução dos programas
 
-	Para a execução dos programas é necessário o GCC que é o compilador originalmente escrito para Sistemas Operacionais GNU e que pode ser facilmente encontrado em distribuições Linux. 
+Para a execução dos programas é necessário o GCC que é o compilador originalmente escrito para Sistemas Operacionais GNU e que pode ser facilmente encontrado em distribuições Linux. 
 Para compilar os programas e gerar os executáveis foi necessário o seguinte comando para os respectivos programas:
 gcc codigo.c -o nome_executavel
 
