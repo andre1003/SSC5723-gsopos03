@@ -9,18 +9,18 @@ Objetivo: identificar na prática alguns conceitos abordados em aula, como: cham
 
 Foram selecionadas 3 primitivas de chamada de sistema disponíveis no Linux para cada categoria (gerenciamento de memória, processos, E/S e arquivos), devendo totalizar 9 para serem analisadas com a construção de programas.
 As selecionadas foram:
- - **Arquivos:** 
-        - creat(); 
-        - open(;
-        - chmod();
- - **Memória:** 
-        - brk();
-        - mmap();
-        - munmap();
- - **Processos:** 
-        - execve();
-        - fork();
-        - kill();
+- **Arquivos:** 
+    - creat(); 
+    - open(;
+    - chmod();
+- **Memória:** 
+    - brk();
+    - mmap();
+    - munmap();
+- **Processos:** 
+    - execve();
+    - fork();
+    - kill();
 
 ### Execução dos programas
 
