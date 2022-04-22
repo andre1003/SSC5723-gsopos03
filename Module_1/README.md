@@ -43,6 +43,8 @@ strace -c ./main
 
 E para obtenção das chamadas de sistema e dos tempos de execução dos que utilizam fork() e kill() foram usados, respectivamente, os comandos abaixo.
 Observe que o “-f” é usado para também catalogar a execução dos processos filhos que surgirem.
+**Todos os dados estatísticos dos respectivos programas foram coletados.**
+**Eles estão dentro do diretório "analysis" deste diretório.**
 ```
 strace -f ./main
 ```
@@ -50,8 +52,7 @@ strace -f ./main
 strace -c -f ./main
 ```
 
-**Todos os dados estatísticos dos respectivos programas foram coletados.**
-**Eles estão dentro do diretório "analysis" deste diretório.**
+
 
 
 
@@ -72,13 +73,8 @@ Informações mínimas esperadas:
  - Trocas de contexto involuntárias
 
 Para a obtenção desses dados foram aplicados aos programas CPU-bound e I/O-bound o respectivo comando abaixo.
+**Todos os dados estatísticos dos programas de CPU-bound e I/O-bound acabaram sendo coletados.**
+ **Eles estão armazenados dentro do diretório "analysis" deste diretório.**
 ```
 /usr/bin/time ./main
 ```
-
-**Todos os dados estatísticos dos programas de CPU-bound e I/O-bound acabaram sendo coletados.**
- **Eles estão armazenados dentro do diretório "analysis" deste diretório.**
-
-
-
-
