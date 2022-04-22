@@ -1,26 +1,53 @@
+// I/O bound program
+
+// Imports
 #include <stdio.h>
 #include <stdlib.h>
+#include <fcntl.h>
+#include <string.h>
 
-#define NUM_ITER 10000
+int main() {
+    // Declaration of variables
+    int num_files, i, j;
+    FILE *prev_file, *curr_file;
+    char ch, file_path[256];
 
-int main(int argc, char const *argv[]) {
-    FILE *file_1, *file_2;
-    char info[50];
-    int i;
+    num_files = 10; // Number of files. 
+    // Always greater than 1
 
-    file_1 = fopen("file_1.txt", "r");
-    remove("file_2.txt");
-    file_2 = fopen("file_2.txt", "w");
+    printf("###################################\n");
+    printf("#            I/O bound            #\n");
+    printf("###################################\n\n");
+    printf(">> Building the files...\n");
 
-    if(file_1 != NULL) {
-        while((fgets(info, sizeof(info), file_1)) != NULL) {
-           for(i = 0; i < NUM_ITER; i++) {
-               fprintf(file_2, "%s\n", info);
-           }
+    for(i = 2; i <= num_files; i++) { // Loop through the building of each file
+        snprintf(file_path, sizeof(file_path), "file_%d.txt", i - 1); // Build previous file path name
+        prev_file = fopen(file_path, "r"); // Open the previous file
+
+        if(prev_file != NULL) { // Check if file exists
+            snprintf(file_path, sizeof(file_path), "file_%d.txt", i); // Build current file path name
+            curr_file = fopen(file_path, "w"); // Create the current file
+
+            while((ch = fgetc(prev_file)) != EOF) // Copy content from previous file to current one  
+                fputc(ch, curr_file); // Copying each char (ch)
         }
+        else { // Error, return -1
+            printf(">> Error opening file!\n");
+            return -1;
+        }
+
+        fclose(prev_file); // Close the previous file
+        fclose(curr_file); // Close the current file
     }
 
-    fclose(file_1);
-    fclose(file_2);
+    printf(">> Removing the files...\n");
+
+    for(i = 2; i <= num_files; i++) { // Loop through built files
+        snprintf(file_path, sizeof(file_path), "file_%d.txt", i); // Build built file path name
+        remove(file_path); // Remove the file
+    }
+
+    printf(">> Complete!\n");
+
     return 0;
 }
