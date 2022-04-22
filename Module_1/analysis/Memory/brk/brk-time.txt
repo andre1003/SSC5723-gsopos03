@@ -1,0 +1,10 @@
+Insert the total fibonacci numbers (greater than 2): 15
+
+Fibonacci serie:
+0 -> 1 -> 1 -> 2 -> 3 -> 5 -> 8 -> 13 -> 21 -> 34 -> 55 -> 89 -> 144 -> 233 -> 377
+ Tempo gasto em modo usuário (segundos): 0.00
+ Tempo gasto em modo kernel (segundos): 0.00
+ Tempo Total decorrido (segundos): 2.90
+ Porcentagem de uso da CPU ( (0.00 + 0.00) / 2.90 ): 0%
+ Trocas de contexto voluntárias: 18
+ Trocas de contexto involuntárias: 0
