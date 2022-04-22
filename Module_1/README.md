@@ -9,9 +9,18 @@ Objetivo: identificar na prática alguns conceitos abordados em aula, como: cham
 
 Foram selecionadas 3 primitivas de chamada de sistema disponíveis no Linux para cada categoria (gerenciamento de memória, processos, E/S e arquivos), devendo totalizar 9 para serem analisadas com a construção de programas.
 As selecionadas foram:
- - Arquivos: creat(), open() e chmod()
- - Memória: brk(), mmap() e munmap()
- - Processos: execve(), fork() e kill()
+ - **Arquivos:** 
+        - creat(); 
+        - open(;
+        - chmod();
+ - **Memória:** 
+        - brk();
+        - mmap();
+        - munmap();
+ - **Processos:** 
+        - execve();
+        - fork();
+        - kill();
 
 ### Execução dos programas
 
@@ -41,6 +50,9 @@ strace -f ./main
 strace -c -f ./main
 ```
 
+**Todos os dados estatísticos dos respectivos programas foram coletados.**
+**Eles estão dentro do diretório "analysis" deste diretório.**
+
 
 
 
@@ -51,14 +63,21 @@ Foram criados 2 programas para ilustrar o comportamento esperado para processos 
 ### Ferramenta time
 
 A ferramenta time (https://linux.die.net/man/1/time) foi usada para obter estatísticas de uso de recursos em cada um dos programas desenvolvidos.
+Informações mínimas esperadas:
+ - Tempo gasto em modo usuário
+ - Tempo gasto em modo kernel
+ - Tempo Total Decorrido
+ - Porcentagem de uso da CPU (Tempo modo usuário + tempo modo kernel / tempo total decorrido) 
+ - Trocas de contexto voluntárias
+ - Trocas de contexto involuntárias
 
+Para a obtenção desses dados foram aplicados aos programas CPU-bound e I/O-bound o respectivo comando abaixo.
+```
+/usr/bin/time ./main
+```
 
-
-
-
-
-
-
+**Todos os dados estatísticos dos programas de CPU-bound e I/O-bound acabaram sendo coletados.**
+ **Eles estão armazenados dentro do diretório "analysis" deste diretório.**
 
 
 
