@@ -43,8 +43,10 @@ strace -c ./main
 
 E para obtenção das chamadas de sistema e dos tempos de execução dos que utilizam fork() e kill() foram usados, respectivamente, os comandos abaixo.
 Observe que o “-f” é usado para também catalogar a execução dos processos filhos que surgirem.
+
 **Todos os dados estatísticos dos respectivos programas foram coletados.**
 **Eles estão dentro do diretório "analysis" deste diretório.**
+
 ```
 strace -f ./main
 ```
@@ -73,8 +75,15 @@ Informações mínimas esperadas:
  - Trocas de contexto involuntárias
 
 Para a obtenção desses dados foram aplicados aos programas CPU-bound e I/O-bound o respectivo comando abaixo.
+
 **Todos os dados estatísticos dos programas de CPU-bound e I/O-bound acabaram sendo coletados.**
  **Eles estão armazenados dentro do diretório "analysis" deste diretório.**
+
 ```
 /usr/bin/time ./main
+```
+Se quisessemos formatar a saída do __/usr/bin/time ./main__ poderíamos ter utilizado o parâmetro "-f".
+Com este parâmetro, para trazer apenas as informações mínimas solicitadas por exemplo, o comando seria o seguinte:
+```
+/usr/bin/time -f " Tempo gasto em modo usuário (segundos): %U \n Tempo gasto em modo kernel (segundos): %S \n Tempo Total decorrido (segundos): %e \n Porcentagem de uso da CPU ( (%U + %S) / %e ): %P \n Trocas de contexto voluntárias: %w \n Trocas de contexto involuntárias: %c \n" ./main
 ```
