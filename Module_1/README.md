@@ -95,7 +95,7 @@ Informações mínimas esperadas:
 
 A ferramenta "_time_" foi aplicada aos programas CPU-bound e I/O-bound através do comando:
 ```
-/usr/bin/time ./nome_executavel
+/usr/bin/time -v ./nome_executavel
 ```
 Se quisessemos formatar a saída do "_/usr/bin/time ./nome_executavel_" poderíamos ter utilizado o parâmetro "_-f_".
 
