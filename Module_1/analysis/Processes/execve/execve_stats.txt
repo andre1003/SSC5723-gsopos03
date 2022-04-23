@@ -1,24 +1,24 @@
- Tentando executar pathname: ./novo 
+ Trying to run: ./new 
 
- ----------------------------- 
- Arquivo novo foi executado! 
- Parametro informado: Ola Mundo 
+ ------------------------------ 
+ The new program was executed! 
+ Informed parameter contains: Hello World 
  ----------------------------- 
 % time     seconds  usecs/call     calls    errors syscall
 ------ ----------- ----------- --------- --------- ----------------
- 24.21    0.000344         172         2           execve
- 14.50    0.000206          14        14           mmap
- 12.03    0.000171          28         6           mprotect
- 11.61    0.000165          13        12           pread64
-  6.97    0.000099          24         4         2 arch_prctl
-  5.77    0.000082          16         5           write
-  5.14    0.000073          18         4           openat
-  4.71    0.000067          11         6           fstat
-  4.22    0.000060          10         6           brk
-  3.45    0.000049          12         4           close
-  2.32    0.000033          33         1           clock_nanosleep
-  2.25    0.000032          16         2           munmap
-  1.48    0.000021          10         2         2 access
-  1.34    0.000019           9         2           read
+  0.00    0.000000           0         2           read
+  0.00    0.000000           0         5           write
+  0.00    0.000000           0         4           close
+  0.00    0.000000           0         6           fstat
+  0.00    0.000000           0        14           mmap
+  0.00    0.000000           0         6           mprotect
+  0.00    0.000000           0         2           munmap
+  0.00    0.000000           0         6           brk
+  0.00    0.000000           0        12           pread64
+  0.00    0.000000           0         2         2 access
+  0.00    0.000000           0         2           execve
+  0.00    0.000000           0         4         2 arch_prctl
+  0.00    0.000000           0         1           clock_nanosleep
+  0.00    0.000000           0         4           openat
 ------ ----------- ----------- --------- --------- ----------------
-100.00    0.001421                    70         4 total
+100.00    0.000000                    70         4 total

@@ -1,23 +1,21 @@
-------------------- 
- Iniciando execucao 
-------------------- 
-strace: Process 18754 attached
- [FILHO]: Meu PID e -> 18754 
- [FILHO]: Meu Pai tem PID -> 18732 
- [FILHO]: Usei a posicao '0x7fff3fc020ec', mas meu numero e: 20 
- [FILHO]: Vou dormir por 3 segundos antes de encerrar 
- [PAI]: Meu PID e -> 18732 
- [PAI]: Tenho o numero 10 que esta no endereço '0x7fff3fc020ec' 
- [PAI]: Agora vou esperar a execucao de meu filho 
- [FILHO]: Encerrando... 
- [PAI]: Meu numero ainda e -> 10 
- [PAI]: Como agora meu filho terminou, vou encerrar tambem! 
+-------------------- 
+ Starting execution  
+-------------------- 
+strace: Process 8440 attached
+ [FATHER]: My PID is -> 8421 
+ [FATHER]: I have the number 10 that was in address space '0x7ffd02fbb07c' 
+ [FATHER]: Now I will wait for execution of my son 
+ [SON]: My PID is -> 8440 
+ [SON]: My father's PID is -> 8421 
+ [SON]: I used the address space '0x7ffd02fbb07c', but my num is: 20 
+ [SON]: I will sleep for 3 seconds before I finish. 
+ [SON]: Finishing... 
+ [FATHER]: My num value still is -> 10 
+ [FATHER]: My son finished, now I will finish too! 
 % time     seconds  usecs/call     calls    errors syscall
 ------ ----------- ----------- --------- --------- ----------------
- 44.81    0.000108          36         3           clock_nanosleep
- 33.20    0.000080           6        13           write
- 21.99    0.000053          53         1           wait4
   0.00    0.000000           0         1           read
+  0.00    0.000000           0        13           write
   0.00    0.000000           0         2           close
   0.00    0.000000           0         3           fstat
   0.00    0.000000           0         7           mmap
@@ -29,8 +27,10 @@ strace: Process 18754 attached
   0.00    0.000000           0         2           getpid
   0.00    0.000000           0         1           clone
   0.00    0.000000           0         1           execve
+  0.00    0.000000           0         1           wait4
   0.00    0.000000           0         1           getppid
   0.00    0.000000           0         2         1 arch_prctl
+  0.00    0.000000           0         3           clock_nanosleep
   0.00    0.000000           0         2           openat
 ------ ----------- ----------- --------- --------- ----------------
-100.00    0.000241                    53         2 total
+100.00    0.000000                    53         2 total

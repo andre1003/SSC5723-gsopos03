@@ -5,85 +5,84 @@
 
 int main(int argc, char const *argv[])
 {
-    // Declaração de variável que receberá o ID de retorno do fork() na criação do novo processo
+    // Declaration of variable that will receive the return ID of fork() on creation of the new process
     pid_t id;
 
     /* 
-        Declaração de variaveis utilizadas. Altere os valores se quiser.
-        O "sec" é para estabelecer um sleep e acompanhar no console as execuções.
-        O "num" é para ilustrar que o novo processo é uma cópia do pai (tanto que compartilham mesmo endereço de endereçamento), 
-        mas, apesar disso, a alteração do valor pelo filho não afeta o valor do pai.
+        Declaration of variables used. Change the values if you like.
+        The "sec" is to sleep some seconds and monitor the executions on the console.
+        The "num" is to illustrate that the new process is a copy of the father (they share the same address, for example),
+        but changing the value by the son does not affect the value of the father.
     */
     int sec = 3;
     int num = 10;
     
-    printf("------------------- \n");
-    printf(" Iniciando execucao \n");
-    printf("------------------- \n");
+    printf("-------------------- \n");
+    printf(" Starting execution  \n");
+    printf("-------------------- \n");
     sleep(sec);
 
-    // Criar um novo processo (fork) e recebe como retorno o pid_t da chamada de sistema
+    // Create a new process (fork) and return the pid_t of the system call
     id = fork();
 
-    // Se o ID retornado da chamada for MAIOR que zero (0), então estamos no processo PAI
+    // If the ID returned is GREATER than zero (0), then we are in the FATHER process.
     if (id > 0){
         /*
-            O código aqui é executado pelo processo PAI.
-            É exibido em tela algumas informações que identifique isso, como: 
-            PID do PAI, espaço de endereçamento usado por "num" e o valor lá contido.
+            This is the code that is executed by the FATHER process.
+            Some information that identifies this is displayed on the console, such as:
+            FATHER PID, address space used by "num" value and your value.
         */
-        printf(" [PAI]: Meu PID e -> %i \n", getpid());
-        printf(" [PAI]: Tenho o numero %i que esta no endereço '%p' \n", num, &num);
-        printf(" [PAI]: Agora vou esperar a execucao de meu filho \n");
+        printf(" [FATHER]: My PID is -> %i \n", getpid());
+        printf(" [FATHER]: I have the number %i that was in address space '%p' \n", num, &num);
+        printf(" [FATHER]: Now I will wait for execution of my son \n");
         
         /*
-            O wait() também é uma primitiva de chamada de sistema! 
-            Apesar do foco ser ilustrar o fork(), 
-            ele foi usado aqui para bloquear o processo pai até que o filho se encerre
+            "wait()" is also a system call primitive.
+            Although the focus is on illustrating fork(),
+            it was used here to block the father process execution until the son terminates.
         */
         wait(NULL);
 
         /*
-            Após o término do processo filho, o pai pode encerrar.
-            Mas antes de encerrar, é exibido em tela o valor que o pai contém no espaço de endereçamento.
-            É observado que o valor não sofre mudança apesar da execução e manipulação do valor pelo filho.
+            After the son process ends, the father can terminate.
+            But before finish, the value of "num" that the father contains in the address space is displayed.
+            Note that the value does not change, because it is not affected by the son's manipulation value.
         */
-        printf(" [PAI]: Meu numero ainda e -> %i \n", num);
-        printf(" [PAI]: Como agora meu filho terminou, vou encerrar tambem! \n");
+        printf(" [FATHER]: My num value still is -> %i \n", num);
+        printf(" [FATHER]: My son finished, now I will finish too! \n");
         sleep(sec);
     }
 
-    // Se o ID retornado da chamada for IGUAL a zero (0), então estamos no processo FILHO
+    // If the ID returned is EQUAL to zero (0), then we are in the SON process.
     else if (id == 0){
         /*
-            O código aqui é executado pelo processo FILHO.
-            É exibido em tela algumas informações que identifique isso, como: 
-            PID do FILHO, PID do PAI do processo FILHO, espaço de endereçamento usado ao 
-            manipular "num" (mesmo que o PAI) e o valor dele após alteração.
+            This code is executed by the SON process.
+            Some information that identifies this is displayed on the console, such as:
+            SON PID, FATHER PID, address space used when handle "num" and your value after manipulation.
         */
-        printf(" [FILHO]: Meu PID e -> %i \n", getpid());
-        printf(" [FILHO]: Meu Pai tem PID -> %i \n", getppid());
+        printf(" [SON]: My PID is -> %i \n", getpid());
+        printf(" [SON]: My father's PID is -> %i \n", getppid());
 
         /* 
-            Soma realizada para alterar valor de "num" e termos um comparativo
-            de que a alteração dele pelo processo FILHO não afeta o valor de "num" que está sendo 
-            processado pelo PAI.
+            Sum performed to change value of "num" by the SON process.
+            Even using the same address space, 
+            this manipulation should not affect the value of "num" being processed in the FATHER process.
         */
         num += 10;
-        printf(" [FILHO]: Usei a posicao '%p', mas meu numero e: %i \n", &num, num);
+        printf(" [SON]: I used the address space '%p', but my num is: %i \n", &num, num);
 
-        // Espera alguns segundos e sinaliza o encerramento do processo FILHO
-        printf(" [FILHO]: Vou dormir por %i segundos antes de encerrar \n", sec);
+        // Wait a few seconds and print in the console the termination of the SON process
+        printf(" [SON]: I will sleep for %i seconds before I finish. \n", sec);
         sleep(sec);
-        printf(" [FILHO]: Encerrando... \n");
+        printf(" [SON]: Finishing... \n");
     }
 
     /* 
-        Se o ID retornado da chamada for diferente disso, ou seja, MENOR que zero (0), 
-        então não foi possivel executar o fork() e o novo processo (filho) não foi criado.
+        If the ID returned is different from anything (for example, SMALLER than zero (0)),
+        so it was not possible to execute fork() and the new (son) process was not created.
     */
     else{
-        printf("Falha: nao foi possivel executar o fork() ! \n");
+        printf("Error: could not execute fork() ! \n");
         exit(1);
     }
 

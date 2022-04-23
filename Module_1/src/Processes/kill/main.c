@@ -5,74 +5,74 @@
 
 int main(int argc, char const *argv[])
 {
-    // Declaração de variável que receberá o ID de retorno do fork() na criação do novo processo
+    // Declaration of variable that will receive the return ID of fork() on creation of the new process
     pid_t id;
 
     /* 
-        Declaração de variaveis utilizadas. Altere o valor se quiser.
-        O "sec" é para estabelecer um sleep e acompanhar no console as execuções mais pausadamente.
+        Declaration of variables used. Change the values if you like.
+        The "sec" is to sleep some seconds and monitor the executions on the console.
     */
     int sec = 3;
     
-    printf("------------------- \n");
-    printf(" Iniciando execucao \n");
-    printf("------------------- \n");
+    printf("-------------------- \n");
+    printf(" Starting execution  \n");
+    printf("-------------------- \n");
     sleep(sec);
 
-    // Criar um novo processo (fork) e recebe como retorno o pid_t da chamada de sistema
+    // Create a new process (fork) and return the pid_t of the system call
     id = fork();
 
-    // Se o ID retornado da chamada for IGUAL a zero (0), então estamos no processo FILHO
+    // If the ID returned is EQUAL to zero (0), then we are in the SON process.
     if (id == 0){
         /*
-            O código aqui é executado pelo processo FILHO.
-            É exibido em tela algumas informações que identifique isso, como: 
-            PID do FILHO e PID do PAI do processo FILHO.
+            This code is executed by the SON process.
+            Some information that identifies this is displayed on the console, such as:
+            SON PID and FATHER PID.
         */
-        printf(" [FILHO]: Meu PID e -> %i \n", getpid());
-        printf(" [FILHO]: Meu Pai tem PID -> %i \n", getppid());
+        printf(" [SON]: My PID is -> %i \n", getpid());
+        printf(" [SON]: My father's PID is -> %i \n", getppid());
 
         /*
-            Exibe em tela indicação sobre o loop infitino implementado 
-            para manter o processo sempre em execução (a menos que seja forçadamente encerrado)
+            Display in the console the print that indicates the infinite loop implemented
+            to keep the SON process always running (unless it is forced to terminate)
         */
-        printf(" [FILHO]: Vou ficar executando eternamente ate me encerrarem (loop infinito) ! \n");
+        printf(" [SON]: I will execute forever (infinite loop) ! \n");
         for (;;);
 
     }
 
-    // Se o ID retornado da chamada for MAIOR que zero (0), então estamos no processo PAI
+    // If the ID returned is GREATER than zero (0), then we are in the FATHER process.
     else if (id > 0){
         /*
-            O código aqui é executado pelo processo PAI.
-            É exibido em tela algumas informações que identifique isso, como: PID do PAI
+            This code is executed by the FATHER process.
+            Some information that identifies this is displayed on the console, such as: FATHER PID
         */
-        printf(" [PAI]: Meu PID e -> %i \n", getpid());
-        printf(" [PAI]: Vou esperar por %i segundos a execucao de meu filho. \n", sec);
+        printf(" [FATHER]: My PID is -> %i \n", getpid());
+        printf(" [FATHER]: I will wait %i seconds for the execution of my son. \n", sec);
         sleep(sec);
 
-        // Exibe em tela a indicação de que encerrará o processo FILHO
-        printf(" [PAI]: Agora vou encerrar meu filho! \n");
+        // Display in the console that the FATHER process will terminate the SON process
+        printf(" [FATHER]: Now I will finish my son! \n");
 
         /* 
-            Encerra o processo filho enviando sinal -9
-            e aguarda para seguir em frente com seu proprio encerramento.
+            Terminates the SON process by sending a "-9" signal
+            and waits to move on.
         */
         kill(id, SIGKILL);
         wait(NULL);
         
-        // Exibe em tela que o processo pai também terminará sua execução.
-        printf(" [PAI]: Como agora finalizei meu filho, vou encerrar tambem! \n");
+        // Display in the console that the FATHER process wil also terminate
+        printf(" [FATHER]: My son was finished, now I will too ! \n");
         sleep(sec);
 
     }
 
-    /* 
-        Se o ID retornado da chamada for diferente disso, ou seja, MENOR que zero (0), 
-        então não foi possivel executar o fork() e o novo processo (filho) não foi criado.
+     /* 
+        If the ID returned is different from anything (for example, SMALLER than zero (0)),
+        so it was not possible to execute fork() and the new (son) process was not created.
     */
     else{
-        printf("Falha: não foi possivel executar o fork() ! \n");
+        printf("Error: could not execute fork() ! \n");
         exit(1);
     }
 

@@ -1,23 +1,18 @@
-------------------- 
- Iniciando execucao 
-------------------- 
-strace: Process 19097 attached
- [FILHO]: Meu PID e -> 19097 
- [FILHO]: Meu Pai tem PID -> 19078 
- [FILHO]: Vou ficar executando eternamente ate me encerrarem (loop infinito) ! 
- [PAI]: Meu PID e -> 19078 
- [PAI]: Vou esperar por 3 segundos a execucao de meu filho. 
- [PAI]: Agora vou encerrar meu filho! 
- [PAI]: Como agora finalizei meu filho, vou encerrar tambem! 
+-------------------- 
+ Starting execution  
+-------------------- 
+strace: Process 9491 attached
+ [FATHER]: My PID is -> 9469 
+ [SON]: My PID is -> 9491 
+ [FATHER]: I will wait 3 seconds for the execution of my son. 
+ [SON]: My father's PID is -> 9469 
+ [SON]: I will execute forever (infinite loop) ! 
+ [FATHER]: Now I will finish my son! 
+ [FATHER]: My son was finished, now I will too ! 
 % time     seconds  usecs/call     calls    errors syscall
 ------ ----------- ----------- --------- --------- ----------------
- 93.59    0.004043        4043         1           wait4
-  2.27    0.000098          98         1           clone
-  1.97    0.000085           8        10           write
-  1.81    0.000078          26         3           clock_nanosleep
-  0.32    0.000014          14         1           kill
-  0.05    0.000002           1         2           getpid
   0.00    0.000000           0         1           read
+  0.00    0.000000           0        10           write
   0.00    0.000000           0         2           close
   0.00    0.000000           0         3           fstat
   0.00    0.000000           0         7           mmap
@@ -26,9 +21,15 @@ strace: Process 19097 attached
   0.00    0.000000           0         3           brk
   0.00    0.000000           0         6           pread64
   0.00    0.000000           0         1         1 access
+  0.00    0.000000           0         2           getpid
+  0.00    0.000000           0         1           clone
   0.00    0.000000           0         1           execve
+  0.00    0.000000           0         1           wait4
+  0.00    0.000000           0         1           kill
   0.00    0.000000           0         1           getppid
   0.00    0.000000           0         2         1 arch_prctl
+  0.00    0.000000           0         1           restart_syscall
+  0.00    0.000000           0         3         1 clock_nanosleep
   0.00    0.000000           0         2           openat
 ------ ----------- ----------- --------- --------- ----------------
-100.00    0.004320                    51         2 total
+100.00    0.000000                    52         3 total

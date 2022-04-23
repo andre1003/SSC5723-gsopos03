@@ -2,56 +2,55 @@
 #include <unistd.h>
 
 /*
-    Arquivo principal feito para ilustrar o funcionamento do "execve"
-    Observe que foi pré-estabelecido o caminho do programa e o parametro.
-    que será passado na execução do mesmo.
+    This file was made to illustrate how "execve" works
+    Note that the program path and parameter have been preset
 */
 
 int main(int argc, char const *argv[])
 {
 
-    // Caminho onde está o novo programa
-    char pathname[] = "./novo";
+    // This is the path where is the "new" program
+    char pathname[] = "./new";
 
     /* 
-       Parametro passado para a execução do novo processo.
-       Foi fixado "Ola Mundo", mas poderia ser qualquer String.
-       Caso não se queira passar um parâmetro ao novo processo, pode-se deixar NULL nos argumentos.
+       This is the parameter that was passed to the execution of the new process.
+       "Hello World" was fixed, but it could be any string.
+       If you don't want to pass a parameter to the new process, you can leave NULL in arguments.
     */
-    char param[] = "Ola Mundo";
+    char param[] = "Hello World";
     
     /* 
-        Definição dos argumentos que serão passados ao novo processo.
-        Caso não se queira passar um parâmetro ao novo processo, pode-se deixar NULL.
-        O NULL ao final do vetor é necessário pois indica o momento em que se chegou ao fim.
+        This is the definition of the arguments that will be passed to the new process.
+        If you don't want to pass a parameter to the new process, you can leave it NULL.
+        The NULL at the end of the vector is necessary because it indicates the moment when the end was reached.
     */
     char * arg[] = {pathname, param, NULL};
 
-    // Print para ilustrar a tentativa de execução do novo processo (aguarda 3 segundos)
-    printf(" Tentando executar pathname: %s \n\n", pathname);
+    // Print to illustrate the attempt to execute the new process (wait for 3 seconds to continue)
+    printf(" Trying to run: %s \n\n", pathname);
     sleep(3);
 
     /* 
-        Executa a chamada de sistema execve para trocar o processo em execução pelo novo.
-        Nenhum retorno normalmente é esperado. Se houver retorno (valor -1) é porque algo deu errado.
-        "__environ" define um vetor com as variáveis de ambiente terminada em NULL
-        Parametros doe execve:
-            - caminho do novo programa
-            - lista de possiveis argumentos para o novo programa
-            - ambiente de usuario onde o novo processo irá executar
+        Executes the "execve" system call to swap the running process with the new one.
+        No returns are normally expected. If it exists (value -1) is because something went wrong.
+        "__environ" defines a NULL-terminated array of environment variables.
+        "execve" parameters:
+            - path of new program;
+            - list of possible arguments for the new program;
+            - user environment where the new process will run;
     */
     if (execve(pathname, arg, __environ) == -1 ) {
-        printf(" Algo deu errado na execucao do execve! \n");
+        printf(" Something went wrong with 'execve'! \n");
     }
     
     /*
-        Se não houver retorno algum, o novo processo foi executado e encerrado. 
-        Se deu tudo der certo (o que é o esperado) o processo em execução foi trocado pelo novo
-        e esses últimos prints não foram exibidos em tela (não foram executados).
+        If no return, the new process has been executed and terminated.
+        If everything went well (as expected) the running process was replaced by the new one
+        and the prints below will not be shown on the screen (because they will not be executed).
     */
-    printf("--------------------------------------------------------------\n");
-    printf(" Se o execve der certo, esse print nao devera aparecer !!! \n");
-    printf("--------------------------------------------------------------\n");
+    printf("-----------------------------------------------------\n");
+    printf(" If all goes well, this print should not appear  !!! \n");
+    printf("-----------------------------------------------------\n");
 
     return 0;
 }
