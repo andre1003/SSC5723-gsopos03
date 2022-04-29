@@ -14,20 +14,6 @@ Identificar na prática alguns conceitos abordados em aula, como: chamadas de si
 Foram selecionadas 3 primitivas de chamada de sistema disponíveis no Linux para cada categoria (gerenciamento de memória, processos, E/S e arquivos), devendo totalizar 9 para serem analisadas com a construção de programas.
 Além disso, foram criados 2 programas para ilustrar o comportamento esperado para processos com características dos tipos CPU-bound e I/O-bound.
 
-As primitivas de chamada de sistema selecionadas foram:
-- **Arquivos:** 
-    - _creat()_; 
-    - _open()_;
-    - _chmod()_;
-- **Memória:** 
-    - _brk()_;
-    - _mmap()_;
-    - _munmap()_;
-- **Processos:** 
-    - _execve()_;
-    - _fork()_;
-    - _kill()_;
-
 E os programas CPU-bound e I/O-bound:
 - **CPU-bound:** calcula valor de Pi através do método de Monte Carlo.
 - **I/O-bound:** copia o conteúdo de um arquivo pra dentro de um novo arquivo.
@@ -72,10 +58,6 @@ strace -f ./nome_executavel
 strace -c -f ./nome_executavel
 ```
 
-**Todos os dados estatísticos dos respectivos programas foram coletados.**
-
-**Eles estão dentro do diretório "_analysis_".**
-
 --
 
 
@@ -104,20 +86,27 @@ Com este parâmetro, para trazer apenas as informações mínimas solicitadas po
 /usr/bin/time -f " Tempo gasto em modo usuário (segundos): %U \n Tempo gasto em modo kernel (segundos): %S \n Tempo Total decorrido (segundos): %e \n Porcentagem de uso da CPU ( (%U + %S) / %e ): %P \n Trocas de contexto voluntárias: %w \n Trocas de contexto involuntárias: %c \n" ./main
 ```
 
-**Todos os dados estatísticos dos programas de CPU-bound e I/O-bound acabaram sendo coletados.**
- 
- **Eles estão armazenados dentro do diretório "analysis".**
- 
- 
  -----
  
 
 ## 2. Chamadas de Sistema
 
+Como comentado anteriormente, três primitivas de chamada de sistema Linux foram selecionadas, sendo elas:
 
-Aqui vai conteudo das chamadas de sistema
-    
-    
+- **Arquivos:** 
+    - ```creat()```: Cria um novo arquivo ou reescreve um já existente; 
+    - ```open()```: Abre um arquivo em um determinado caminho _path_. Caso esse _path_ não exista, ele pode ser criado pela função ```open()```;
+    - ```chmod()```: Altera o modo do arquivo especificado;
+- **Memória:** 
+    - ```brk()```: Define o final do segmento de dados em um determinado endereço _addr_;
+    - ```mmap()```: Cria um novo mapeamento no espaço de endereço virtual do processo chamado;
+    - ```munmap()```: Exclui os mapeamentos para um trecho de memória especificado;
+- **Processos:** 
+    - ```execve()```: Executa um programa especificado em um caminho _path_;
+    - ```fork()```: Cria um novo processo filho duplicando o processo pai;
+    - ```kill()```: Envia um sinal qualquer para um processo ou um grupo de processos;
+
+Após a implementação, todos os dados estatísticos das chamadas de sistema foram coletados, sendo armazenados na pasta ```analysis```.
 
 -----
 
@@ -126,9 +115,9 @@ Aqui vai conteudo das chamadas de sistema
 
 
 Aqui vai conteudo dos tipos de processos
-    
-    
+
+**Todos os dados estatísticos dos programas de CPU-bound e I/O-bound acabaram sendo coletados.**
+ 
+ **Eles estão armazenados dentro do diretório "analysis".**
+
 -----
-
-
-
