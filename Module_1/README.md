@@ -9,8 +9,8 @@ Este módulo da disciplina de Sistemas Operacionais foi dividido em duas partes:
 Foram selecionadas três primitivas de chamada de sistema disponíveis no Linux para cada categoria (gerenciamento de memória, processos, E/S e arquivos), totalizando nove para serem analisadas com a construção de programas, que exemplificam a utilização de cada uma das primitivas.
 Ainda, foram criados dois programas para ilustrar o comportamento esperado para processos com características dos tipos CPU-*bound* e I/O-*bound*. A respeito dos programas de CPU-*bound* e I/O-*bound*:
 
-- **CPU-bound:** calcula uma aproximação do valor de π (pi) por meio do método de Monte Carlo.
-- **I/O-bound:** copia o conteúdo de um arquivo anterior (existente) pra dentro de um novo arquivo, e assim por diante.
+- **CPU-_bound_:** calcula uma aproximação do valor de π (pi) por meio do método de Monte Carlo.
+- **I/O-_bound_:** copia o conteúdo de um arquivo anterior (existente) pra dentro de um novo arquivo, e assim por diante.
 
 
 ### Compilação dos programas e execução
@@ -114,7 +114,7 @@ No programa de CPU-*bound* é realizado o cálculo de uma aproximação ao valor
 - Área do quadrado ```A = 4.R²```;
 - Área do círculo ```B = π.R²```.
 
-Se B e A forem respectivamente o total de coordenadas dentro da circunferÊncia e o total de coordenadas sorteadas, tem que o valor de π é dado pela equação: ```π = 4.(B/A)```.
+Se B e A forem respectivamente o total de coordenadas dentro da circunferência e o total de coordenadas sorteadas, tem que o valor de π é dado pela equação: ```π = 4.(B/A)```.
 
 A partir disso, os seguintes dados foram retornados na ferramenta "_time_":
 
