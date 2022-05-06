@@ -141,5 +141,3 @@ Baseado nisso, as seguintes informações foram obtidas na ferramenta "_time_":
  - Trocas de contexto involuntárias: 0.
 
 Nota-se que a CPU teve apenas 26% de uso quando o processo é do tipo I/O-*bound*. Além disso, o número elevado de trocas de contexto voluntárias, o qual acontece por conta da quantidade de arquivos que são gerados e depois excluídos.
-
------
