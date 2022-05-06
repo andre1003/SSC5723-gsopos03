@@ -8,14 +8,14 @@
 #include <math.h>
 
 // Function to calculate Pi (Monte Carlo)
-double calculation_pi(unsigned long n_points) {
+double calculation_pi(unsigned long nPoints) {
     // Variables for the calculation
     double x, y;
     unsigned long i, hit;
 
     hit = 0;
 
-    for(i = 0; i < n_points ; i++) { // Loop through the number of points
+    for(i = 0; i < nPoints ; i++) { // Loop through the number of points
         // Generate coordinates x, y
         x = ((double) rand() / (RAND_MAX));
         y = ((double) rand() / (RAND_MAX));
@@ -26,27 +26,27 @@ double calculation_pi(unsigned long n_points) {
     }
 
     // Pi calculation
-    return (4.0 * ((double) hit) / ((double) n_points));
+    return (4.0 * ((double) hit) / ((double) nPoints));
 }
 
-int main() {
+int main(int argc, char const *argv[]) {
     // Declaration of variables
-    int exp_number;         
-    unsigned long n_points;
+    int expNumber;         
+    unsigned long nPoints;
     double result;
 
     printf("###################################\n");
     printf("#            CPU bound            #\n");
     printf("###################################\n\n");
 
-    exp_number = 8; // Exponential number
+    expNumber = 8; // Exponential number
     // The larger it is, the greater the accuracy and computational cost
 
     // Number of points
-    n_points = pow(10, exp_number);
+    nPoints = pow(10, expNumber);
 
     srand(time(NULL)); // Seed to generate random values
-    result = calculation_pi(n_points); // Pi calculation
+    result = calculation_pi(nPoints); // Pi calculation
 
     printf(">> Pi value = %lf\n", result); // Final result
 
