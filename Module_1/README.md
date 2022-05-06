@@ -1,23 +1,17 @@
 # Módulo 1
 
-Este módulo da disciplina de Sistemas Operacionais foi dividido duas partes:
-- Chamadas de sistema (do inglês *syscalls*);
+Este módulo da disciplina de Sistemas Operacionais foi dividido em duas partes:
+- Chamadas de sistema (do inglês *syscalls* ou *system calls*);
 - Processos CPU-*bound* e I/O-*bound*.
-
-**Objetivo**: 
-
-Identificar na prática alguns conceitos abordados em aula, como: chamadas de sistema, tipos de processos, trocas de contexto de processos, tempo de execução, entre outros.
-
 
 ## 1. Informações Gerais
 
 Foram selecionadas três primitivas de chamada de sistema disponíveis no Linux para cada categoria (gerenciamento de memória, processos, E/S e arquivos), totalizando nove para serem analisadas com a construção de programas, que exemplificam a utilização de cada uma das primitivas.
-Além disso, foram criados dois programas para ilustrar o comportamento esperado para processos com características dos tipos CPU-*bound* e I/O-*bound*. A respeito dos programas de CPU-*bound* e I/O-*bound*:
+Ainda, foram criados dois programas para ilustrar o comportamento esperado para processos com características dos tipos CPU-*bound* e I/O-*bound*. A respeito dos programas de CPU-*bound* e I/O-*bound*:
 
 - **CPU-bound:** calcula uma aproximação do valor de π (pi) por meio do método de Monte Carlo.
 - **I/O-bound:** copia o conteúdo de um arquivo anterior (existente) pra dentro de um novo arquivo, e assim por diante.
 
---
 
 ### Compilação dos programas e execução
 
@@ -62,9 +56,10 @@ strace -c -f ./executable_name
 
 A ferramenta "_time_" (https://linux.die.net/man/1/time) foi utilizada para obter estatísticas de uso de recursos nos programas de CPU-*bound* e I/O-*bound*.
 Para obter melhores resultados, foi utilizado o "_/usr/bin/time_", o qual está contido no sistema Linux. As informações mínimas esperadas nesta etapa são:
+
  - Tempo gasto em modo usuário;
  - Tempo gasto em modo kernel;
- - Tempo total Decorrido;
+ - Tempo total decorrido;
  - Porcentagem de uso da CPU ```[(tempo modo usuário + tempo modo kernel) / tempo total decorrido]```; 
  - Trocas de contexto voluntárias;
  - Trocas de contexto involuntárias.
@@ -84,31 +79,33 @@ Com esse parâmetro, para trazer somente as informações mínimas apresentadas,
 
 ## 2. Chamadas de Sistema
 
-Como comentado anteriormente, três primitivas de chamada de sistema Linux foram selecionadas, sendo:
+Uma *syscall* é o mecanismo programático pelo qual um programa de computador solicita um serviço ao núcleo sobre o qual está sendo executado. Como comentado anteriormente, três primitivas de chamada de sistema Linux foram selecionadas, sendo:
 
 - E/S e arquivos: 
-    - ```creat()```: Cria um novo arquivo ou reescreve um já existente; 
-    - ```open()```: Abre um arquivo em um determinado caminho _path_. Caso esse _path_ não exista, ele pode ser criado pela função ```open()```;
-    - ```chmod()```: Altera o modo do arquivo especificado;
+    - ```creat()```: cria um novo arquivo ou reescreve um já existente; 
+    - ```open()```: abre um arquivo em um determinado caminho _path_. Caso o arquivo não exista, o arquivo é criado;
+    - ```chmod()```: altera a permissão do arquivo especificado.
 - Gerenciamento de memória:
-    - ```brk()```: Define o final do segmento de dados em um determinado endereço _addr_;
-    - ```mmap()```: Cria um novo mapeamento no espaço de endereço virtual do processo chamado;
-    - ```munmap()```: Exclui os mapeamentos para um trecho de memória especificado;
+    - ```brk()```: define o final do segmento de dados em um determinado endereço _addr_;
+    - ```mmap()```: cria um novo mapeamento no espaço de endereço virtual do processo chamado;
+    - ```munmap()```: exclui os mapeamentos para um trecho de memória especificado.
 - Processos:
-    - ```execve()```: Executa um programa especificado em um caminho _path_;
-    - ```fork()```: Cria um novo processo filho duplicando o processo pai;
-    - ```kill()```: Envia um sinal qualquer para um processo ou um grupo de processos;
+    - ```execve()```: executa um programa especificado em um caminho _path_;
+    - ```fork()```: cria um novo processo filho duplicando o processo pai;
+    - ```kill()```: envia um sinal qualquer para um processo ou um grupo de processos.
 
-Após a implementação, todos os dados estatísticos das chamadas de sistema foram coletados, sendo armazenados na pasta ```analysis```.
+Após a implementação, todos os dados estatísticos das chamadas de sistema foram coletados, sendo armazenados no diretório ```analysis```.
+
+Além das chamadas de sistemas selecionadas listadas acima, outras chamadas também apareceram nas estatísticas dos programas exemplos da primeira parte, como read, write, close, fstat, mprotect, rt_sigaction, rt_sigprocmask, pread64, access, clone, wait4,arch_prctl, openat, arch_prctl, lseek, clock_nanosleep, getpid, clone, getppid e clock_nanosleep.
 
 -----
 
 
 ## 3. Tipos de Processos
 
-Os processos CPU-*bound* são aqueles que utilizam a CPU na maior parte de seu tempo de execução. Em contrapartida, os processos I/O-*bound* são os que dependem mais das entradas e saídas do sistema.
+Os processos CPU-*bound* são aqueles que utilizam a CPU na maior parte de seu tempo de execução. Assim, esses processos são mais rápidos se o desempenho da CPU for bom. Em contrapartida, os processos I/O-*bound* são os que dependem mais das entradas e saídas do sistema. Dessa forma, quando um certo dispostivo possui um desempenho excelente, como exemplo, o uso de SSD ao invés de disco rígido, os processos I/O-*bound* são mais eficientes.  
 
-**Todos os dados estatísticos dos programas de CPU-bound e I/O-bound acabaram sendo coletados. Eles estão armazenados dentro do diretório "analysis".**
+**Observação:** todos os dados estatísticos dos programas de CPU-*bound* e I/O-*bound* foram coletados, os quais foram salvos na pasta ```analysis```.
 
 ### 3.1. CPU-*bound*
 
@@ -119,12 +116,30 @@ No programa de CPU-*bound* é realizado o cálculo de uma aproximação ao valor
 
 Se B e A forem respectivamente o total de coordenadas dentro da circunferÊncia e o total de coordenadas sorteadas, tem que o valor de π é dado pela equação: ```π = 4.(B/A)```.
 
-[...].
+A partir disso, os seguintes dados foram retornados na ferramenta "_time_":
+
+ - Tempo gasto em modo usuário: 1.59 segundos;
+ - Tempo gasto em modo kernel: 0.00 segundos;
+ - Tempo total decorrido: 1.60 segundos;
+ - Porcentagem de uso da CPU: 99%; 
+ - Trocas de contexto voluntárias: 17;
+ - Trocas de contexto involuntárias: 0.
+
+É possível observar que a CPU atingiu quase 100% de uso ao executar o processo do tipo CPU-*bound*.
 
 ### 3.2. I/O-*bound*
 
-No programa de IO-*bound* é realizada uma cópia de um arquivo anterior (existente) para dentro um novo arquivo (atual), e processo se repete até atingir um número _x_ de arquivos gerados. Ao final da operação, todos os arquivos são removidos, com exceção do primeiro.
+No programa de I/O-*bound* é realizada uma cópia de um arquivo anterior (existente) para dentro um novo arquivo (atual), e processo se repete até atingir um número _x_ de arquivos gerados. Ao final da operação, todos os arquivos são removidos, com exceção do primeiro.
 
-[...].
+Baseado nisso, as seguintes informações foram obtidas na ferramenta "_time_":
+
+ - Tempo gasto em modo usuário: 0.01 segundos;
+ - Tempo gasto em modo kernel: 0.00 segundos;
+ - Tempo total decorrido: 0.03 segundos;
+ - Porcentagem de uso da CPU: 26%; 
+ - Trocas de contexto voluntárias: 224;
+ - Trocas de contexto involuntárias: 0.
+
+Nota-se que a CPU teve apenas 26% de uso quando o processo é do tipo I/O-*bound*. Além disso, o número elevado de trocas de contexto voluntárias, o qual acontece por conta da quantidade de arquivos que são gerados e depois excluídos.
 
 -----
