@@ -1,22 +1,24 @@
--------------------- 
- Starting execution  
--------------------- 
-strace: Process 9491 attached
- [FATHER]: My PID is -> 9469 
- [SON]: My PID is -> 9491 
- [FATHER]: I will wait 3 seconds for the execution of my son. 
- [SON]: My father's PID is -> 9469 
- [SON]: I will execute forever (infinite loop) ! 
- [FATHER]: Now I will finish my son! 
- [FATHER]: My son was finished, now I will too ! 
+###################################
+#         KILL system call        #
+###################################
+
+>> Starting execution:
+strace: Process 476 attached
+  [FATHER]: My PID is -> 475
+  [SON]: My PID is -> 476
+  [FATHER]: I will wait 3 seconds for the execution of my son.
+  [SON]: My father's PID is -> 475
+  [SON]: I will execute forever (infinite loop)!
+  [FATHER]: Now I will finish my son!
+  [FATHER]: My son was finished, now I will too!
 % time     seconds  usecs/call     calls    errors syscall
 ------ ----------- ----------- --------- --------- ----------------
   0.00    0.000000           0         1           read
-  0.00    0.000000           0        10           write
+  0.00    0.000000           0        12           write
   0.00    0.000000           0         2           close
   0.00    0.000000           0         3           fstat
   0.00    0.000000           0         7           mmap
-  0.00    0.000000           0         3           mprotect
+  0.00    0.000000           0         4           mprotect
   0.00    0.000000           0         1           munmap
   0.00    0.000000           0         3           brk
   0.00    0.000000           0         6           pread64
@@ -28,8 +30,7 @@ strace: Process 9491 attached
   0.00    0.000000           0         1           kill
   0.00    0.000000           0         1           getppid
   0.00    0.000000           0         2         1 arch_prctl
-  0.00    0.000000           0         1           restart_syscall
-  0.00    0.000000           0         3         1 clock_nanosleep
+  0.00    0.000000           0         3           clock_nanosleep
   0.00    0.000000           0         2           openat
 ------ ----------- ----------- --------- --------- ----------------
-100.00    0.000000                    52         3 total
+100.00    0.000000                    54         2 total

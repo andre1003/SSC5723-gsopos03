@@ -1,0 +1,15 @@
+###################################
+#            CPU bound            #
+###################################
+
+>> Pi value = 3.141795
+
+
+>> Minimum information:
+
+  Time spent in user mode (seconds): 1.59
+  Time spent in kernel mode (seconds): 0.00
+  Total elapsed time (seconds): 1.60
+  CPU usage percentage ((1.59 + 0.00) / 1.60): 99%
+  Voluntary context switches: 17
+  Involuntary context switches: 0

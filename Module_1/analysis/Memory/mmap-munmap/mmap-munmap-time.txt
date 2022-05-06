@@ -1,9 +1,0 @@
-File content:
-
-Olá mundo
- Tempo gasto em modo usuário (segundos): 0.00
- Tempo gasto em modo kernel (segundos): 0.00
- Tempo Total decorrido (segundos): 0.00
- Porcentagem de uso da CPU ( (0.00 + 0.00) / 0.00 ): 14%
- Trocas de contexto voluntárias: 26
- Trocas de contexto involuntárias: 0

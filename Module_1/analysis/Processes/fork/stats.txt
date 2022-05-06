@@ -1,25 +1,27 @@
--------------------- 
- Starting execution  
--------------------- 
-strace: Process 8440 attached
- [FATHER]: My PID is -> 8421 
- [FATHER]: I have the number 10 that was in address space '0x7ffd02fbb07c' 
- [FATHER]: Now I will wait for execution of my son 
- [SON]: My PID is -> 8440 
- [SON]: My father's PID is -> 8421 
- [SON]: I used the address space '0x7ffd02fbb07c', but my num is: 20 
- [SON]: I will sleep for 3 seconds before I finish. 
- [SON]: Finishing... 
- [FATHER]: My num value still is -> 10 
- [FATHER]: My son finished, now I will finish too! 
+###################################
+#         FORK system call        #
+###################################
+
+>> Starting execution:
+strace: Process 454 attached
+  [FATHER]: My PID is -> 453
+  [SON]: My PID is -> 454
+  [FATHER]: I have the number 10 that was in address space '0x7ffcecb275fc'.
+  [FATHER]: Now I will wait for execution of my son.
+  [SON]: My father's PID is -> 453
+  [SON]: I used the address space '0x7ffcecb275fc', but my num is: 20
+  [SON]: I will sleep for 3 seconds before I finish.
+  [SON]: Finishing...
+  [FATHER]: My num value still is -> 10
+  [FATHER]: My son finished, now I will finish too!
 % time     seconds  usecs/call     calls    errors syscall
 ------ ----------- ----------- --------- --------- ----------------
   0.00    0.000000           0         1           read
-  0.00    0.000000           0        13           write
+  0.00    0.000000           0        15           write
   0.00    0.000000           0         2           close
   0.00    0.000000           0         3           fstat
   0.00    0.000000           0         7           mmap
-  0.00    0.000000           0         3           mprotect
+  0.00    0.000000           0         4           mprotect
   0.00    0.000000           0         1           munmap
   0.00    0.000000           0         3           brk
   0.00    0.000000           0         6           pread64
@@ -33,4 +35,4 @@ strace: Process 8440 attached
   0.00    0.000000           0         3           clock_nanosleep
   0.00    0.000000           0         2           openat
 ------ ----------- ----------- --------- --------- ----------------
-100.00    0.000000                    53         2 total
+100.00    0.000000                    56         2 total

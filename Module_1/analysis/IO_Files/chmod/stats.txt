@@ -3,9 +3,9 @@
 ###################################
 
 >> Permissions before CHMOD:
--rwxrwxrwx 1 leandro leandro 0 Apr 22 14:11 file.txt
+-r-xr-xr-x 1 andre andre 0 May  6 16:09 file.txt
 >> Permissions after CHMOD:
--rwxrwxrwx 1 leandro leandro 0 Apr 22 14:11 file.txt
+-rwxrwxrwx 1 andre andre 0 May  6 16:09 file.txt
 % time     seconds  usecs/call     calls    errors syscall
 ------ ----------- ----------- --------- --------- ----------------
   0.00    0.000000           0         1           read
@@ -13,7 +13,7 @@
   0.00    0.000000           0         2           close
   0.00    0.000000           0         3           fstat
   0.00    0.000000           0         9           mmap
-  0.00    0.000000           0         3           mprotect
+  0.00    0.000000           0         4           mprotect
   0.00    0.000000           0         3           munmap
   0.00    0.000000           0         3           brk
   0.00    0.000000           0         8           rt_sigaction
@@ -27,4 +27,4 @@
   0.00    0.000000           0         2         1 arch_prctl
   0.00    0.000000           0         2           openat
 ------ ----------- ----------- --------- --------- ----------------
-100.00    0.000000                    63         2 total
+100.00    0.000000                    64         2 total

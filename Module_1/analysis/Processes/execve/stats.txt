@@ -1,0 +1,25 @@
+###################################
+#        EXECVE system call       #
+###################################
+
+>> Trying to run: ./new
+>> The new program was executed!
+>> Informed parameter contains: Hello World
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+ 23.61    0.000879         439         2           execve
+ 18.18    0.000677          48        14           mmap
+ 11.58    0.000431          61         7           write
+  9.62    0.000358          44         8           mprotect
+  9.59    0.000357          29        12           pread64
+  5.91    0.000220          36         6           fstat
+  5.48    0.000204          34         6           brk
+  3.36    0.000125          31         4           close
+  3.25    0.000121          30         4         2 arch_prctl
+  2.63    0.000098          49         2           munmap
+  2.55    0.000095          23         4           openat
+  1.85    0.000069          69         1           clock_nanosleep
+  1.24    0.000046          23         2           read
+  1.15    0.000043          21         2         2 access
+------ ----------- ----------- --------- --------- ----------------
+100.00    0.003723                    74         4 total

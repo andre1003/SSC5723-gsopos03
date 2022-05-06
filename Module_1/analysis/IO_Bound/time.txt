@@ -1,0 +1,17 @@
+###################################
+#            I/O bound            #
+###################################
+
+>> Building the files...
+>> Removing the files...
+>> Complete!
+
+
+>> Minimum information:
+
+  Time spent in user mode (seconds): 0.01
+  Time spent in kernel mode (seconds): 0.00
+  Total elapsed time (seconds): 0.03
+  CPU usage percentage ((0.01 + 0.00) / 0.03): 26%
+  Voluntary context switches: 224
+  Involuntary context switches: 0

@@ -1,0 +1,76 @@
+execve("./main", ["./main"], 0x7ffcee320920 /* 25 vars */) = 0
+brk(NULL)                               = 0x55fe319ad000
+arch_prctl(0x3001 /* ARCH_??? */, 0x7ffcb2edfba0) = -1 EINVAL (Invalid argument)
+access("/etc/ld.so.preload", R_OK)      = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=42733, ...}) = 0
+mmap(NULL, 42733, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f1bd30c5000
+close(3)                                = 0
+openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\360q\2\0\0\0\0\0"..., 832) = 832
+pread64(3, "\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784
+pread64(3, "\4\0\0\0\20\0\0\0\5\0\0\0GNU\0\2\0\0\300\4\0\0\0\3\0\0\0\0\0\0\0", 32, 848) = 32
+pread64(3, "\4\0\0\0\24\0\0\0\3\0\0\0GNU\0\t\233\222%\274\260\320\31\331\326\10\204\276X>\263"..., 68, 880) = 68
+fstat(3, {st_mode=S_IFREG|0755, st_size=2029224, ...}) = 0
+mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f1bd30c3000
+pread64(3, "\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784
+pread64(3, "\4\0\0\0\20\0\0\0\5\0\0\0GNU\0\2\0\0\300\4\0\0\0\3\0\0\0\0\0\0\0", 32, 848) = 32
+pread64(3, "\4\0\0\0\24\0\0\0\3\0\0\0GNU\0\t\233\222%\274\260\320\31\331\326\10\204\276X>\263"..., 68, 880) = 68
+mmap(NULL, 2036952, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7f1bd2ed1000
+mprotect(0x7f1bd2ef6000, 1847296, PROT_NONE) = 0
+mmap(0x7f1bd2ef6000, 1540096, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x25000) = 0x7f1bd2ef6000
+mmap(0x7f1bd306e000, 303104, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x19d000) = 0x7f1bd306e000
+mmap(0x7f1bd30b9000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1e7000) = 0x7f1bd30b9000
+mmap(0x7f1bd30bf000, 13528, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7f1bd30bf000
+close(3)                                = 0
+arch_prctl(ARCH_SET_FS, 0x7f1bd30c4540) = 0
+mprotect(0x7f1bd30b9000, 12288, PROT_READ) = 0
+mprotect(0x55fe3072b000, 4096, PROT_READ) = 0
+mprotect(0x7f1bd30fd000, 4096, PROT_READ) = 0
+munmap(0x7f1bd30c5000, 42733)           = 0
+fstat(1, {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0), ...}) = 0
+brk(NULL)                               = 0x55fe319ad000
+brk(0x55fe319ce000)                     = 0x55fe319ce000
+write(1, "################################"..., 36###################################
+) = 36
+write(1, "#        CHMOD system call      "..., 36#        CHMOD system call        #
+) = 36
+write(1, "################################"..., 36###################################
+) = 36
+write(1, "\n", 1
+)                       = 1
+write(1, ">> Permissions before CHMOD:\n", 29>> Permissions before CHMOD:
+) = 29
+rt_sigaction(SIGINT, {sa_handler=SIG_IGN, sa_mask=[], sa_flags=SA_RESTORER, sa_restorer=0x7f1bd2f17210}, {sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+rt_sigaction(SIGQUIT, {sa_handler=SIG_IGN, sa_mask=[], sa_flags=SA_RESTORER, sa_restorer=0x7f1bd2f17210}, {sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+rt_sigprocmask(SIG_BLOCK, [CHLD], [], 8) = 0
+mmap(NULL, 36864, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS|MAP_STACK, -1, 0) = 0x7f1bd30c7000
+rt_sigprocmask(SIG_BLOCK, ~[], [CHLD], 8) = 0
+clone(child_stack=0x7f1bd30cfff0, flags=CLONE_VM|CLONE_VFORK|SIGCHLD) = 366
+munmap(0x7f1bd30c7000, 36864)           = 0
+rt_sigprocmask(SIG_SETMASK, [CHLD], NULL, 8) = 0
+wait4(366, -r-xr-xr-x 1 andre andre 0 May  6 16:09 file.txt
+[{WIFEXITED(s) && WEXITSTATUS(s) == 0}], 0, NULL) = 366
+rt_sigaction(SIGINT, {sa_handler=SIG_DFL, sa_mask=[], sa_flags=SA_RESTORER, sa_restorer=0x7f1bd2f17210}, NULL, 8) = 0
+rt_sigaction(SIGQUIT, {sa_handler=SIG_DFL, sa_mask=[], sa_flags=SA_RESTORER, sa_restorer=0x7f1bd2f17210}, NULL, 8) = 0
+rt_sigprocmask(SIG_SETMASK, [], NULL, 8) = 0
+--- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=366, si_uid=1000, si_status=0, si_utime=0, si_stime=0} ---
+chmod("./file.txt", 0777)               = 0
+write(1, ">> Permissions after CHMOD:\n", 28>> Permissions after CHMOD:
+) = 28
+rt_sigaction(SIGINT, {sa_handler=SIG_IGN, sa_mask=[], sa_flags=SA_RESTORER, sa_restorer=0x7f1bd2f17210}, {sa_handler=SIG_DFL, sa_mask=[], sa_flags=SA_RESTORER, sa_restorer=0x7f1bd2f17210}, 8) = 0
+rt_sigaction(SIGQUIT, {sa_handler=SIG_IGN, sa_mask=[], sa_flags=SA_RESTORER, sa_restorer=0x7f1bd2f17210}, {sa_handler=SIG_DFL, sa_mask=[], sa_flags=SA_RESTORER, sa_restorer=0x7f1bd2f17210}, 8) = 0
+rt_sigprocmask(SIG_BLOCK, [CHLD], [], 8) = 0
+mmap(NULL, 36864, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS|MAP_STACK, -1, 0) = 0x7f1bd30c7000
+rt_sigprocmask(SIG_BLOCK, ~[], [CHLD], 8) = 0
+clone(child_stack=0x7f1bd30cfff0, flags=CLONE_VM|CLONE_VFORK|SIGCHLD) = 368
+munmap(0x7f1bd30c7000, 36864)           = 0
+rt_sigprocmask(SIG_SETMASK, [CHLD], NULL, 8) = 0
+wait4(368, -rwxrwxrwx 1 andre andre 0 May  6 16:09 file.txt
+[{WIFEXITED(s) && WEXITSTATUS(s) == 0}], 0, NULL) = 368
+rt_sigaction(SIGINT, {sa_handler=SIG_DFL, sa_mask=[], sa_flags=SA_RESTORER, sa_restorer=0x7f1bd2f17210}, NULL, 8) = 0
+rt_sigaction(SIGQUIT, {sa_handler=SIG_DFL, sa_mask=[], sa_flags=SA_RESTORER, sa_restorer=0x7f1bd2f17210}, NULL, 8) = 0
+rt_sigprocmask(SIG_SETMASK, [], NULL, 8) = 0
+--- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=368, si_uid=1000, si_status=0, si_utime=0, si_stime=0} ---
+exit_group(0)                           = ?
++++ exited with 0 +++

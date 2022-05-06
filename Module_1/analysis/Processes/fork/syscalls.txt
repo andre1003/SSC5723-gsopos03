@@ -1,0 +1,88 @@
+execve("./main", ["./main"], 0x7ffe435eb8f8 /* 25 vars */) = 0
+brk(NULL)                               = 0x555760fb5000
+arch_prctl(0x3001 /* ARCH_??? */, 0x7ffc918b1240) = -1 EINVAL (Invalid argument)
+access("/etc/ld.so.preload", R_OK)      = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=42733, ...}) = 0
+mmap(NULL, 42733, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f8a494a6000
+close(3)                                = 0
+openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\360q\2\0\0\0\0\0"..., 832) = 832
+pread64(3, "\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784
+pread64(3, "\4\0\0\0\20\0\0\0\5\0\0\0GNU\0\2\0\0\300\4\0\0\0\3\0\0\0\0\0\0\0", 32, 848) = 32
+pread64(3, "\4\0\0\0\24\0\0\0\3\0\0\0GNU\0\t\233\222%\274\260\320\31\331\326\10\204\276X>\263"..., 68, 880) = 68
+fstat(3, {st_mode=S_IFREG|0755, st_size=2029224, ...}) = 0
+mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f8a494a4000
+pread64(3, "\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784
+pread64(3, "\4\0\0\0\20\0\0\0\5\0\0\0GNU\0\2\0\0\300\4\0\0\0\3\0\0\0\0\0\0\0", 32, 848) = 32
+pread64(3, "\4\0\0\0\24\0\0\0\3\0\0\0GNU\0\t\233\222%\274\260\320\31\331\326\10\204\276X>\263"..., 68, 880) = 68
+mmap(NULL, 2036952, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7f8a492b2000
+mprotect(0x7f8a492d7000, 1847296, PROT_NONE) = 0
+mmap(0x7f8a492d7000, 1540096, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x25000) = 0x7f8a492d7000
+mmap(0x7f8a4944f000, 303104, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x19d000) = 0x7f8a4944f000
+mmap(0x7f8a4949a000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1e7000) = 0x7f8a4949a000
+mmap(0x7f8a494a0000, 13528, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7f8a494a0000
+close(3)                                = 0
+arch_prctl(ARCH_SET_FS, 0x7f8a494a5540) = 0
+mprotect(0x7f8a4949a000, 12288, PROT_READ) = 0
+mprotect(0x55575fa7f000, 4096, PROT_READ) = 0
+mprotect(0x7f8a494de000, 4096, PROT_READ) = 0
+munmap(0x7f8a494a6000, 42733)           = 0
+fstat(1, {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0), ...}) = 0
+brk(NULL)                               = 0x555760fb5000
+brk(0x555760fd6000)                     = 0x555760fd6000
+write(1, "################################"..., 36###################################
+) = 36
+write(1, "#         FORK system call      "..., 36#         FORK system call        #
+) = 36
+write(1, "################################"..., 36###################################
+) = 36
+write(1, "\n", 1
+)                       = 1
+write(1, ">> Starting execution:\n", 23>> Starting execution:
+) = 23
+clock_nanosleep(CLOCK_REALTIME, 0, {tv_sec=3, tv_nsec=0}, 0x7ffc918b11b0) = 0
+clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLDstrace: Process 449 attached
+ <unfinished ...>
+[pid   449] getpid( <unfinished ...>
+[pid   448] <... clone resumed>, child_tidptr=0x7f8a494a5810) = 449
+[pid   449] <... getpid resumed>)       = 449
+[pid   448] getpid( <unfinished ...>
+[pid   449] write(1, "  [SON]: My PID is -> 449\n", 26 <unfinished ...>
+[pid   448] <... getpid resumed>)       = 448
+  [SON]: My PID is -> 449
+[pid   449] <... write resumed>)        = 26
+[pid   448] write(1, "  [FATHER]: My PID is -> 448\n", 29 <unfinished ...>
+  [FATHER]: My PID is -> 448
+[pid   449] getppid( <unfinished ...>
+[pid   448] <... write resumed>)        = 29
+[pid   449] <... getppid resumed>)      = 448
+[pid   448] write(1, "  [FATHER]: I have the number 10"..., 77 <unfinished ...>
+  [FATHER]: I have the number 10 that was in address space '0x7ffc918b120c'.
+[pid   449] write(1, "  [SON]: My father's PID is -> 4"..., 35 <unfinished ...>
+  [SON]: My father's PID is -> 448
+[pid   448] <... write resumed>)        = 77
+[pid   449] <... write resumed>)        = 35
+[pid   448] write(1, "  [FATHER]: Now I will wait for "..., 53 <unfinished ...>
+  [FATHER]: Now I will wait for execution of my son.
+[pid   449] write(1, "  [SON]: I used the address spac"..., 70 <unfinished ...>
+  [SON]: I used the address space '0x7ffc918b120c', but my num is: 20
+[pid   448] <... write resumed>)        = 53
+[pid   449] <... write resumed>)        = 70
+[pid   448] wait4(-1,  <unfinished ...>
+[pid   449] write(1, "  [SON]: I will sleep for 3 seco"..., 53  [SON]: I will sleep for 3 seconds before I finish.
+) = 53
+[pid   449] clock_nanosleep(CLOCK_REALTIME, 0, {tv_sec=3, tv_nsec=0}, 0x7ffc918b11b0) = 0
+[pid   449] write(1, "  [SON]: Finishing... \n", 23  [SON]: Finishing...
+) = 23
+[pid   449] exit_group(0)               = ?
+[pid   449] +++ exited with 0 +++
+<... wait4 resumed>NULL, 0, NULL)       = 449
+--- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=449, si_uid=1000, si_status=0, si_utime=0, si_stime=0} ---
+write(1, "  [FATHER]: My num value still i"..., 40  [FATHER]: My num value still is -> 10
+) = 40
+write(1, "  [FATHER]: My son finished, now"..., 52  [FATHER]: My son finished, now I will finish too!
+) = 52
+clock_nanosleep(CLOCK_REALTIME, 0, {tv_sec=3, tv_nsec=0}, 0x7ffc918b11b0) = 0
+exit_group(0)                           = ?
++++ exited with 0 +++
