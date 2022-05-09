@@ -9,7 +9,7 @@ Este módulo da disciplina de Sistemas Operacionais foi dividido em duas partes:
 Foram selecionadas três primitivas de chamada de sistema disponíveis no Linux para cada categoria (gerenciamento de memória, processos, E/S e arquivos), totalizando nove para serem analisadas com a construção de programas, que exemplificam a utilização de cada uma das primitivas.
 Ainda, foram criados dois programas para ilustrar o comportamento esperado para processos com características dos tipos CPU-*bound* e I/O-*bound*. A respeito dos programas de CPU-*bound* e I/O-*bound*:
 
-- **CPU-_bound_:** calcula uma aproximação do valor de π (pi) por meio do método de Monte Carlo.
+- **CPU-_bound_:** calcula uma aproximação do valor de π (pi) por meio do método de Monte Carlo;
 - **I/O-_bound_:** copia o conteúdo de um arquivo anterior (existente) pra dentro de um novo arquivo, e assim por diante.
 
 
