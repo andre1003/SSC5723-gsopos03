@@ -1,12 +1,14 @@
 /* DEFINES */
 #define MAX_BUFFER_SIZE 5   // Maximum number of elements in buffer node list
+#define TRUE            1   // True const value
+#define FALSE           0   // False const value
 
 
 
 /* INCLUDES */
+#include "pthread.h"
 #include "stdlib.h"
 #include "stdio.h"
-#include "pthread.h"
 #include "time.h"
 
 
@@ -71,12 +73,27 @@ node* insert(node* head, int id, int isEmpty) {
 }
 
 
-buffer update(buffer buff, int value) {
-    buff.nextEmpty->value = value;
-    buff.nextEmpty->isEmpty = 1;
+/// <summary>
+/// Function for updating a given buffer.
+/// </summary>
+/// <param name="buff">Buffer struct.</param>
+/// <param name="value">Value to be inserted.</param>
+/// <returns>Updated buffer.</returns>
+buffer update(buffer buff, int value, int isEmpty) {
+    if(isEmpty == TRUE) {
+        buff.nextFull->value = value;
+        buff.nextFull->isEmpty = isEmpty;
+    }
+    else {
+        buff.nextEmpty->value = value;
+        buff.nextEmpty->isEmpty = isEmpty;
+    }
+    
 
     node* current = buff.head;
-    while(current && current->isEmpty == 0)
+
+    // Update nextEmpty node
+    while(current && current->isEmpty == FALSE)
         current = current->next;
 
     if(current) {
@@ -86,6 +103,19 @@ buffer update(buffer buff, int value) {
         buff.nextEmpty = NULL;
     }
 
+    // Update nextFull node
+    current = buff.head;
+    while(current && current->isEmpty == TRUE)
+        current = current->next;
+
+    if(current) {
+        buff.nextFull = current;
+    }
+    else {
+        buff.nextFull = NULL;
+    }
+
+    // Return the buffer
     return buff;
 }
 
@@ -159,7 +189,7 @@ buffer init(buffer buff) {
 
     // Insert MAX_BUFFER_SIZE nodes in the buffer head list
     for(i = 0; i < MAX_BUFFER_SIZE; i++)
-        buff.head = insert(buff.head, i, 1);
+        buff.head = insert(buff.head, i, TRUE);
 
     buff.nextEmpty = buff.head;             // The next empty element is the first buffer list element
 
@@ -209,7 +239,7 @@ void print_data(node* head) {
 
     // Go through the node list
     while(aux != NULL) {
-        printf("|ID: %d, Is Empty: %d|\n", aux->id, aux->isEmpty);
+        printf("|ID: %d\tIs Empty: %d\tValue: %d|\n", aux->id, aux->isEmpty, aux->value);
         aux = aux->next;
     }
 
@@ -220,7 +250,7 @@ void print_data(node* head) {
 void* produce(void* arg) {
     // Reparse void* to buffer
     buffer buff = *(buffer*) arg;
-    while(1) {
+    while(TRUE) {
         // Produce item
         int item = rand() % 100 + 1;
 
@@ -228,10 +258,10 @@ void* produce(void* arg) {
         pthread_mutex_lock(&buff.mutex);                // Lock mutex semaphore
 
         // Check buffer (empty slots)
-        if(buff.countEmpty != MAX_BUFFER_SIZE && buff.nextEmpty) {
+        if(buff.countEmpty != 0 && buff.nextEmpty) {
+            buff = update(buff, rand() % 100, FALSE);
             buff.countEmpty--;
             buff.countFull++;
-            buff = update(buff, value);
         }
 
 
@@ -248,6 +278,12 @@ void* produce(void* arg) {
 void* consume(void* arg) {
     // Reparse void* to buffer
     buffer buff = *(buffer*)arg;
+
+    if(buff.countFull != 0) {
+        buff = update(buff, -1, TRUE);
+        buff.countEmpty++;
+        buff.countFull--;
+    }
 }
 
 
@@ -268,20 +304,41 @@ int main() {
     buff = create(buff);                                        // Create buffer
     buff = init(buff);                                          // Init buffer
 
+    int i;
+    for(i = 0; i < 10; i++) {
+        if(buff.countEmpty != 0 && buff.nextEmpty) {
+            buff = update(buff, rand() % 100, FALSE);
+            buff.countEmpty--;
+            buff.countFull++;
+        }
+            
+    }
+
     print_data(buff.head);                                      // Print the initialized buffer node list
 
-    // Create the threads
-    pthread_t producer;                                         // Producer thread variable
-    pthread_t consumer;                                         // Consumer thread variable
+    for(i = 0; i < 10; i++) {
+        if(buff.countFull != 0) {
+            buff = update(buff, -1, TRUE);
+            buff.countEmpty++;
+            buff.countFull--;
+        }
+            
+    }
 
-    pthread_create(&producer, NULL, produce, (void*)(&buff));   // Producer thread creation
-    pthread_create(&consumer, NULL, consume, (void*)(&buff));   // Consumer thread creation
+    print_data(buff.head);                                      // Print the initialized buffer node list
 
-    pthread_join(producer, NULL);                               // Wait for the producer end
-    pthread_join(consumer, NULL);                               // Wait for the consumer end
+    //// Create the threads
+    //pthread_t producer;                                         // Producer thread variable
+    //pthread_t consumer;                                         // Consumer thread variable
 
-    // Destroy the buffer
-    buff = destroy(buff);                                       // Destroy the buffer struct completely
+    //pthread_create(&producer, NULL, produce, (void*)(&buff));   // Producer thread creation
+    //pthread_create(&consumer, NULL, consume, (void*)(&buff));   // Consumer thread creation
+
+    //pthread_join(producer, NULL);                               // Wait for the producer end
+    //pthread_join(consumer, NULL);                               // Wait for the consumer end
+
+    //// Destroy the buffer
+    //buff = destroy(buff);                                       // Destroy the buffer struct completely
 
     // Exit
     return 0;
