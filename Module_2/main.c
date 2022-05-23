@@ -7,6 +7,7 @@
 #include "stdlib.h"
 #include "stdio.h"
 #include "pthread.h"
+#include "time.h"
 
 
 
@@ -15,6 +16,7 @@
 // Node struct
 typedef struct NODE {
     int id;             // Node ID
+    int value;          // Value
     int isEmpty;        // 1 - is empty | 0 - is full
     struct NODE* next;  // Next element
 } node;
@@ -51,6 +53,7 @@ node* insert(node* head, int id, int isEmpty) {
 
     // Node variables setting
     newNode->id = id;                   // ID
+    newNode->value = -1;                // Value is -1 (not a valid value)
     newNode->isEmpty = isEmpty;         // Is empty
     newNode->next = NULL;               // Next element
 
@@ -65,6 +68,25 @@ node* insert(node* head, int id, int isEmpty) {
     current->next = newNode;            // Insert the created node
 
     return head;                        // Return the list
+}
+
+
+buffer update(buffer buff, int value) {
+    buff.nextEmpty->value = value;
+    buff.nextEmpty->isEmpty = 1;
+
+    node* current = buff.head;
+    while(current && current->isEmpty == 0)
+        current = current->next;
+
+    if(current) {
+        buff.nextEmpty = current;
+    }
+    else {
+        buff.nextEmpty = NULL;
+    }
+
+    return buff;
 }
 
 
@@ -195,19 +217,37 @@ void print_data(node* head) {
 }
 
 
-void* produce() {
-    int i;
-    for(i = 0; i < MAX_BUFFER_SIZE; i++) {
-        
+void* produce(void* arg) {
+    // Reparse void* to buffer
+    buffer buff = *(buffer*) arg;
+    while(1) {
+        // Produce item
+        int item = rand() % 100 + 1;
+
+        pthread_cond_wait(&buff.empty, &buff.mutex);    // Down empty
+        pthread_mutex_lock(&buff.mutex);                // Lock mutex semaphore
+
+        // Check buffer (empty slots)
+        if(buff.countEmpty != MAX_BUFFER_SIZE && buff.nextEmpty) {
+            buff.countEmpty--;
+            buff.countFull++;
+            buff = update(buff, value);
+        }
+
+
+        // Enter item
+
+        pthread_mutex_unlock(&buff.mutex);              // Unlock mutex semaphore
+        pthread_cond_signal(&buff.full);                // Up full
     }
+
+    
 }
 
 
-void* consume() {
-    int i;
-    for(i = 0; i < MAX_BUFFER_SIZE; i++) {
-
-    }
+void* consume(void* arg) {
+    // Reparse void* to buffer
+    buffer buff = *(buffer*)arg;
 }
 
 
@@ -220,25 +260,28 @@ int main() {
     printf("#\t\tProducer and Consumer\t\t#\n");
     printf("#################################################\n\n\n");
 
-    // Create buffer
-    buffer buff;                                    // Buffer
-    buff = create(buff);                            // Create buffer
-    buff = init(buff);                              // Init buffer
+    // Random values seed
+    srand(time(NULL));
 
-    print_data(buff.head);                          // Print the initialized buffer node list
+    // Create buffer
+    buffer buff;                                                // Buffer
+    buff = create(buff);                                        // Create buffer
+    buff = init(buff);                                          // Init buffer
+
+    print_data(buff.head);                                      // Print the initialized buffer node list
 
     // Create the threads
-    pthread_t producer;                             // Producer thread variable
-    pthread_t consumer;                             // Consumer thread variable
+    pthread_t producer;                                         // Producer thread variable
+    pthread_t consumer;                                         // Consumer thread variable
 
-    pthread_create(&producer, NULL, produce, NULL); // Producer thread creation
-    pthread_create(&consumer, NULL, consume, NULL); // Consumer thread creation
+    pthread_create(&producer, NULL, produce, (void*)(&buff));   // Producer thread creation
+    pthread_create(&consumer, NULL, consume, (void*)(&buff));   // Consumer thread creation
 
-    pthread_join(producer, NULL);                   // Wait for the producer end
-    pthread_join(consumer, NULL);                   // Wait for the consumer end
+    pthread_join(producer, NULL);                               // Wait for the producer end
+    pthread_join(consumer, NULL);                               // Wait for the consumer end
 
     // Destroy the buffer
-    buff = destroy(buff);                           // Destroy the buffer struct completely
+    buff = destroy(buff);                                       // Destroy the buffer struct completely
 
     // Exit
     return 0;
