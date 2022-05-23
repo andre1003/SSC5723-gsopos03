@@ -100,7 +100,7 @@ node* del(node* head, int id) {
     }
     // Node not founded
     else {
-        printf("This value was not found on the list...\n");
+        printf(">> This value was not found on the list...\n");
     }
 
     // Return the node list
@@ -120,6 +120,8 @@ buffer create(buffer buff) {
     buff.head = NULL;
     buff.nextFull = NULL;
     buff.nextEmpty = NULL;
+
+    printf(">> Buffer created successfully!\n");
 
     return buff;
 }
@@ -144,29 +146,10 @@ buffer init(buffer buff) {
     pthread_cond_init(&buff.empty, NULL);   // Empty
     pthread_cond_init(&buff.full, NULL);    // Full
 
+    printf(">> Buffer initialized successfully!\n");
+
     // Return buffer
     return buff;
-}
-
-
-/// <summary>
-/// Print the node list.
-/// </summary>
-/// <param name="head">Node list first element.</param>
-void print_data(node* head) {
-    node* aux = head;
-
-    // Go through the node list
-    while(aux != NULL) {
-        printf("|ID: %d, Is Empty: %d|", aux->id, aux->isEmpty);
-
-        if(aux->next != NULL)
-            printf(" --> ");
-        else
-            printf("\n");
-
-        aux = aux->next;
-    }
 }
 
 
@@ -183,21 +166,48 @@ buffer destroy(buffer buff) {
 
     // Destroy the node list
     int i;
-    for (i = 0; i < MAX_BUFFER_SIZE; i++)
+    for(i = 0; i < MAX_BUFFER_SIZE; i++)
         buff.head = del(buff.head, i);
+
+    printf(">> Buffer destroyed successfully!\n");
 
     // Return an empty buffer struct
     return buff;
 }
 
 
-void* produce() {
+/// <summary>
+/// Print the node list.
+/// </summary>
+/// <param name="head">Node list first element.</param>
+void print_data(node* head) {
+    node* aux = head;
 
+    printf("\n---------------------\n>> Node list:\n");
+
+    // Go through the node list
+    while(aux != NULL) {
+        printf("|ID: %d, Is Empty: %d|\n", aux->id, aux->isEmpty);
+        aux = aux->next;
+    }
+
+    printf("---------------------\n\n");
+}
+
+
+void* produce() {
+    int i;
+    for(i = 0; i < MAX_BUFFER_SIZE; i++) {
+        
+    }
 }
 
 
 void* consume() {
+    int i;
+    for(i = 0; i < MAX_BUFFER_SIZE; i++) {
 
+    }
 }
 
 
@@ -205,6 +215,11 @@ void* consume() {
 
 /* MAIN */
 int main() {
+    // Print header
+    printf("\n#################################################\n");
+    printf("#\t\tProducer and Consumer\t\t#\n");
+    printf("#################################################\n\n\n");
+
     // Create buffer
     buffer buff;                                    // Buffer
     buff = create(buff);                            // Create buffer
