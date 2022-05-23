@@ -1,5 +1,5 @@
 /* DEFINES */
-#define MAX_BUFFER_SIZE 10
+#define MAX_BUFFER_SIZE 5   // Maximum number of elements in buffer node list
 
 
 
@@ -39,6 +39,76 @@ typedef struct BUFFER {
 
 /* FUNCTIONS */
 /// <summary>
+/// Insert a node into a given list
+/// </summary>
+/// <param name="head">List to insert the node.</param>
+/// <param name="id">Node's ID.</param>
+/// <param name="isEmpty">Is the node empty.</param>
+/// <returns>Return the full list.</returns>
+node* insert(node* head, int id, int isEmpty) {
+    // Allocates the node
+    node* newNode = (node*)malloc(sizeof(node));
+
+    // Node variables setting
+    newNode->id = id;                   // ID
+    newNode->isEmpty = isEmpty;         // Is empty
+    newNode->next = NULL;               // Next element
+
+    // Insert the element
+    if (!head)                          // If head is null
+        return newNode;                 // Return the node
+
+    node* current = head;               // Init the current node at the list's head
+    while (current->next)               // While the current node has a next element
+        current = current->next;        // Go through the list
+
+    current->next = newNode;            // Insert the created node
+
+    return head;                        // Return the list
+}
+
+
+/// <summary>
+/// Remove a node by id.
+/// </summary>
+/// <param name="head">The first node list element.</param>
+/// <param name="id">The node's ID to be removed.</param>
+/// <returns>The node list without the removed node.</returns>
+node* del(node* head, int id) {
+    node* current = head;
+    node* previous = NULL;
+
+    // Try to find the node to be removed
+    while (current && current->id != id) {
+        previous = current;
+        current = current->next;
+    }
+
+    // If there is a node to be removed
+    if (current) {
+        // Is not the first element
+        if (previous) {
+            previous->next = current->next;
+            free(current);
+        }
+        // Is the first element
+        else {
+            previous = current->next;
+            free(current);
+            return previous;
+        }
+    }
+    // Node not founded
+    else {
+        printf("This value was not found on the list...\n");
+    }
+
+    // Return the node list
+    return head;
+}
+
+
+/// <summary>
 /// Creates the buffer.
 /// </summary>
 /// <param name="buff">Buffer struct.</param>
@@ -65,7 +135,7 @@ buffer init(buffer buff) {
 
     // Insert MAX_BUFFER_SIZE nodes in the buffer head list
     for(i = 0; i < MAX_BUFFER_SIZE; i++)
-        buff.head = add(buff.head, i, 1);
+        buff.head = insert(buff.head, i, 1);
 
     buff.nextEmpty = buff.head;             // The next empty element is the first buffer list element
 
@@ -80,92 +150,22 @@ buffer init(buffer buff) {
 
 
 /// <summary>
-/// Insert a node into a given list
-/// </summary>
-/// <param name="head">List to insert the node.</param>
-/// <param name="id">Node's ID.</param>
-/// <param name="isEmpty">Is the node empty.</param>
-/// <returns>Return the full list.</returns>
-node* add(node* head, int id, int isEmpty) {
-    // Allocates the node
-    node* node = (node*) malloc (sizeof(node));
-
-    // Node variables setting
-    node->id = id;                  // ID
-    node->isEmpty = isEmpty;        // Is empty
-    node->next = NULL;              // Next element
-
-    // Insert the element
-    if(!head)                       // If head is null
-        return node;                // Return the node
-
-    node* current = head;           // Init the current node at the list's head
-    while(current->next)            // While the current node has a next element
-        current = current->next;    // Go through the list
-
-    current->next = node;           // Insert the created node
-
-    return head;                    // Return the list
-}
-
-
-/// <summary>
-/// Remove a node by id.
-/// </summary>
-/// <param name="head">The first node list element.</param>
-/// <param name="id">The node's ID to be removed.</param>
-/// <returns>The node list without the removed node.</returns>
-node* del(node* head, int id) {
-	node* current = head;
-	node* previous = NULL;
-
-    // Try to find the node to be removed
-	while(current && current->id != id) {
-		previous = current;
-		current = current->next;
-	}
-
-    // If there is a node to be removed
-	if (current) {
-        // Is not the first element
-		if(previous) {
-			previous->next = current->next;
-			free(current);
-		}
-        // Is the first element
-		else {
-			previous = current->next;
-			free(current);
-			return previous;
-		}
-	}
-    // Node not founded
-	else {
-		printf("This value was not found on the list...\n");
-	}
-
-    // Return the node list
-	return head;
-}
-
-
-/// <summary>
 /// Print the node list.
 /// </summary>
 /// <param name="head">Node list first element.</param>
-void printData(node* head) {
+void print_data(node* head) {
     node* aux = head;
 
     // Go through the node list
     while(aux != NULL) {
-        printf("%d", aux->id);  // Print the id
+        printf("|ID: %d, Is Empty: %d|", aux->id, aux->isEmpty);
 
         if(aux->next != NULL)
-            printf(" -> ");
+            printf(" --> ");
         else
             printf("\n");
 
-        aux = aux->next;               // Get the next element
+        aux = aux->next;
     }
 }
 
@@ -182,11 +182,12 @@ buffer destroy(buffer buff) {
     pthread_mutex_destroy(&buff.mutex); // Mutex
 
     // Destroy the node list
+    int i;
     for (i = 0; i < MAX_BUFFER_SIZE; i++)
         buff.head = del(buff.head, i);
 
     // Return an empty buffer struct
-    return NULL;
+    return buff;
 }
 
 
@@ -208,6 +209,8 @@ int main() {
     buffer buff;                                    // Buffer
     buff = create(buff);                            // Create buffer
     buff = init(buff);                              // Init buffer
+
+    print_data(buff.head);                          // Print the initialized buffer node list
 
     // Create the threads
     pthread_t producer;                             // Producer thread variable
