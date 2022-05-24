@@ -3,6 +3,7 @@
 #define MAX_BUFFER_SIZE 5   // Maximum number of elements in buffer node list
 #define TRUE            1   // True const value
 #define FALSE           0   // False const value
+#define MAX_THREADS     10
 #pragma endregion
 
 
@@ -14,15 +15,23 @@
 #include "semaphore.h"
 #include "stdlib.h"
 #include "stdio.h"
+#include "string.h"
 #include "time.h"
 #include "unistd.h"
 #pragma endregion
 
 
 
-sem_t full;
-sem_t empty;
-pthread_mutex_t mutex;
+
+#pragma region Global Variables
+/* GLOBAL VARIABLES */
+sem_t full;             // Full semaphore
+sem_t empty;            // Empty semaphore
+pthread_mutex_t mutex;  // Mutex semaphore
+int verbose = FALSE;
+#pragma endregion
+
+
 
 
 #pragma region Structs
@@ -48,6 +57,7 @@ typedef struct BUFFER {
 
 
 #pragma region Functions
+/* FUNCTIONS */
 #pragma region Node List
 /// <summary>
 /// Insert a node into a given list
@@ -261,7 +271,7 @@ buffer destroy(buffer buff) {
 /// Producer function. It creates items and insert them in the buffer, if possible.
 /// </summary>
 /// <param name="arg">Buffer struct in void* type.</param>
-void* produce(void* arg) {
+void* producer(void* arg) {
     // Reparse void* to buffer
     buffer buff = *(buffer*)arg;
 
@@ -269,18 +279,19 @@ void* produce(void* arg) {
     while(TRUE) {
         // Produce item
         int item = rand() % 100 + 1;
+        if(verbose == TRUE)
+            sleep(1);
 
         sem_wait(&empty);               // Down empty
         pthread_mutex_lock(&mutex);     // Lock mutex semaphore
 
         buff = update(buff, item, FALSE);
-		printf("\n\033[0;32m>> The producer has produced an item.");
-        print_data(buff.head);
-		fflush(stdout);
-        sleep(1);
 
         pthread_mutex_unlock(&mutex);   // Unlock mutex semaphore
         sem_post(&full);                // Up full
+
+        printf("\n\033[0;32m>> The producer has produced an item.");
+        
     }
     //pthread_exit(NULL);
 }
@@ -290,7 +301,7 @@ void* produce(void* arg) {
 /// Consumer function. It consumes items and remove them from the buffer, if possible.
 /// </summary>
 /// <param name="arg">Buffer struct in void* type.</param>
-void* consume(void* arg) {
+void* consumer(void* arg) {
     // Reparse void* to buffer
     buffer buff = *(buffer*)arg;
 
@@ -300,13 +311,13 @@ void* consume(void* arg) {
         pthread_mutex_lock(&mutex);     // Lock mutex semaphore
 
         buff = update(buff, -1, TRUE);
-        printf("\n\033[0;31m>> The consumer has consumed an item.");
-        print_data(buff.head);
-        fflush(stdout);
-        sleep(1);
 
         pthread_mutex_unlock(&mutex);   // Unlock mutex semaphore
         sem_post(&empty);               // Up empty
+
+        printf("\n\033[0;31m>> The consumer has consumed an item.");
+        if(verbose == TRUE)
+            sleep(1);
     }
     //pthread_exit(NULL);
 }
@@ -318,7 +329,12 @@ void* consume(void* arg) {
 
 #pragma region Main Code
 /* MAIN */
-int main() {
+int main(int argc, char *argv[]) {
+    // Check arguments
+    while(--argc > 0)
+        if(strcmp(argv[argc], "-v") == 0 || strcmp(argv[argc], "--verbose") == 0)
+            verbose = TRUE;
+
     // Print header
     printf("\n#################################################\n");
     printf("#\t\tProducer and Consumer\t\t#\n");
@@ -328,25 +344,31 @@ int main() {
     srand(time(NULL));
 
     // Create buffer
-    buffer buff;                                                // Buffer
+    buffer buff;                        // Buffer
 
-    buff = create(buff);                                        // Create buffer
-    buff = init(buff);                                          // Init buffer
+    buff = create(buff);                // Create buffer
+    buff = init(buff);                  // Init buffer
 
-    print_data(buff.head);                                      // Print the initialized buffer node list
+    print_data(buff.head);              // Print the initialized buffer node list
 
     // Create the threads
-    pthread_t producer;                                         // Producer thread variable
-    pthread_t consumer;                                         // Consumer thread variable
+    pthread_t threads[MAX_THREADS];     // Threads vector
 
-    pthread_create(&producer, NULL, &produce, (void*)(&buff));  // Producer thread creation
-    pthread_create(&consumer, NULL, &consume, (void*)(&buff));  // Consumer thread creation
+    int i;
+    for(i = 0; i < MAX_THREADS; i++) {
+        if(i % 2 == 0)                  // Producer thread creation
+            pthread_create(&threads[i], NULL, &producer, (void*)(&buff));  
+        else                            // Consumer thread creation
+            pthread_create(&threads[i], NULL, &consumer, (void*)(&buff));  
+    }
 
-    pthread_join(producer, NULL);                               // Wait for the producer end
-    pthread_join(consumer, NULL);                               // Wait for the consumer end
+    // End threads
+    for(i = 0; i < MAX_THREADS; i++) {
+        pthread_join(threads[i], NULL); // Wait for the thread's end
+    }
 
     // Destroy the buffer
-    buff = destroy(buff);                                       // Destroy the buffer struct completely
+    buff = destroy(buff);               // Destroy the buffer struct completely
 
     // Exit
     return 0;
