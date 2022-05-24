@@ -28,7 +28,9 @@
 sem_t full;             // Full semaphore
 sem_t empty;            // Empty semaphore
 pthread_mutex_t mutex;  // Mutex semaphore
-int verbose = FALSE;
+
+int verbose = FALSE;    // Verbose variable
+int canContinue = TRUE; // Can continue variable
 #pragma endregion
 
 
@@ -276,7 +278,7 @@ void* producer(void* arg) {
     buffer buff = *(buffer*)arg;
 
     // Producer
-    while(TRUE) {
+    while(canContinue == TRUE) {
         // Produce item
         int item = rand() % 100 + 1;
         if(verbose == TRUE)
@@ -293,7 +295,9 @@ void* producer(void* arg) {
         printf("\n\033[0;32m>> The producer has produced an item.");
         
     }
-    //pthread_exit(NULL);
+
+    // Exit thread
+    pthread_exit(NULL);
 }
 
 
@@ -306,7 +310,7 @@ void* consumer(void* arg) {
     buffer buff = *(buffer*)arg;
 
     // Consumer
-    while(TRUE) {
+    while(canContinue == TRUE) {
         sem_wait(&full);                // Down full
         pthread_mutex_lock(&mutex);     // Lock mutex semaphore
 
@@ -319,7 +323,9 @@ void* consumer(void* arg) {
         if(verbose == TRUE)
             sleep(1);
     }
-    //pthread_exit(NULL);
+
+    // Exit thread
+    pthread_exit(NULL);
 }
 #pragma endregion
 #pragma endregion
@@ -360,6 +366,12 @@ int main(int argc, char *argv[]) {
             pthread_create(&threads[i], NULL, &producer, (void*)(&buff));  
         else                            // Consumer thread creation
             pthread_create(&threads[i], NULL, &consumer, (void*)(&buff));  
+    }
+
+    while(TRUE) {
+        // deltaTime = initial time - current time
+        // Do it until deltaTime is < than the value that you want.
+        // After that, set can continue global variable to false to stop the threads.
     }
 
     // End threads
