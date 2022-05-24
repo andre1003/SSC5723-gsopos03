@@ -67,11 +67,11 @@ node* insert(node* head, int id, int isEmpty) {
     newNode->next = NULL;               // Next element
 
     // Insert the element
-    if(!head)                          // If head is null
+    if(!head)                           // If head is null
         return newNode;                 // Return the node
 
     node* current = head;               // Init the current node at the list's head
-    while(current->next)               // While the current node has a next element
+    while(current->next)                // While the current node has a next element
         current = current->next;        // Go through the list
 
     current->next = newNode;            // Insert the created node
@@ -131,7 +131,7 @@ void print_data(node* head) {
 
     // Go through the node list
     while(aux != NULL) {
-        printf("|ID: %d\tIs Empty: %d\tValue: %d|\n", aux->id, aux->isEmpty, aux->value);
+        printf("|ID: %d\tIs Empty: %d\tValue: %02d|\n", aux->id, aux->isEmpty, aux->value);
         fflush(stdout);
         aux = aux->next;
     }
@@ -192,8 +192,6 @@ buffer init(buffer buff) {
 /// <param name="value">Value to be inserted.</param>
 /// <returns>Updated buffer.</returns>
 buffer update(buffer buff, int value, int isEmpty) {
-    
-
     node* current = buff.head;
 
     // Update nextEmpty node
@@ -225,7 +223,6 @@ buffer update(buffer buff, int value, int isEmpty) {
         buff.nextFull->isEmpty = isEmpty;
     }
     else {                  // Producing
-
         buff.nextEmpty->value = value;
         buff.nextEmpty->isEmpty = isEmpty;
     }
@@ -258,6 +255,7 @@ buffer destroy(buffer buff) {
 }
 #pragma endregion
 
+
 #pragma region Producer and Consumer
 /// <summary>
 /// Producer function. It creates items and insert them in the buffer, if possible.
@@ -275,15 +273,16 @@ void* produce(void* arg) {
         sem_wait(&empty);               // Down empty
         pthread_mutex_lock(&mutex);     // Lock mutex semaphore
 
-        buff = update(buff, rand() % 100 + 1, FALSE);
+        buff = update(buff, item, FALSE);
 		printf("\n\033[0;32m>> The producer has produced an item.");
+        print_data(buff.head);
 		fflush(stdout);
         sleep(1);
 
         pthread_mutex_unlock(&mutex);   // Unlock mutex semaphore
         sem_post(&full);                // Up full
     }
-    pthread_exit(NULL);
+    //pthread_exit(NULL);
 }
 
 
@@ -302,18 +301,20 @@ void* consume(void* arg) {
 
         buff = update(buff, -1, TRUE);
         printf("\n\033[0;31m>> The consumer has consumed an item.");
+        print_data(buff.head);
         fflush(stdout);
         sleep(1);
 
         pthread_mutex_unlock(&mutex);   // Unlock mutex semaphore
         sem_post(&empty);               // Up empty
     }
-    pthread_exit(NULL);
+    //pthread_exit(NULL);
 }
 #pragma endregion
 #pragma endregion
 
-pthread_mutex_t potato = PTHREAD_MUTEX_INITIALIZER;
+
+
 
 #pragma region Main Code
 /* MAIN */
@@ -338,8 +339,8 @@ int main() {
     pthread_t producer;                                         // Producer thread variable
     pthread_t consumer;                                         // Consumer thread variable
 
-    pthread_create(&producer, NULL, &produce, (void*)(&buff));   // Producer thread creation
-    pthread_create(&consumer, NULL, &consume, (void*)(&buff));   // Consumer thread creation
+    pthread_create(&producer, NULL, &produce, (void*)(&buff));  // Producer thread creation
+    pthread_create(&consumer, NULL, &consume, (void*)(&buff));  // Consumer thread creation
 
     pthread_join(producer, NULL);                               // Wait for the producer end
     pthread_join(consumer, NULL);                               // Wait for the consumer end
