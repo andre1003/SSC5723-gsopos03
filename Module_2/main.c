@@ -1,9 +1,10 @@
 #pragma region Defines
 /* DEFINES */
-#define MAX_BUFFER_SIZE 5   // Maximum number of elements in buffer node list
-#define TRUE            1   // True const value
-#define FALSE           0   // False const value
-#define MAX_THREADS     10
+#define MAX_BUFFER_SIZE     5       // Maximum number of elements in buffer node list
+#define TRUE                1       // True const value
+#define FALSE               0       // False const value
+#define MAX_THREADS         10      // Maximum number of threads
+#define MAX_INTERACTIONS    100000  // Maximum number of interactions with the buffer
 #pragma endregion
 
 
@@ -16,9 +17,9 @@
 #include "stdlib.h"
 #include "stdio.h"
 #include "string.h"
+#include "sys/time.h"
 #include "time.h"
 #include "unistd.h"
-#include "sys/time.h"
 #pragma endregion
 
 
@@ -26,13 +27,16 @@
 
 #pragma region Global Variables
 /* GLOBAL VARIABLES */
-sem_t full;             // Full semaphore
-sem_t empty;            // Empty semaphore
-pthread_mutex_t mutex;  // Mutex semaphore
+sem_t full;                             // Full semaphore
+sem_t empty;                            // Empty semaphore
+pthread_mutex_t mutex;                  // Mutex semaphore
 
-int verbose = FALSE;    // Verbose variable
-int canContinue = TRUE; // Can continue variable
-FILE* logs;
+int verbose = FALSE;                    // Verbose variable
+int stepByStep = FALSE;                 // Can continue variable
+
+int interactions = 0;                   // Current number of interactions with the buffer
+int maxInteraction = MAX_INTERACTIONS;  // Maximum number of interactions with the buffer
+FILE* logs;                             // Log file
 #pragma endregion
 
 
@@ -58,14 +62,6 @@ typedef struct BUFFER {
 #pragma endregion
 
 
-
-// Function to calculate time
-double get_time() {
-    struct timeval t;
-    struct timezone tzp;
-    gettimeofday(&t, &tzp);
-    return t.tv_sec + t.tv_usec * 1e-6;
-}
 
 
 #pragma region Functions
@@ -146,19 +142,19 @@ node* del(node* head, int id) {
 /// Print the node list.
 /// </summary>
 /// <param name="head">Node list first element.</param>
-void print_data(node* head) {
+void print_data(node* head, char* msg) {
     node* aux = head;
 
-    printf("\n---------------------\n>> Node list:\n");
+    printf("\n\033[0;37m>> %s:\n ---------------------------------\n", msg);
 
     // Go through the node list
     while(aux != NULL) {
-        printf("|ID: %d\tIs Empty: %d\tValue: %02d|\n", aux->id, aux->isEmpty, aux->value);
+        printf("|ID: %d\tIs Empty: %d\tValue: %03d|\n", aux->id, aux->isEmpty, aux->value);
         fflush(stdout);
         aux = aux->next;
     }
 
-    printf("---------------------\n\n");
+    printf(" ---------------------------------\n\n");
 }
 #pragma endregion
 
@@ -288,11 +284,25 @@ void* producer(void* arg) {
     buffer buff = *(buffer*)arg;
 
     // Producer
-    while(canContinue) {
+    while(interactions < maxInteraction) {
+        
         // Produce item
         int item = rand() % 100 + 1;
 
-        sem_wait(&empty);               // Down empty
+        // Try to down empty
+        int s;
+        int count = 0;
+        
+        while((s = sem_trywait(&empty)) == -1) {
+            // While the semaphore empty cannot be downed
+            count++;                    // Increase try counter
+
+            if(count >= 500000)         // Tries more than 500000 times
+                pthread_exit(NULL);     // Exit thread
+
+            continue;                   // Continue trying
+        }
+            
         pthread_mutex_lock(&mutex);     // Lock mutex semaphore
 
         buff = update(buff, item, FALSE);
@@ -300,12 +310,17 @@ void* producer(void* arg) {
         pthread_mutex_unlock(&mutex);   // Unlock mutex semaphore
         sem_post(&full);                // Up full
 
-        // Write to log.txt file
-        fprintf(logs, "\n>> The producer has produced an item.");
-        printf("\n\033[0;32m>> The producer has produced an item.");
+        interactions++;
 
-        if(verbose == TRUE)             // Verbose is TRUE
-            sleep(1);
+        // Write in log.txt file
+        fprintf(logs, "\n[PRODUCER] The producer has produced an item.");
+
+        if(verbose == TRUE) {           // Verbose is TRUE
+            printf("\n\033[0;32m>> The producer has produced an item.");
+            if(stepByStep == TRUE)      // Step by step is TRUE
+                sleep(1);
+        }
+            
     }
 
     // Exit thread
@@ -322,25 +337,76 @@ void* consumer(void* arg) {
     buffer buff = *(buffer*)arg;
 
     // Consumer
-    while(canContinue) {
-        sem_wait(&full);                // Down full
+    while(interactions < maxInteraction) {
+        // Try to down full
+        int s;
+        int count = 0;
+
+        while((s = sem_trywait(&full)) == -1) {
+            // While the semaphore full cannot be downed
+            count++;                    // Increase try counter
+
+            if(count >= 500000)         // Tries more than 500000 times
+                pthread_exit(NULL);     // Exit thread
+
+            continue;                   // Continue trying
+        }
+            
         pthread_mutex_lock(&mutex);     // Lock mutex semaphore
 
         buff = update(buff, -1, TRUE);
+        
 
         pthread_mutex_unlock(&mutex);   // Unlock mutex semaphore
         sem_post(&empty);               // Up empty
 
-        // Write to log.txt file
-        fprintf(logs, "\n>> The consumer has consumed an item.");
-        printf("\n\033[0;31m>> The consumer has consumed an item.");
+        interactions++;
 
-        if(verbose == TRUE)             // Verbose is TRUE
-            sleep(1);
+        // Write in log.txt file
+        fprintf(logs, "\n[CONSUMER] The consumer has consumed an item.");
+        
+        if(verbose == TRUE) {           // Verbose is TRUE
+            printf("\n\033[0;31m>> The consumer has consumed an item.");
+            if(stepByStep == TRUE)      // Step by step is TRUE
+                sleep(1);
+        }
     }
 
     // Exit thread
     pthread_exit(NULL);
+}
+#pragma endregion
+
+#pragma region Arguments
+/// <summary>
+/// Displays the help if requested.
+/// </summary>
+void help() {
+    printf("Producer and Consumer programm, made by Leandro Marcos da Silva and Paulo André Pimenta Aragão.");
+    printf("\n\nAccepted arguments:");
+}
+
+
+/// <summary>
+/// Check the program arguments.
+/// </summary>
+/// <param name="argc">Argument counter.</param>
+/// <param name="argv">Argument vector.</param>
+void check_args(int argc, char* argv[]) {
+    while(--argc > 0) {
+        // Verbose
+        if(strcmp(argv[argc], "-v") == 0 || strcmp(argv[argc], "--verbose") == 0)
+            verbose = TRUE;
+        // Interactions
+        else if((strcmp(argv[argc], "-i") == 0 || strcmp(argv[argc], "--interactions") == 0) && argv[argc + 1])
+            maxInteraction = atoi(argv[argc + 1]);
+        // Step by step
+        else if(strcmp(argv[argc], "-s") == 0 || strcmp(argv[argc], "--step-by-step") == 0)
+            stepByStep = TRUE;
+        // Help
+        else if(strcmp(argv[argc], "-h") == 0 || strcmp(argv[argc], "--help") == 0)
+            help();
+    }
 }
 #pragma endregion
 #pragma endregion
@@ -349,12 +415,10 @@ void* consumer(void* arg) {
 
 
 #pragma region Main Code
-/* MAIN */
+/* MAIN CODE */
 int main(int argc, char *argv[]) {
     // Check arguments
-    while(--argc > 0)
-        if(strcmp(argv[argc], "-v") == 0 || strcmp(argv[argc], "--verbose") == 0)
-            verbose = TRUE;
+    check_args(argc, argv);
 
     // Print header
     printf("\n#################################################\n");
@@ -364,6 +428,7 @@ int main(int argc, char *argv[]) {
     // Random values seed
     srand(time(NULL));
 
+    // Open log file to write
     logs = fopen("logs.txt", "w"); 
     
     // Create buffer
@@ -372,7 +437,8 @@ int main(int argc, char *argv[]) {
     buff = create(buff);                // Create buffer
     buff = init(buff);                  // Init buffer
 
-    print_data(buff.head);              // Print the initialized buffer node list
+    // Print the initialized buffer node list
+    print_data(buff.head, "Initial buffer");
 
     // Create the threads
     pthread_t threads[MAX_THREADS];     // Threads vector
@@ -386,24 +452,20 @@ int main(int argc, char *argv[]) {
             pthread_create(&threads[i], NULL, &consumer, (void*)(&buff));  
     }
 
-    double t = get_time();
-
-    while(canContinue)
-        if((get_time() - t) > 2) // 2 seconds
-            canContinue = FALSE;
-        
-        // deltaTime = initial time - current time
-        // Do it until deltaTime is < than the value that you want.
-        // After that, set can continue global variable to false to stop the threads.
-
     // End threads
     for(i = 0; i < MAX_THREADS; i++) {
         pthread_join(threads[i], NULL); // Wait for the thread's end
     }
 
+    // Print last buffer state
+    if(verbose == TRUE)
+        printf("\n\n");
+    print_data(buff.head, "Buffer last state");
+
     // Destroy the buffer
     buff = destroy(buff);               // Destroy the buffer struct completely
 
+    // Close log file
     fclose(logs);
 
     // Exit
