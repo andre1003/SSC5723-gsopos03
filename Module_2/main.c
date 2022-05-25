@@ -18,6 +18,7 @@
 #include "string.h"
 #include "time.h"
 #include "unistd.h"
+#include "sys/time.h"
 #pragma endregion
 
 
@@ -31,6 +32,7 @@ pthread_mutex_t mutex;  // Mutex semaphore
 
 int verbose = FALSE;    // Verbose variable
 int canContinue = TRUE; // Can continue variable
+FILE* logs;
 #pragma endregion
 
 
@@ -56,6 +58,14 @@ typedef struct BUFFER {
 #pragma endregion
 
 
+
+// Function to calculate time
+double get_time() {
+    struct timeval t;
+    struct timezone tzp;
+    gettimeofday(&t, &tzp);
+    return t.tv_sec + t.tv_usec * 1e-6;
+}
 
 
 #pragma region Functions
@@ -278,11 +288,9 @@ void* producer(void* arg) {
     buffer buff = *(buffer*)arg;
 
     // Producer
-    while(canContinue == TRUE) {
+    while(canContinue) {
         // Produce item
         int item = rand() % 100 + 1;
-        if(verbose == TRUE)
-            sleep(1);
 
         sem_wait(&empty);               // Down empty
         pthread_mutex_lock(&mutex);     // Lock mutex semaphore
@@ -292,8 +300,12 @@ void* producer(void* arg) {
         pthread_mutex_unlock(&mutex);   // Unlock mutex semaphore
         sem_post(&full);                // Up full
 
+        // Write to log.txt file
+        fprintf(logs, "\n>> The producer has produced an item.");
         printf("\n\033[0;32m>> The producer has produced an item.");
-        
+
+        if(verbose == TRUE)             // Verbose is TRUE
+            sleep(1);
     }
 
     // Exit thread
@@ -310,7 +322,7 @@ void* consumer(void* arg) {
     buffer buff = *(buffer*)arg;
 
     // Consumer
-    while(canContinue == TRUE) {
+    while(canContinue) {
         sem_wait(&full);                // Down full
         pthread_mutex_lock(&mutex);     // Lock mutex semaphore
 
@@ -319,8 +331,11 @@ void* consumer(void* arg) {
         pthread_mutex_unlock(&mutex);   // Unlock mutex semaphore
         sem_post(&empty);               // Up empty
 
+        // Write to log.txt file
+        fprintf(logs, "\n>> The consumer has consumed an item.");
         printf("\n\033[0;31m>> The consumer has consumed an item.");
-        if(verbose == TRUE)
+
+        if(verbose == TRUE)             // Verbose is TRUE
             sleep(1);
     }
 
@@ -349,6 +364,8 @@ int main(int argc, char *argv[]) {
     // Random values seed
     srand(time(NULL));
 
+    logs = fopen("logs.txt", "w"); 
+    
     // Create buffer
     buffer buff;                        // Buffer
 
@@ -360,6 +377,7 @@ int main(int argc, char *argv[]) {
     // Create the threads
     pthread_t threads[MAX_THREADS];     // Threads vector
 
+    
     int i;
     for(i = 0; i < MAX_THREADS; i++) {
         if(i % 2 == 0)                  // Producer thread creation
@@ -368,11 +386,15 @@ int main(int argc, char *argv[]) {
             pthread_create(&threads[i], NULL, &consumer, (void*)(&buff));  
     }
 
-    while(TRUE) {
+    double t = get_time();
+
+    while(canContinue)
+        if((get_time() - t) > 2) // 2 seconds
+            canContinue = FALSE;
+        
         // deltaTime = initial time - current time
         // Do it until deltaTime is < than the value that you want.
         // After that, set can continue global variable to false to stop the threads.
-    }
 
     // End threads
     for(i = 0; i < MAX_THREADS; i++) {
@@ -381,6 +403,8 @@ int main(int argc, char *argv[]) {
 
     // Destroy the buffer
     buff = destroy(buff);               // Destroy the buffer struct completely
+
+    fclose(logs);
 
     // Exit
     return 0;
