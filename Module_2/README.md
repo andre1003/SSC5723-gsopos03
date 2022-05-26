@@ -6,7 +6,7 @@ Este módulo da disciplina de Sistemas Operacionais consiste na solução do pro
 
 O problema do Produtor e o Consumidor trata-se de um conjunto de processos que compartilham um mesmo _buffer_. Os processos chamados produtores colocam dados no _buffer_. Por sua vez, os processos denominados consumidores removem dados deste _buffer_. Assim, o produtor insere na região que ainda não houve consumo e o consumidor remove dessa região. Este problema é clássico em sistemas operacionais, o qual procura exemplificar as situações de impasses no gerenciamento de processos, além de preocupar com acessos indevidos em recursos compartilhados e no sincronismo entre processos. Para solucionar o problema é necessário que:
 
-- Se o _buffer_ estiver vazio, o processo produtor é bloqueado;
+- Se o _buffer_ estiver cheio, o processo produtor é bloqueado;
 - Se o _buffer_ estiver vazio, o processo consumidor é bloqueado;
 - Apenas um processo pode acessar o _buffer_ em um determinado instante.
 
