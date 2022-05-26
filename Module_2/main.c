@@ -266,7 +266,7 @@ buffer destroy(buffer buff) {
     for(i = 0; i < MAX_BUFFER_SIZE; i++)
         buff.head = del(buff.head, i);
 
-    printf("\n\033[0;37m>> Buffer destroyed successfully!\n");
+    printf("\n\033[0;39m>> Buffer destroyed successfully!\n");
 
     // Return an empty buffer struct
     return buff;
@@ -305,20 +305,21 @@ void* producer(void* arg) {
             
         pthread_mutex_lock(&mutex);     // Lock mutex semaphore
 
+        // Update buffer
         buff = update(buff, item, FALSE);
 
         pthread_mutex_unlock(&mutex);   // Unlock mutex semaphore
         sem_post(&full);                // Up full
 
-        interactions++;
+        interactions++;                 // Increase interaction counter
 
         // Write in log.txt file
-        fprintf(logs, "\n[PRODUCER] The producer has produced an item.");
+        fprintf(logs, "[PRODUCER] The producer has produced an item.\n");
 
         if(verbose == TRUE) {           // Verbose is TRUE
             printf("\n\033[0;32m>> The producer has produced an item.");
             if(stepByStep == TRUE)      // Step by step is TRUE
-                sleep(1);
+                sleep(1);               // 1 second sleep
         }
             
     }
@@ -354,21 +355,21 @@ void* consumer(void* arg) {
             
         pthread_mutex_lock(&mutex);     // Lock mutex semaphore
 
+        // Update buffer
         buff = update(buff, -1, TRUE);
         
-
         pthread_mutex_unlock(&mutex);   // Unlock mutex semaphore
         sem_post(&empty);               // Up empty
 
-        interactions++;
+        interactions++;                 // Increase interaction counter
 
         // Write in log.txt file
-        fprintf(logs, "\n[CONSUMER] The consumer has consumed an item.");
+        fprintf(logs, "[CONSUMER] The consumer has consumed an item.\n");
         
         if(verbose == TRUE) {           // Verbose is TRUE
             printf("\n\033[0;31m>> The consumer has consumed an item.");
             if(stepByStep == TRUE)      // Step by step is TRUE
-                sleep(1);
+                sleep(1);               // 1 second sleep
         }
     }
 
@@ -382,8 +383,14 @@ void* consumer(void* arg) {
 /// Displays the help if requested.
 /// </summary>
 void help() {
-    printf("Producer and Consumer programm, made by Leandro Marcos da Silva and Paulo André Pimenta Aragão.");
-    printf("\n\nAccepted arguments:");
+    printf("Usage:"
+           "\n\t./main [options]"
+           "\n\nOptions:"
+           "\n\t-v, --verbose\t\tMore words than necessary on the display"
+           "\n\t-i, --interactions\tNumber of interactions with the buffer"
+           "\n\t-s, --step-by-step\tStep by step when running the program (verbose is activated)"
+           "\n\t-h, --help\t\tDisplay help\n");
+    exit(0); // Successful termination of the program
 }
 
 
@@ -398,11 +405,19 @@ void check_args(int argc, char* argv[]) {
         if(strcmp(argv[argc], "-v") == 0 || strcmp(argv[argc], "--verbose") == 0)
             verbose = TRUE;
         // Interactions
-        else if((strcmp(argv[argc], "-i") == 0 || strcmp(argv[argc], "--interactions") == 0) && argv[argc + 1])
+        else if((strcmp(argv[argc], "-i") == 0 || strcmp(argv[argc], "--interactions") == 0) && argv[argc + 1]) {
             maxInteraction = atoi(argv[argc + 1]);
+
+            if(!(maxInteraction > 0)) {
+                printf(">> Error: number of interactions must be at least 0 (zero)!\n");
+                exit(1); // Unsuccessful termination of the program
+            }
+        }
         // Step by step
-        else if(strcmp(argv[argc], "-s") == 0 || strcmp(argv[argc], "--step-by-step") == 0)
+        else if(strcmp(argv[argc], "-s") == 0 || strcmp(argv[argc], "--step-by-step") == 0) {
+            verbose = TRUE;
             stepByStep = TRUE;
+        }
         // Help
         else if(strcmp(argv[argc], "-h") == 0 || strcmp(argv[argc], "--help") == 0)
             help();
