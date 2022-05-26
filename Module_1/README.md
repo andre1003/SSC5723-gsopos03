@@ -13,7 +13,7 @@ Ainda, foram criados dois programas para ilustrar o comportamento esperado para 
 - **I/O-_bound_:** copia o conteúdo de um arquivo anterior (existente) pra dentro de um novo arquivo, e assim por diante.
 
 
-### Compilação dos programas e execução
+### Compilação dos Programas e Execução
 
 Para a execução dos programas é necessário o GNU *Compiler* C (GCC) que é o compilador originalmente escrito para Sistemas Operacionais GNU e que pode ser facilmente encontrado em distribuições Linux. 
 Para compilar os programas e gerar os executáveis é necessário o seguinte comando para os respectivos programas:
@@ -28,7 +28,7 @@ Uma vez gerado os executáveis, basta executar os programas com:
 **Observação:** no programa de CPU-*bound* é preciso inserir o parâmetro "_-lm_" ao compilar, pois utiliza a biblioteca **math.h** para os cálculos.
 
 
-### Ferramenta strace
+### Ferramenta Strace
 
 A ferramenta strace (http://man7.org/linux/man-pages/man1/strace.1.html) foi utilizada para obter as estatísticas relacionadas aos programas desenvolvidos, como as chamadas de sistema realizadas e o tempo de processamento de cada uma. Para obter as chamadas de sistema em geral, foi utilizado o seguinte comando:
 ```
@@ -52,7 +52,7 @@ strace -c -f ./executable_name
 **Observação:** o parâmetro "_-f_" é necessário para também catalogar a execução dos processos filhos que surgirem.
 
 
-### Ferramenta time
+### Ferramenta Time
 
 A ferramenta "_time_" (https://linux.die.net/man/1/time) foi utilizada para obter estatísticas de uso de recursos nos programas de CPU-*bound* e I/O-*bound*.
 Para obter melhores resultados, foi utilizado o "_/usr/bin/time_", o qual está contido no sistema Linux. As informações mínimas esperadas nesta etapa são:
@@ -107,7 +107,7 @@ Os processos CPU-*bound* são aqueles que utilizam a CPU na maior parte de seu t
 
 **Observação:** todos os dados estatísticos dos programas de CPU-*bound* e I/O-*bound* foram coletados, os quais foram salvos na pasta ```analysis```.
 
-### 3.1. CPU-*bound*
+### 3.1. CPU-*Bound*
 
 No programa de CPU-*bound* é realizado o cálculo de uma aproximação ao valor de π (pi) por meio do método de Monte Carlo, que faz o uso de números aleatórios. O que se faz é sortear um grande número de pontos em um plano cartesiano, no qual se define um quadrado de lado _2.R_ e uma circunferência inscrita no quadrado, de raio _R_. Sorteia-se então uma certa quantidade _N_ de coordenadas dentro do plano cartesiano, contando-se quantas dessas coordenadas estão dentro da circunferência (_k_). Considerando uma distribuição homogênea de coordenadas é possível admitir que essas quantias são equivalentes:
 
@@ -127,7 +127,7 @@ A partir disso, os seguintes dados foram retornados na ferramenta "_time_":
 
 É possível observar que a CPU atingiu quase 100% de uso ao executar o processo do tipo CPU-*bound*.
 
-### 3.2. I/O-*bound*
+### 3.2. I/O-*Bound*
 
 No programa de I/O-*bound* é realizada uma cópia de um arquivo anterior (existente) para dentro um novo arquivo (atual), e processo se repete até atingir um número _x_ de arquivos gerados. Ao final da operação, todos os arquivos são removidos, com exceção do primeiro.
 
