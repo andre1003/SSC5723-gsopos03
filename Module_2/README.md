@@ -23,12 +23,12 @@ Portanto, para solucionar este problema, as seguintes condições foram requisit
 - O programa deve ter um _buffer_ limitado, acessível a qualquer processo decorrente do processo principal;
 - O programa deve ter uma fila apontando para o próximo endereço livre, a ser escrito;
 - O programa deve ter uma fila apontando para o próximo endereço ocupado, a ser lido e liberado;
-- O programa deve controlar as seções críticas, para que não haja acessos indevidos.
+- O programa deve controlar as seções críticas, para que não haja acessos indevidos;
 - O programa deve ter a capacidade de colocar um processo em modo de espera;
 - O programa deve ter a capacidade de controlar quando um processo está em espera, para poder "chamar" o mesmo;
 - O programa deve controlar quantos endereços estão livres e quantos endereços estão ocupados.
 
-Finalmente, a biblioteca _pthreads_ (http://www.yolinux.com/TUTORIALS/LinuxTutorialPosixThreads.html) é utilizada para a programação de forma concorrente com as funcionalidades de criação, controle e suspensão de _threads_, além da execução e controle de exclusão mútua por semáforos binários. Além disso, a biblioteca _semaphore_ para implementar os semáforos _full_ e _empty_, o qual adiciona algumas funcionalidades extras de semáforo sobre a biblioteca anterior.
+Finalmente, a biblioteca _pthreads_ (http://www.yolinux.com/TUTORIALS/LinuxTutorialPosixThreads.html) é utilizada para a programação de forma concorrente com as funcionalidades de criação, controle e suspensão de _threads_, além da execução e controle de exclusão mútua por semáforos binários. Além disso, a biblioteca _semaphore_ para a implementação dos semáforos _full_ e _empty_, o qual adiciona algumas funcionalidades extras de semáforo sobre a biblioteca anterior.
 
 -----
 
@@ -65,6 +65,6 @@ A execução é realizada com o comando ```./main```, sendo possível a inserç�
 
 ## 3. Visualização das _Threads_
 
-Ao executar o programa, abra outro terminal e execute o comando ```htop```, sendo necessário aplicar ```./main```.
+Ao executar o programa, abra outro terminal e execute o comando ```htop```, sendo necessário aplicar o filtro ```./main```.
 
 A partir disso, é possível a visualização da alternância dos processos produtores e consumidores.
