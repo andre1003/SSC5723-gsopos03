@@ -17,10 +17,10 @@ Para compilar o programa, execute o comando: ```make```.
 
 A execução é realizada com o comando ```./main```, sendo possível a inserção de parâmetros definidos. Os parâmetros são:
 
- - _-v, --verbose_: Mais palavras do que o necessário na tela;
- - _-i, --interactions_: Número de interações com o buffer;
- - _-s, --step-by-step_: Passo a passo ao executar o programa (verbose é ativado);
- - _-h, --help_: Exibir ajuda.
+ - _-v, --verbose_: mais palavras do que o necessário na tela;
+ - _-i, --interactions_: número de interações com o buffer;
+ - _-s, --step-by-step_: passo a passo ao executar o programa (verbose é ativado);
+ - _-h, --help_: exibir ajuda.
 
 **Observação:** o comando ```make``` possibilita adicionar ```clean``` e ```help``` também para limpar o executável e exibir a ajuda, respectivamente.
 
