@@ -2,13 +2,11 @@
 #define MANAGER_H
 
 
+#include "config.h"
+
 #pragma region Defines
 #define TRUE 1
 #define FALSE 0
-#define VIRTUAL_PAGE_SIZE 4
-#define VIRTUAL_MEMORY_SIZE (VIRTUAL_PAGE_SIZE * 2000)
-#define FRAME_SIZE VIRTUAL_PAGE_SIZE
-#define RAM_SIZE (FRAME_SIZE * 6)
 #define PAGES_NUMBER (VIRTUAL_MEMORY_SIZE / VIRTUAL_PAGE_SIZE)
 #define FRAMES_NUMBER (RAM_SIZE / FRAME_SIZE)
 #define PAGES_NUMBER_LEN bits_len_decimal(PAGES_NUMBER)
@@ -17,40 +15,44 @@
 
 #pragma region Structs
 typedef struct PAGE {
-	// Indica se a página está referenciada ou não
+	// Indicates whether the page is referenced or not
 	int referenced;
 
-	// Indica se a página foi modificada ou não
+	// Indicates whether the page has been modified or not
 	int modifed;
 
-	// Indica se a página possui uma moldura
+	// Indicates whether the page has a frame
 	int present;
 
-	// Quadro de página
+	// Page frame number
 	int* frame_number;
 } page;
-
 
 typedef struct PAGE_TABLE {
 	// Page vector
 	page* pages;
 } page_table;
+
+typedef struct ADDRESS {
+	// Bit vector
+	int* bits;
+
+	// Number of bits in the bits vector
+	int size;
+
+	// Decimal version of bits vector
+	unsigned long long decimal;
+} address;
 #pragma endregion
 
-
 #pragma region Functions
+#pragma region Initialize
 /// <summary>
 /// Initialize all the global configuration.
 /// </summary>
 /// <param name="">None</param>
 void init(void);
-
-/// <summary>
-/// Get the bits length of a given param.
-/// </summary>
-/// <param name=""></param>
-/// <returns>Bit length</returns>
-int bits_len_decimal(int);
+#pragma endregion
 
 #pragma region Page Management
 /// <summary>
@@ -89,7 +91,6 @@ page* insert_page(page*);
 /// <param name=""></param>
 /// <returns></returns>
 int* remove_best_page(void);
-#pragma endregion
 
 /// <summary>
 /// Get the number of pages in the global list.
@@ -97,14 +98,23 @@ int* remove_best_page(void);
 /// <param name=""></param>
 /// <returns></returns>
 int get_mapped_pages_number(void);
+#pragma endregion
 
+#pragma region Output
 /// <summary>
 /// Print the current situation.
 /// </summary>
 /// <param name=""></param>
 void print_situation(void);
 
-#pragma region Counters
+/// <summary>
+/// Print current RAM status.
+/// </summary>
+/// <param name=""></param>
+void ram_status(void);
+#pragma endregion
+
+#pragma region MMU Functionalities
 /// <summary>
 /// Get the global instruction counter.
 /// </summary>
@@ -151,7 +161,7 @@ void init_frames(void);
 /// <param name=""></param>
 /// <param name=""></param>
 /// <returns></returns>
-int* mark_frame(int*, int);
+int* set_frame(int*, int);
 
 /// <summary>
 /// Get the first virtual page activated in memory
@@ -172,7 +182,113 @@ page_table* create_page_table(void);
 /// </summary>
 /// <param name=""></param>
 void free_page_table(page_table*);
+
+/// <summary>
+/// Map a virtual page to a free frame.
+/// </summary>
+/// <param name=""></param>
+/// <param name=""></param>
+/// <returns></returns>
+page_table* map_page(page_table*, page*);
+
+/// <summary>
+/// Map a virtual page group to a free frame group.
+/// </summary>
+/// <param name=""></param>
+/// <param name=""></param>
+/// <param name=""></param>
+/// <returns></returns>
+page_table* map_pages_set(page_table*, page*, int);
+
+/// <summary>
+/// Set all pages present variable to FALSE.
+/// </summary>
+/// <param name=""></param>
+void unmap_whole_page_table(page_table*);
+
+/// <summary>
+/// Converts a virtual address to physical addres.
+/// </summary>
+/// <param name=""></param>
+/// <returns></returns>
+address* get_physical_address(page_table*);
+
+/// <summary>
+/// Get the number of mapped pages of a given page table.
+/// </summary>
+/// <param name=""></param>
+/// <returns></returns>
+int count_mapped_pages(page_table*);
+
+/// <summary>
+/// Get the page number from the local page table.
+/// </summary>
+/// <param name=""></param>
+/// <returns></returns>
+int* page_number_from_page(page*);
 #pragma endregion
 
+#pragma region Address
+#pragma region Decimal Functions
+/// <summary>
+/// Create and initialize a new address from decimal.
+/// </summary>
+/// <param name=""></param>
+/// <param name=""></param>
+/// <returns></returns>
+address* init_address_decimal(unsigned long long, int);
+
+/// <summary>
+/// Get bits vector from a given decimal address.
+/// </summary>
+/// <param name=""></param>
+/// <param name=""></param>
+/// <returns></returns>
+int* get_bits_from_decimal(unsigned long long, int);
+#pragma endregion
+
+#pragma region Bit Functions
+/// <summary>
+/// Create and initializes a new address from a given bit vector.
+/// </summary>
+/// <param name=""></param>
+/// <param name=""></param>
+/// <returns></returns>
+address* init_address_bits(int*, int);
+
+/// <summary>
+/// Get decimal address from a given bit vector.
+/// </summary>
+/// <param name=""></param>
+/// <param name=""></param>
+/// <returns></returns>
+unsigned long long get_decimal_from_bits(int*, int);
+#pragma endregion
+
+#pragma region Strings
+/// <summary>
+/// Get the bits vector string from a given address.
+/// </summary>
+/// <param name=""></param>
+/// <returns></returns>
+char* bits_to_string_address(address*);
+
+/// <summary>
+/// Get the bits vector string from a given bits vector.
+/// </summary>
+/// <param name=""></param>
+/// <param name=""></param>
+/// <returns></returns>
+char* bits_to_string_bits(int*, int);
+
+/// <summary>
+/// Get the bits vector string from a given decimal address.
+/// </summary>
+/// <param name=""></param>
+/// <param name=""></param>
+/// <returns></returns>
+char* bits_to_string_decimal(int, int);
+#pragma endregion
+#pragma endregion
 #pragma endregion
 #endif // !MANAGER_H
