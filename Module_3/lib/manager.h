@@ -26,6 +26,9 @@ typedef struct PAGE {
 
 	// Page frame number
 	int* frame_number;
+
+	// Next list element reference
+	struct PAGE* next;
 } page;
 
 typedef struct PAGE_TABLE {
