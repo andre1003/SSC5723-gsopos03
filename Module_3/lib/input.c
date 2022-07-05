@@ -1,9 +1,11 @@
+#pragma region Includes
 #include "input.h"
 #include "stdio.h"
 #include "stdlib.h"
 #include "string.h"
 #include "request.h"
 #include "ctype.h"
+#pragma endregion
 
 
 

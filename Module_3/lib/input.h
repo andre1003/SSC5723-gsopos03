@@ -4,6 +4,5 @@
 /// <summary>
 /// Read the input file.
 /// </summary>
-/// <param name=""></param>
 void read_file(void);
 #endif // !INPUT_H

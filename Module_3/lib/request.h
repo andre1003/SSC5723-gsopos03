@@ -10,14 +10,10 @@
 #pragma endregion
 
 #pragma region Structs
+// Request struct
 typedef struct REQUEST {
-	// Process ID
 	char* id;
-
-	// Process operation
 	char op;
-
-	// Number passed on op variable
 	int number;
 } request;
 #pragma endregion
@@ -26,6 +22,5 @@ typedef struct REQUEST {
 /// <summary>
 /// Recive and execute a received request.
 /// </summary>
-/// <param name=""></param>
 void receive_request(request*);
 #endif // !REQUEST_H

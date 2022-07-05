@@ -1,16 +1,21 @@
 #ifndef CLOCK_H
 #define CLOCK_H
 
+#pragma region Include
 #include "manager.h"
+#pragma endregion
+
 
 
 
 #pragma region Structs
+// Clock node struct
 typedef struct CLOCK_NODE {
 	page* page;
 	struct CLOCK_NODE* next;
 } clock_node;
 
+// Clock list struct
 typedef struct CLOCK_LIST {
 	clock_node* end;
 } clock_list;
@@ -21,66 +26,46 @@ typedef struct CLOCK_LIST {
 /// <summary>
 /// Initialize clock.
 /// </summary>
-/// <param name=""></param>
 void init_clock(void);
 
 /// <summary>
-/// Insert a page vector in the active global page list.
+/// Insert a page vector in the active global page list in clock algorithm.
 /// </summary>
-/// <param name=""></param>
-/// <param name=""></param>
-/// <returns></returns>
 page* insert_set_pages_clock(page*, int);
 
 /// <summary>
-/// Insert a page.
+/// Insert a page in clock algorithm.
 /// </summary>
-/// <param name=""></param>
-/// <returns></returns>
 page* insert_page_clock(page*);
 
 /// <summary>
-/// Remove a page vector in the active global page list.
+/// Remove a page vector in the active global page list in clock algorithm.
 /// </summary>
-/// <param name=""></param>
-/// <param name=""></param>
-/// <returns></returns>
 page* remove_set_pages_clock(page*, int);
 
 /// <summary>
-/// Remove a page.
+/// Remove a page in clock algorithm.
 /// </summary>
-/// <param name=""></param>
-/// <returns></returns>
 page* remove_page_clock(page*);
 
 /// <summary>
-/// Select the best page of clock to bem swapped.
+/// Select the best page of clock to be swapped in clock algorithm.
 /// </summary>
-/// <param name=""></param>
-/// <returns></returns>
 int* remove_best_page_clock(void);
 
 /// <summary>
-/// Get the number of pages at this moment.
+/// Get the number of pages at this moment in clock algorithm.
 /// </summary>
-/// <param name=""></param>
-/// <returns></returns>
 int get_number_mapped_pages_clock(void);
 
 /// <summary>
 /// Check if list is empty.
 /// </summary>
-/// <param name=""></param>
-/// <returns></returns>
 int list_empty(void);
 
 /// <summary>
 /// Find a clock node.
 /// </summary>
-/// <param name=""></param>
-/// <param name=""></param>
-/// <returns></returns>
 clock_node* find_node_clock(page*, clock_node**);
 #pragma endregion
 
