@@ -18,7 +18,7 @@ typedef struct PAGE {
 	int referenced;
 
 	// Indicates whether the page has been modified or not
-	int modifed;
+	int modified;
 
 	// Indicates whether the page has a frame
 	int present;

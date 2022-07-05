@@ -39,7 +39,7 @@ void read_file(void) {
 			int number;
 			char* id = NULL;
 			char* ptr = strtok(line, " ()\r");
-			char* op;
+			char op;
 			
 			//// While ptr exists
 			//while(ptr != NULL) {

@@ -9,16 +9,7 @@
 
 
 
-#pragma region Structs
-typedef struct CLOCK_NODE {
-	page* page;
-	struct CLOCK_NODE* next;
-} clock_node;
 
-typedef struct CLOCK_LIST {
-	clock_node* end;
-} clock_list;
-#pragma endregion
 
 
 clock_list* global_clock_list = NULL;
@@ -34,7 +25,7 @@ void init_clock() {
 int list_empty(void) {
 	if(global_clock_list->end == NULL)
 		return TRUE;
-	return FALSE
+	return FALSE;
 }
 
 clock_node* find_node_clock(page* pg, clock_node** previous) {
@@ -111,7 +102,7 @@ page* remove_page_clock(page* remove_page) {
 	if(node == node->next)
 		global_clock_list->end = NULL;
 
-	if(remove_page->modifed == TRUE) {
+	if(remove_page->modified == TRUE) {
 		if(send_page_to_disc_page_only(remove_page) == 0)
 			return NULL;
 	}

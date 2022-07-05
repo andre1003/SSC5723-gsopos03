@@ -5,6 +5,17 @@
 
 
 
+#pragma region Structs
+typedef struct CLOCK_NODE {
+	page* page;
+	struct CLOCK_NODE* next;
+} clock_node;
+
+typedef struct CLOCK_LIST {
+	clock_node* end;
+} clock_list;
+#pragma endregion
+
 
 #pragma region Functions
 /// <summary>

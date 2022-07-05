@@ -7,6 +7,9 @@
 #define IN_DISC FALSE
 #define IN_RAM TRUE
 
+
+
+#pragma region Structs
 typedef struct PROCESS {
 	char* id;
 	int image_size;
@@ -15,6 +18,15 @@ typedef struct PROCESS {
 	page_table* table;
 } process;
 
+typedef struct PROCESS_NODE {
+	process* proc;
+	struct PROCESS_NODE* next;
+} process_node;
+
+typedef struct PROCESS_LIST {
+	process_node* start;
+} process_list;
+#pragma endregion
 
 #pragma region Functions
 /// <summary>
@@ -22,6 +34,13 @@ typedef struct PROCESS {
 /// </summary>
 /// <param name=""></param>
 void init_process_list(void);
+
+/// <summary>
+/// Find last process.
+/// </summary>
+/// <param name=""></param>
+/// <returns></returns>
+process_node* find_last(void);
 
 /// <summary>
 /// Create a process.

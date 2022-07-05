@@ -22,14 +22,14 @@ process_swap_area* create_swap_area(int image_size) {
         current_used_swap = new_used_swap;
         swap_area = malloc(sizeof(process_swap_area));
 
-        swap_area->first_address = get_bits_from_decimal(0, VIRTUAL_ADDRESS_SIZE);
+        swap_area->first_address = init_address_decimal(0, VIRTUAL_ADDRESS_SIZE);
         if(image_size > VIRTUAL_MEMORY_SIZE) {
             printf("O processo não pode ser alocado na área de troca! Tamanho do processo maior do que o permitido para endereçamento.\n");
             swap_area = NULL;
             current_used_swap -= image_size;
         }
         else {
-            swap_area->last_address = get_bits_from_decimal(image_size * 1024 - 1, VIRTUAL_ADDRESS_SIZE);
+            swap_area->last_address = init_address_decimal(image_size * 1024 - 1, VIRTUAL_ADDRESS_SIZE);
         }
     }
     else {
@@ -109,7 +109,7 @@ page* send_page_to_disc(process_swap_area* swap_area, page* virtual_page, int* p
         printf("A página '%d' (%s) foi enviada para o disco.\n",
             page_number,
             bits_to_string_bits(page_number_bits, PAGES_NUMBER_LEN));
-        virtual_page->modifed = FALSE;
+        virtual_page->modified = FALSE;
         return virtual_page;
     }
     else {
@@ -124,7 +124,7 @@ page_table* send_page_table_to_disc(process_swap_area* swap_area, page_table* pa
     printf("Enviando todas as págins modificadas do processo para o disco...\n");
 
     for(int i = 0; i < PAGES_NUMBER; i++) {
-        if(pages_table->pages[i].present == TRUE && pages_table->pages[i].modifed == TRUE) {
+        if(pages_table->pages[i].present == TRUE && pages_table->pages[i].modified == TRUE) {
             if(send_page_to_disc(swap_area, &pages_table->pages[i], get_bits_from_decimal(i, PAGES_NUMBER_LEN)) == NULL) {
                 return NULL;
             }

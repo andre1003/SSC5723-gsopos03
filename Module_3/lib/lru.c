@@ -9,16 +9,6 @@
 
 
 
-#pragma region Structs
-typedef struct LRU_NODE {
-	page* page;
-	struct LRU_NODE* next;
-} lru_node;
-
-typedef struct LRU_LIST {
-	lru_node* start;
-} lru_list;
-#pragma endregion
 
 
 lru_list* global_lru_list = NULL;
@@ -31,8 +21,17 @@ void init_lru(void) {
 #pragma endregion
 
 #pragma region Find
-lru_node* find_node_lru(page*, lru_node**) {
-	return nullptr;
+lru_node* find_node_lru(page* pg, lru_node** previous) {
+	*previous = NULL;
+	lru_node* current = global_lru_list->start;
+	while(current != NULL) {
+		if(current->page == pg) {
+			return current;
+		}
+		*previous = current;
+		current = current->next;
+	}
+	return NULL;
 }
 #pragma endregion
 
@@ -101,7 +100,7 @@ page* remove_page_lru(page* remove_page) {
 	else
 		(*previous)->next = node->next;
 
-	if(remove_page->modifed == TRUE)
+	if(remove_page->modified == TRUE)
 		if(send_page_to_disc_page_only(remove_page) == 0)
 			return NULL;
 

@@ -6,6 +6,18 @@
 
 
 
+#pragma region Structs
+typedef struct LRU_NODE {
+	page* page;
+	struct LRU_NODE* next;
+} lru_node;
+
+typedef struct LRU_LIST {
+	lru_node* start;
+} lru_list;
+#pragma endregion
+
+
 #pragma region Functions
 /// <summary>
 /// Initialize LRU.

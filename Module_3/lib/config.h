@@ -18,7 +18,7 @@
 // Virtual address size
 #define VIRTUAL_ADDRESS_SIZE bits_len(VIRTUAL_MEMORY_SIZE)
 // Physical address size
-#define PHYSICAL_ADDRESS_SIZE bits_len(RAM_SIZE);
+#define PHYSICAL_ADDRESS_SIZE bits_len(RAM_SIZE)
 #pragma endregion
 
 #pragma region Method

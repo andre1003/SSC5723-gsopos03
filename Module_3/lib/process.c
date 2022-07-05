@@ -7,23 +7,14 @@
 
 
 
-#pragma region Structs
-typedef struct PROCESS_NODE {
-    process* proc;
-    struct PROCESS_NODE* next;
-} process_node;
 
-typedef struct PROCESS_LIST {
-	process_node* start;
-} process_list;
-#pragma endregion
 
 
 process_list* process_table = NULL;
 
 #pragma region Init
 void init_process_list() {
-	process_table = malloc(sizeof(process_list));
+	process_table = (process_list*)malloc(sizeof(process_list));
 	process_table->start = NULL;
 }
 #pragma endregion
@@ -31,6 +22,9 @@ void init_process_list() {
 #pragma region Finders
 process_node* find_last() {
 	process_node* current = process_table->start;
+
+	if(current == NULL)
+		return NULL;
 
 	while(current->next != NULL)
 		current = current->next;
@@ -99,7 +93,7 @@ process* choose_process_to_sleep() {
 
 #pragma region Create and Remove Process
 process* create_process() {
-	process* proc = malloc(sizeof(process));
+	process* proc = (process*)malloc(sizeof(process));
 	proc->image_size = 0;
 	proc->id = NULL;
 	proc->status = -1;
@@ -109,9 +103,10 @@ process* create_process() {
 	if(process_table == NULL)
 		init_process_list();
 
+	
 	process_node* last = find_last();
-	process_node* current = malloc(sizeof(process_node));
-
+	process_node* current = (process_node*)malloc(sizeof(process_node));
+	
 	current->next = NULL;
 	current->proc = proc;
 
@@ -216,7 +211,7 @@ process* wakeup(process* proc) {
 				return NULL;
 		}
 
-		unmap_whole_pages_table(proc->table);
+		unmap_whole_page_table(proc->table);
 
 		for(int i = 0; i < mapped_pages_number; i++)
 			mapped_pages[i]->present = TRUE;

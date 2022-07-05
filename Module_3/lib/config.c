@@ -20,7 +20,7 @@ int allocation_policy(int image) {
     // Calculate the number of frames and maximum frames
 	// Processes can dynamically increase or decrease the amount of RAM
 	int frames = floor((image / VIRTUAL_PAGE_SIZE) * ALLOCATION_PERCENT);
-	int max_frames = floor(0.50 * NUMBER_OF_FRAMES);
+	int max_frames = floor(0.50 * FRAMES_NUMBER);
 
 	// Guarantee that at least 1 frame is reserved for the process
 	if (frames == 0) 

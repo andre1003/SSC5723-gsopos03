@@ -118,7 +118,7 @@ void print_situation() {
 }
 
 void ram_status() {
-	printf("Page frame usage: %d/%d\n", get_number_of_used_frames(), NUMBER_OF_FRAMES);
+	printf("Page frame usage: %d/%d\n", get_used_frames_number(), FRAMES_NUMBER);
 }
 #pragma endregion
 
@@ -139,7 +139,7 @@ int get_used_frames_number(void) {
         return 0;
     }
 
-	int i = 0
+    int i = 0;
     for(i = 0; i < FRAMES_NUMBER; i++) {
         count += frames_status[i];
 	}
@@ -164,7 +164,7 @@ int* get_first_free_frame(void) {
 	}
 
     if (i < FRAMES_NUMBER)
-        return get_bits_from_decimal(i, FRAME_NUMBER_LEN);
+        return get_bits_from_decimal(i, FRAMES_NUMBER_LEN);
 	
     return NULL;
 }
@@ -180,7 +180,7 @@ void init_frames() {
 
 int* set_frame(int *frame_number_bits, int status) {
     if(frames_status == NULL)
-        initialize_frames();
+        init_frames();
 
     int frame_number = get_decimal_from_bits(frame_number_bits, FRAMES_NUMBER_LEN);
     
@@ -226,7 +226,7 @@ void free_page_table(page_table* table) {
                 if(remove_page(&table->pages[i]) == NULL)
                     printf("Could not remove page '%d' (%s) from global page table.\n",
                            i, bits_to_string_decimal(i, PAGES_NUMBER_LEN));
-                mark_frame(table->pages[i].frame_number, FALSE);
+                set_frame(table->pages[i].frame_number, FALSE);
             }
         }
         free(table->pages);
@@ -255,7 +255,7 @@ page_table* map_pages_set(page_table* table, page* pages_set, int size) {
     if(size > get_free_frames_number())
         return NULL;
 
-	int = 0;
+	int i = 0;
     for (i = 0; i < size; i++) {
         if(map_page(table, &pages_set[i]) == NULL)
             return NULL;
@@ -280,8 +280,8 @@ address* get_physical_address(address* virtual_address, page_table* table, char 
     }
 
     int page_number = get_decimal_from_bits((*page_number_bits), PAGES_NUMBER_LEN);
-    if (page_number >= 0 && page_number < NUMBER_OF_PAGES) {
-        if (table->pages[page_number].present == PRESENT) {
+    if (page_number >= 0 && page_number < PAGES_NUMBER) {
+        if (table->pages[page_number].present == TRUE) {
             int *physical_bits = malloc(sizeof(int) * PHYSICAL_ADDRESS_SIZE);
             
 			// Copy the page frame number
@@ -308,7 +308,7 @@ address* get_physical_address(address* virtual_address, page_table* table, char 
                 break;
             }
 
-            if (op == W)
+            if (op == WRITE)
                 table->pages[page_number].modified = TRUE;
         }
         else
@@ -335,7 +335,7 @@ int count_mapped_pages(page_table* table) {
     return count;
 }
 
-int* page_number_from_page(page*) {
+int* page_number_from_page(page* pg) {
     process* proc = find_process_from_page(pg);
 
     if (proc == NULL)

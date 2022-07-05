@@ -20,7 +20,7 @@ address* exec(request* req) {
         }
     }
     int** page_number_bits = malloc(sizeof(int*));
-    address* physical_address = get_physical_address(get_bits_from_decimal(req->number, VIRTUAL_ADDRESS_SIZE),
+    address* physical_address = get_physical_address(init_address_decimal(req->number, VIRTUAL_ADDRESS_SIZE),
         proc->table, req->op, page_number_bits);
     if(physical_address == NULL && (*page_number_bits) == NULL) {
         return NULL;
@@ -62,21 +62,24 @@ void receive_request(request* req) {
         return;
     }
 
+    address* physical_address;
+    process* proc;
+
     switch(req->op) {
         #pragma region EXEC
         case EXEC:
             printf("Processo '%s' solicitando a execução da instrução - operando - '%d' (%s)...\n",
                 req->id,
                 req->number,
-                get_bits_from_decimal(req->number, VIRTUAL_ADDRESS_SIZE));
+                bits_to_string_decimal(req->number, VIRTUAL_ADDRESS_SIZE));
 
-            address* physical_address = exec();
+            physical_address = exec(req);
 
             if(physical_address != NULL) {
                 printf("Processo '%s' executou a instrução - operando - '%d' (%s) \n\tno endereço físico '%lld' (%s) \n\tna quadro de página '%lld' (%s).\n",
                     req->id,
                     req->number,
-                    get_bits_from_decimal(req->number, VIRTUAL_ADDRESS_SIZE),
+                    bits_to_string_decimal(req->number, VIRTUAL_ADDRESS_SIZE),
                     physical_address->decimal,
                     bits_to_string_address(physical_address),
                     physical_address->decimal / 1024 / FRAME_SIZE,
@@ -90,9 +93,9 @@ void receive_request(request* req) {
             printf("Processo '%s' solicitando E/S para o dispositivo '%d' (%s)...\n",
                 req->id,
                 req->number,
-                get_bits_from_decimal(req->number, bits_len(1)));
+                bits_to_string_decimal(req->number, bits_len(1)));
 
-            process* proc = find_process(req->id);
+            proc = find_process(req->id);
 
             if(proc == NULL) {
                 printf("Error: Process '%s' do not exist", req->id);
@@ -108,14 +111,14 @@ void receive_request(request* req) {
             printf("Processo '%s' solicitando leitura em '%d' (%s)...\n",
                 req->id,
                 req->number,
-                get_bits_from_decimal(req->number, VIRTUAL_ADDRESS_SIZE));
+                bits_to_string_decimal(req->number, VIRTUAL_ADDRESS_SIZE));
 
-            address* physical_address = exec();
+            physical_address = exec(req);
 
             printf("Processo '%s' leu em '%d' (%s) \n\tno endereço físico '%lld' (%s) \n\tna quadro de página '%lld' (%s).\n",
                 req->id,
                 req->number,
-                get_bits_from_decimal(req->number, VIRTUAL_ADDRESS_SIZE),
+                bits_to_string_decimal(req->number, VIRTUAL_ADDRESS_SIZE),
                 physical_address->decimal,
                 bits_to_string_address(physical_address),
                 physical_address->decimal / 1024 / FRAME_SIZE,
@@ -128,14 +131,14 @@ void receive_request(request* req) {
             printf("Processo '%s' solicitando escrita em '%d' (%s)...\n",
                 req->id,
                 req->number,
-                get_bits_from_decimal(req->number, VIRTUAL_ADDRESS_SIZE));
+                bits_to_string_decimal(req->number, VIRTUAL_ADDRESS_SIZE));
 
-            address* physical_address = exec();
+            physical_address = exec(req);
 
             printf("Processo '%s' escreveu em '%d' (%s) \n\tno endereço físico '%lld' (%s) \n\tna quadro de página '%lld' (%s).\n",
                 req->id,
                 req->number,
-                get_bits_from_decimal(req->number, VIRTUAL_ADDRESS_SIZE),
+                bits_to_string_decimal(req->number, VIRTUAL_ADDRESS_SIZE),
                 physical_address->decimal,
                 bits_to_string_address(physical_address),
                 physical_address->decimal / 1024 / FRAME_SIZE,
@@ -147,21 +150,22 @@ void receive_request(request* req) {
         case CREATE:
             printf("Criando o Processo '%s'...\n", req->id);
 
-            process* proc = create_process();
+            proc = create_process();
+
             proc->id = req->id;
             proc->image_size = req->number;
             proc->swap_area = create_swap_area(proc->image_size);
 
             if(proc->swap_area == NULL) {
                 printf("Não é possível criar o processo '%s'! Erro na SWAP.\n", proc->id);
-                reset_process(process);
+                reset_process(proc);
                 break;
             }
 
             proc->table = create_page_table();
             if(proc->table == NULL) {
                 printf("Não é possível criar o processo '%s'! Erro na tabela de páginas.\n", proc->id);
-                reset_process(process);
+                reset_process(proc);
                 break;
             }
 
