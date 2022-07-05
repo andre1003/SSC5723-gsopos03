@@ -1,7 +1,6 @@
 #ifndef MANAGER_H
 #define MANAGER_H
 
-
 #include "config.h"
 
 #pragma region Defines
@@ -51,7 +50,7 @@ typedef struct ADDRESS {
 #pragma region Functions
 #pragma region Initialize
 /// <summary>
-/// Initialize all the global configuration.
+/// Initialize the global list of active pages.
 /// </summary>
 /// <param name="">None</param>
 void init(void);
@@ -59,7 +58,7 @@ void init(void);
 
 #pragma region Page Management
 /// <summary>
-/// Remove a set of pages.
+/// Remove page set from global list of active pages.
 /// </summary>
 /// <param name=""></param>
 /// <param name=""></param>
@@ -67,14 +66,14 @@ void init(void);
 page* remove_set_pages(page*, int);
 
 /// <summary>
-/// Remove a page.
+/// Remove page from the global list of active pages.
 /// </summary>
 /// <param name=""></param>
 /// <returns></returns>
 page* remove_page(page*);
 
 /// <summary>
-/// Insert a set of pages.
+/// Insert page set from global list of active pages.
 /// </summary>
 /// <param name=""></param>
 /// <param name=""></param>
@@ -82,14 +81,14 @@ page* remove_page(page*);
 page* insert_set_pages(page*, int);
 
 /// <summary>
-/// Insert a page.
+/// Insert page from the global list of active pages.
 /// </summary>
 /// <param name=""></param>
 /// <returns></returns>
 page* insert_page(page*);
 
 /// <summary>
-/// Remove best page, if possible.
+/// Remove the best page based on the running algorithm, if possible.
 /// </summary>
 /// <param name=""></param>
 /// <returns></returns>
@@ -105,13 +104,13 @@ int get_mapped_pages_number(void);
 
 #pragma region Output
 /// <summary>
-/// Print the current situation.
+/// Print how many virtual pages are mapped in the global list.
 /// </summary>
 /// <param name=""></param>
 void print_situation(void);
 
 /// <summary>
-/// Print current RAM status.
+/// Print number of page frames used.
 /// </summary>
 /// <param name=""></param>
 void ram_status(void);
@@ -214,7 +213,7 @@ void unmap_whole_page_table(page_table*);
 /// </summary>
 /// <param name=""></param>
 /// <returns></returns>
-address* get_physical_address(page_table*);
+address* get_physical_address(address*, page_table*, char, int **);
 
 /// <summary>
 /// Get the number of mapped pages of a given page table.
@@ -234,31 +233,23 @@ int* page_number_from_page(page*);
 #pragma region Address
 #pragma region Decimal Functions
 /// <summary>
-/// Create and initialize a new address from decimal.
-/// </summary>
-/// <param name=""></param>
-/// <param name=""></param>
-/// <returns></returns>
-address* init_address_decimal(unsigned long long, int);
-
-/// <summary>
 /// Get bits vector from a given decimal address.
 /// </summary>
 /// <param name=""></param>
 /// <param name=""></param>
 /// <returns></returns>
 int* get_bits_from_decimal(unsigned long long, int);
-#pragma endregion
 
-#pragma region Bit Functions
 /// <summary>
-/// Create and initializes a new address from a given bit vector.
+/// Create and initialize a new address from decimal.
 /// </summary>
 /// <param name=""></param>
 /// <param name=""></param>
 /// <returns></returns>
-address* init_address_bits(int*, int);
+address* init_address_decimal(unsigned long long, int);
+#pragma endregion
 
+#pragma region Bit Functions
 /// <summary>
 /// Get decimal address from a given bit vector.
 /// </summary>
@@ -266,6 +257,14 @@ address* init_address_bits(int*, int);
 /// <param name=""></param>
 /// <returns></returns>
 unsigned long long get_decimal_from_bits(int*, int);
+
+/// <summary>
+/// Create and initializes a new address from a given bit vector.
+/// </summary>
+/// <param name=""></param>
+/// <param name=""></param>
+/// <returns></returns>
+address* init_address_bits(int*, int);
 #pragma endregion
 
 #pragma region Strings
