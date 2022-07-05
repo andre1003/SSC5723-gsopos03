@@ -10,12 +10,12 @@
 address* exec(request* req) {
     process* proc = find_process(req->id);
     if(proc == NULL) {
-        printf("Erro: Processo '%s' não existe!\n", req->id);
+        printf("Error: Process '%s' does not exist!\n", req->id);
         return NULL;
     }
-    if(proc->status == IN_DISC) {
+    if(proc->status == IN_DISK) {
         if(wakeup(proc) == NULL) {
-            printf("Erro: Processo '%s' não pode ser acordado!\n", req->id);
+            printf("Error: Process '%s' could not be awaken!\n", req->id);
             return NULL;
         }
     }
@@ -34,14 +34,14 @@ address* exec(request* req) {
             frame_number_bits = remove_best_page();
         }
         if(frame_number_bits == NULL) {
-            printf("Error: não foi possível substituir uma página virtual!\n");
+            printf("Error: could not replace a virtual page!\n");
             return NULL;
         }
-        if(get_page_in_disc(proc->swap_area, (*page_number_bits)) == NULL) {
+        if(get_page_in_disk(proc->swap_area, (*page_number_bits)) == NULL) {
             return NULL;
         }
         if(map_page(proc->table, &proc->table->pages[get_decimal_from_bits((*page_number_bits), PAGES_NUMBER_LEN)]) == NULL) {
-            printf("Erro: não foi possível mapear a página!\n");
+            printf("Error: could not map page!\n");
             return NULL;
         }
         else {
@@ -68,7 +68,7 @@ void receive_request(request* req) {
     switch(req->op) {
         #pragma region EXEC
         case EXEC:
-            printf("Processo '%s' solicitando a execução da instrução - operando - '%d' (%s)...\n",
+            printf("Process '%s' requesting instruction execution - operand - '%d' (%s)...\n",
                 req->id,
                 req->number,
                 bits_to_string_decimal(req->number, VIRTUAL_ADDRESS_SIZE));
@@ -76,7 +76,7 @@ void receive_request(request* req) {
             physical_address = exec(req);
 
             if(physical_address != NULL) {
-                printf("Processo '%s' executou a instrução - operando - '%d' (%s) \n\tno endereço físico '%lld' (%s) \n\tna quadro de página '%lld' (%s).\n",
+                printf("Process '%s' instruction executed - operand - '%d' (%s) \n\tin the physical address '%lld' (%s) \n\tin the page frame '%lld' (%s).\n",
                     req->id,
                     req->number,
                     bits_to_string_decimal(req->number, VIRTUAL_ADDRESS_SIZE),
@@ -90,7 +90,7 @@ void receive_request(request* req) {
 
         #pragma region IO
         case IO:
-            printf("Processo '%s' solicitando E/S para o dispositivo '%d' (%s)...\n",
+            printf("Process '%s' requesting I/O for the device '%d' (%s)...\n",
                 req->id,
                 req->number,
                 bits_to_string_decimal(req->number, bits_len(1)));
@@ -108,14 +108,14 @@ void receive_request(request* req) {
 
         #pragma region READ
         case READ:
-            printf("Processo '%s' solicitando leitura em '%d' (%s)...\n",
+            printf("Processo '%s' requesting read in '%d' (%s)...\n",
                 req->id,
                 req->number,
                 bits_to_string_decimal(req->number, VIRTUAL_ADDRESS_SIZE));
 
             physical_address = exec(req);
 
-            printf("Processo '%s' leu em '%d' (%s) \n\tno endereço físico '%lld' (%s) \n\tna quadro de página '%lld' (%s).\n",
+            printf("Process '%s' read in '%d' (%s) \n\tin the physical address '%lld' (%s) \n\tin the page frame '%lld' (%s).\n",
                 req->id,
                 req->number,
                 bits_to_string_decimal(req->number, VIRTUAL_ADDRESS_SIZE),
@@ -128,14 +128,14 @@ void receive_request(request* req) {
                     
         #pragma region WRITE
         case WRITE:
-            printf("Processo '%s' solicitando escrita em '%d' (%s)...\n",
+            printf("Process '%s' requesting write in '%d' (%s)...\n",
                 req->id,
                 req->number,
                 bits_to_string_decimal(req->number, VIRTUAL_ADDRESS_SIZE));
 
             physical_address = exec(req);
 
-            printf("Processo '%s' escreveu em '%d' (%s) \n\tno endereço físico '%lld' (%s) \n\tna quadro de página '%lld' (%s).\n",
+            printf("Process '%s' wrote in '%d' (%s) \n\tin the physical address '%lld' (%s) \n\tin the page frame '%lld' (%s).\n",
                 req->id,
                 req->number,
                 bits_to_string_decimal(req->number, VIRTUAL_ADDRESS_SIZE),
@@ -148,7 +148,7 @@ void receive_request(request* req) {
 
         #pragma region CREATE
         case CREATE:
-            printf("Criando o Processo '%s'...\n", req->id);
+            printf("Creating process '%s'...\n", req->id);
 
             proc = create_process();
 
@@ -157,35 +157,35 @@ void receive_request(request* req) {
             proc->swap_area = create_swap_area(proc->image_size);
 
             if(proc->swap_area == NULL) {
-                printf("Não é possível criar o processo '%s'! Erro na SWAP.\n", proc->id);
+                printf("Unable to create process '%s'! SWAP error.\n", proc->id);
                 reset_process(proc);
                 break;
             }
 
             proc->table = create_page_table();
             if(proc->table == NULL) {
-                printf("Não é possível criar o processo '%s'! Erro na tabela de páginas.\n", proc->id);
+                printf("Unable to create process '%s'! Page table error.\n", proc->id);
                 reset_process(proc);
                 break;
             }
 
             if(proc->image_size > VIRTUAL_MEMORY_SIZE) {
-                printf("Não é possível criar o processo '%s'! Imagem maior do que a memória virtual.\n", proc->id);
+                printf("Unable to create process '%s'! Image larger than virtual memory.\n", proc->id);
                 reset_process(proc);
                 break;
             }
 
-            // o processo ainda não foi enviado para a RAM.
-            proc->status = IN_DISC;
-            printf("Processo '%s' criado em disco.\n", proc->id);
+            // o processo ainda nï¿½o foi enviado para a RAM.
+            proc->status = IN_DISK;
+            printf("Process '%s' created in disk.\n", proc->id);
 
             if(wakeup(proc) == NULL) {
-                printf("Não é possível criar o processo '%s' na RAM!\n", proc->id);
+                printf("Unable to create process '%s' na RAM!\n", proc->id);
                 reset_process(proc);
                 break;
             }
 
-            printf("Processo '%s' criado completamente.\n", proc->id);
+            printf("Process '%s' creation successfully.\n", proc->id);
 
             break;
         #pragma endregion
@@ -193,5 +193,3 @@ void receive_request(request* req) {
 
     print_situation();
 }
-    
-

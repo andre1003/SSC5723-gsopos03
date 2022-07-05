@@ -8,8 +8,6 @@
 
 
 
-
-
 process_list* process_table = NULL;
 
 #pragma region Init
@@ -145,9 +143,9 @@ void remove_process(process* proc) {
 
 #pragma region Sleep and Wakeup
 process* sleep(process* proc) {
-	printf("Suspendento o Processo '%s'...\n", proc->id);
+	printf("Suspending process '%s'...\n", proc->id);
 
-	if(send_page_table_to_disc(proc->swap_area, proc->table) == NULL)
+	if(send_page_table_to_disk(proc->swap_area, proc->table) == NULL)
 		return NULL;
 
 	int i;
@@ -165,7 +163,7 @@ process* sleep(process* proc) {
 			return NULL;
 	}
 
-	proc->status = IN_DISC;
+	proc->status = IN_DISK;
 
 	return proc;
 }
@@ -184,7 +182,7 @@ int force_sleep(int size) {
 }
 
 process* wakeup(process* proc) {
-	printf("Levando Processo '%s' para a RAM...\n", proc->id);
+	printf("Taking process '%s' to the RAM...\n", proc->id);
 	int frames = allocation_policy(proc->image_size);
 	int free_frames = get_free_frames_number();
 
@@ -200,7 +198,7 @@ process* wakeup(process* proc) {
 
 			proc->table->pages[get_decimal_from_bits(page_number_bits, PAGES_NUMBER_LEN)].present = FALSE;
 
-			if(get_page_in_disc(proc->swap_area, page_number_bits) == NULL)
+			if(get_page_in_disk(proc->swap_area, page_number_bits) == NULL)
 				return NULL;
 
 			mapped_pages[i] = page_address;
@@ -224,7 +222,7 @@ process* wakeup(process* proc) {
 				if(count-- > 0) {
 					int* page_number_bits = get_bits_from_decimal(i, PAGES_NUMBER_LEN);
 
-					if(get_page_in_disc(proc->swap_area, page_number_bits) == NULL)
+					if(get_page_in_disk(proc->swap_area, page_number_bits) == NULL)
 						return NULL;
 
 					if(map_page(proc->table, &proc->table->pages[get_decimal_from_bits(page_number_bits, PAGES_NUMBER_LEN)]) == NULL)
@@ -250,7 +248,7 @@ process* wakeup(process* proc) {
 #pragma region Reset
 void reset_process(process* proc) {
 	if(proc != NULL) {
-		printf("Excluindo processo...\n");
+		printf("Deleting process...\n");
 		free_swap_area(proc->swap_area, proc->image_size);
 		free_page_table(proc->table);
 		remove_process(proc);
@@ -274,13 +272,13 @@ void print_process_situation() {
 		current = current->next;
 	}
 
-	printf("Quantidade de Processos existentes: %d\n", process_count);
-	printf("Quantidade de Processos ativos na RAM: %d\n", active);
+	printf("Number of existing processes: %d\n", process_count);
+	printf("Number of active processes in RAM: %d\n", active);
 }
 #pragma endregion
 
-#pragma region Page to Disc
-int send_page_to_disc_page_only(page* pg) {
+#pragma region Page to Disk
+int send_page_to_disk_page_only(page* pg) {
 	process* proc = find_process_from_page(pg);
 	if(proc == NULL) {
 		return 0;
@@ -293,7 +291,7 @@ int send_page_to_disc_page_only(page* pg) {
 		}
 	}
 
-	if(send_page_to_disc(proc->swap_area, pg, get_bits_from_decimal(i, PAGES_NUMBER_LEN)) == NULL) {
+	if(send_page_to_disk(proc->swap_area, pg, get_bits_from_decimal(i, PAGES_NUMBER_LEN)) == NULL) {
 		return 0;
 	}
 

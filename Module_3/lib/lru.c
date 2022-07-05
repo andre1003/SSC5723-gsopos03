@@ -9,8 +9,6 @@
 
 
 
-
-
 lru_list* global_lru_list = NULL;
 
 #pragma region Init
@@ -101,14 +99,14 @@ page* remove_page_lru(page* remove_page) {
 		(*previous)->next = node->next;
 
 	if(remove_page->modified == TRUE)
-		if(send_page_to_disc_page_only(remove_page) == 0)
+		if(send_page_to_disk_page_only(remove_page) == 0)
 			return NULL;
 
 	set_frame(remove_page->frame_number, FALSE);
 	int* page_number_bits = page_number_from_page(remove_page);
 	process* proc = find_process_from_page(remove_page);
 
-	printf("Página '%lld' (%s) do Processo '%s' removida da lista global de páginas.\n",
+	printf("Page '%lld' (%s) from process '%s' removed from global page list.\n",
 		get_decimal_from_bits(page_number_bits, PAGES_NUMBER_LEN),
 		bits_to_string_bits(page_number_bits, PAGES_NUMBER_LEN),
 		proc->id

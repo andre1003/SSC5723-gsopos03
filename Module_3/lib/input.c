@@ -6,10 +6,9 @@
 #include "ctype.h"
 
 
+
+
 #define MAX_ROW	200
-
-
-
 
 void read_file(void) {
 	char line[MAX_ROW];
@@ -40,28 +39,6 @@ void read_file(void) {
 			char* id = NULL;
 			char* ptr = strtok(line, " ()\r");
 			char op;
-			
-			//// While ptr exists
-			//while(ptr != NULL) {
-			//	// Switch count variable
-			//	switch(count) {
-			//		case 0:
-			//			id = malloc(strlen(ptr) * sizeof(char) + 1);
-			//			strcpy(id, ptr);
-			//			break;
-
-			//		case 1:
-			//			op = ptr[0];
-			//			break;
-
-			//		case 2:
-			//			number = atoi(ptr);
-			//			break;
-			//	}
-
-			//	count++;
-			//	ptr = strtok(NULL, " ()\r");
-			//}
 
 			// While ptr exists
 			for(count = 0; ptr != NULL; count++, ptr = strtok(NULL, " ()\r")) {

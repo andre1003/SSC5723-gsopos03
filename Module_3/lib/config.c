@@ -5,6 +5,9 @@
 #include "stdio.h"
 #pragma endregion
 
+
+
+
 #pragma region Functions
 int bits_len_decimal(int size) {
 	// Bits required to represent a decimal value

@@ -218,7 +218,7 @@ page_table* create_page_table() {
 }
 
 void free_page_table(page_table* table) {
-    printf("Releasing page table...\n");
+    printf("Free page table...\n");
     if (table != NULL && table->pages != NULL) {
 		int i = 0;
         for(i = 0; i < PAGES_NUMBER; i++) {
@@ -312,7 +312,7 @@ address* get_physical_address(address* virtual_address, page_table* table, char 
                 table->pages[page_number].modified = TRUE;
         }
         else
-            printf("Page fault! irtual address '%llu' (%s). Page No. '%d'.\n",
+            printf("Page fault! Virtual address '%llu' (%s). Page Number: '%d'.\n",
                    virtual_address->decimal, bits_to_string_address(virtual_address), page_number);
     }
     else {

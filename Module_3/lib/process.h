@@ -4,7 +4,7 @@
 #include "swap.h"
 #include "manager.h"
 
-#define IN_DISC FALSE
+#define IN_DISK FALSE
 #define IN_RAM TRUE
 
 
@@ -109,11 +109,11 @@ int force_sleep(int);
 void print_process_situation(void);
 
 /// <summary>
-/// Send a page to disc.
+/// Send a page to disk.
 /// </summary>
 /// <param name=""></param>
 /// <returns></returns>
-int send_page_to_disc_page_only(page*);
+int send_page_to_disk_page_only(page*);
 
 /// <summary>
 /// Find a process from a given page.

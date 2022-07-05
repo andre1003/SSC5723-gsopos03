@@ -10,17 +10,16 @@
 
 void print_config() {
     printf("\n--------------------------------------------\n");
-    printf("Características do simulador.\n");
-    printf("Método de substituição de páginas atual: %s\n", CURRENT_METHOD == CLOCK ? "Relógio" : "LRU");
-    printf("Tamanho da página virtual e quadros de página: %d\n", VIRTUAL_PAGE_SIZE);
-    printf("Tamanho max. da RAM (tamanho / N° quadros): %d/%d\n", RAM_SIZE, FRAMES_NUMBER);
-    printf("Tamanho max. da memória virtual (tamanho / N° páginas): %d/%d\n", VIRTUAL_MEMORY_SIZE, PAGES_NUMBER);
-    printf("Tamanho max. da SWAP: %d\n", SECONDARY_MEMORY_MAX_SIZE);
-    printf("Tamanho do endereço virtual: %d\n", VIRTUAL_ADDRESS_SIZE);
-    printf("Tamanho do endereço físico: %d\n", PHYSICAL_ADDRESS_SIZE);
+    printf("Simulator features:\n");
+    printf("Current page replacement method: %s\n", CURRENT_METHOD == CLOCK ? "Clock" : "LRU");
+    printf("Virtual page and frame page size: %d\n", VIRTUAL_PAGE_SIZE);
+    printf("Maximum RAM size: %d/%d\n", RAM_SIZE, FRAMES_NUMBER);
+    printf("Maximum virtual memory size: %d/%d\n", VIRTUAL_MEMORY_SIZE, PAGES_NUMBER);
+    printf("Maximum SWAP size: %d\n", SECONDARY_MEMORY_MAX_SIZE);
+    printf("Virtual address size: %d\n", VIRTUAL_ADDRESS_SIZE);
+    printf("Physical address size: %d\n", PHYSICAL_ADDRESS_SIZE);
     printf("--------------------------------------------\n");
 }
-
 
 #pragma region Main Code
 int main() {

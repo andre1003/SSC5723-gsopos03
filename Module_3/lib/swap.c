@@ -24,7 +24,7 @@ process_swap_area* create_swap_area(int image_size) {
 
         swap_area->first_address = init_address_decimal(0, VIRTUAL_ADDRESS_SIZE);
         if(image_size > VIRTUAL_MEMORY_SIZE) {
-            printf("O processo não pode ser alocado na área de troca! Tamanho do processo maior do que o permitido para endereçamento.\n");
+            printf("The process cannot be allocated in the SWAP area! Process size larger than allowed for addressing.\n");
             swap_area = NULL;
             current_used_swap -= image_size;
         }
@@ -33,7 +33,7 @@ process_swap_area* create_swap_area(int image_size) {
         }
     }
     else {
-        printf("O processo não pode ser alocado na área de troca! Sem espaço suficiente na área de troca.\n");
+        printf("The process cannot be allocated in the swap area! Not enough space in the SWAP area.\n");
         current_used_swap -= image_size;
     }
 
@@ -43,7 +43,7 @@ process_swap_area* create_swap_area(int image_size) {
 
 #pragma region Free
 void free_swap_area(process_swap_area* swap_area, int size) {
-    printf("Liberando área de troca em disco...\n");
+    printf("Free SWAP area in disk..\n");
 
     if(swap_area != NULL) {
         current_used_swap -= size;
@@ -54,35 +54,35 @@ void free_swap_area(process_swap_area* swap_area, int size) {
 }
 #pragma endregion
 
-#pragma region Get from Disc
-int* get_page_in_disc(process_swap_area* swap_area, int* page_number_bits) {
+#pragma region Get from Disk
+int* get_page_in_disk(process_swap_area* swap_area, int* page_number_bits) {
     if(page_number_bits == NULL) {
-        printf("A página não pode ser buscada no disco, pois o valor 'NULL' é inválido.\n");
+        printf("Page cannot be fetched from disk because value 'NULL' is invalid.\n");
         return NULL;
     }
 
     int page_number = get_decimal_from_bits(page_number_bits, PAGES_NUMBER_LEN);
 
     if(page_number >= 0 && page_number <= ((swap_area->last_address->decimal + 1) / 1024) - 1) {
-        printf("Página '%d' (%s) foi buscada no disco.\n",
+        printf("Page '%d' (%s) fetched in disk.\n",
             page_number,
             bits_to_string_bits(page_number_bits, PAGES_NUMBER_LEN));
         return page_number_bits;
     }
     else {
-        printf("A página '%d' (%s) não pode ser buscada no disco! Endereço fora do escopo da imagem do processo.\n",
+        printf("Page '%d' (%s) could not be fetched in disk. Address out of scope of process image.\n",
             page_number,
             bits_to_string_bits(page_number_bits, PAGES_NUMBER_LEN));
         return NULL;
     }
 }
 
-int** get_pages_set_in_disc(process_swap_area* swap_area, int** pages_set, int size) {
-    printf("Buscando conjunto de páginas no disco...\n");
+int** get_pages_set_in_disk(process_swap_area* swap_area, int** pages_set, int size) {
+    printf("Fetching pages set in disk...\n");
 
     if(pages_set != NULL) {
         for(int i = 0; i < size; i++) {
-            if(get_page_in_disc(swap_area, pages_set[i]) == NULL) {
+            if(get_page_in_disk(swap_area, pages_set[i]) == NULL) {
                 return NULL;
             }
         }
@@ -92,7 +92,7 @@ int** get_pages_set_in_disc(process_swap_area* swap_area, int** pages_set, int s
     pages_set = malloc(sizeof(int*) * size);
     for(int i = 0; i < size; i++) {
         pages_set[i] = get_bits_from_decimal(i, PAGES_NUMBER_LEN);
-        if(get_page_in_disc(swap_area, pages_set[i]) == NULL) {
+        if(get_page_in_disk(swap_area, pages_set[i]) == NULL) {
             return NULL;
         }
     }
@@ -101,31 +101,31 @@ int** get_pages_set_in_disc(process_swap_area* swap_area, int** pages_set, int s
 }
 #pragma endregion
 
-#pragma region Send to Disc
-page* send_page_to_disc(process_swap_area* swap_area, page* virtual_page, int* page_number_bits) {
+#pragma region Send to Disk
+page* send_page_to_disk(process_swap_area* swap_area, page* virtual_page, int* page_number_bits) {
     int page_number = get_decimal_from_bits(page_number_bits, PAGES_NUMBER_LEN);
 
     if(page_number >= 0 && page_number <= ((swap_area->last_address->decimal + 1) / 1024) - 1) {
-        printf("A página '%d' (%s) foi enviada para o disco.\n",
+        printf("Page '%d' (%s) sent to disk.\n",
             page_number,
             bits_to_string_bits(page_number_bits, PAGES_NUMBER_LEN));
         virtual_page->modified = FALSE;
         return virtual_page;
     }
     else {
-        printf("A página '%d' (%s) não pode ser enviada para o disco! Endereço fora do escopo da imagem do processo.\n",
+        printf("Page '%d' (%s) could not be sent to disk! Address out of scope of process image.\n",
             page_number,
             bits_to_string_bits(page_number_bits, PAGES_NUMBER_LEN));
         return NULL;
     }
 }
 
-page_table* send_page_table_to_disc(process_swap_area* swap_area, page_table* pages_table) {
-    printf("Enviando todas as págins modificadas do processo para o disco...\n");
+page_table* send_page_table_to_disk(process_swap_area* swap_area, page_table* pages_table) {
+    printf("Sending all process modified pages to disk...\n");
 
     for(int i = 0; i < PAGES_NUMBER; i++) {
         if(pages_table->pages[i].present == TRUE && pages_table->pages[i].modified == TRUE) {
-            if(send_page_to_disc(swap_area, &pages_table->pages[i], get_bits_from_decimal(i, PAGES_NUMBER_LEN)) == NULL) {
+            if(send_page_to_disk(swap_area, &pages_table->pages[i], get_bits_from_decimal(i, PAGES_NUMBER_LEN)) == NULL) {
                 return NULL;
             }
         }
@@ -137,6 +137,6 @@ page_table* send_page_table_to_disc(process_swap_area* swap_area, page_table* pa
 
 #pragma region Print
 void print_swap_situation(void) {
-    printf("Quantidade de memória usada na SWAP: %d/%d\n", get_used_swap(), SECONDARY_MEMORY_MAX_SIZE);
+    printf("Used SWAP: %d/%d\n", get_used_swap(), SECONDARY_MEMORY_MAX_SIZE);
 }
 #pragma endregion
