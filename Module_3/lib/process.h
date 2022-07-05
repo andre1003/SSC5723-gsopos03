@@ -18,11 +18,29 @@ typedef struct PROCESS {
 
 #pragma region Functions
 /// <summary>
+/// Initialize process list.
+/// </summary>
+/// <param name=""></param>
+void init_process_list(void);
+
+/// <summary>
 /// Create a process.
 /// </summary>
 /// <param name=""></param>
 /// <returns></returns>
 process* create_process(void);
+
+/// <summary>
+/// Find last process.
+/// </summary>
+/// <returns></returns>
+process_node* find_last(void);
+
+/// <summary>
+/// Remove a process from process table.
+/// </summary>
+/// <param name=""></param>
+void remove_process(process*);
 
 /// <summary>
 /// Find a process from char.
@@ -76,7 +94,7 @@ void print_process_situation(void);
 /// </summary>
 /// <param name=""></param>
 /// <returns></returns>
-int send_page_to_disc(page*);
+int send_page_to_disc_page_only(page*);
 
 /// <summary>
 /// Find a process from a given page.

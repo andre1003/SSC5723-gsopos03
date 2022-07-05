@@ -14,12 +14,6 @@
 void init_clock(void);
 
 /// <summary>
-/// Update global page list.
-/// </summary>
-/// <param name=""></param>
-void update_global_list_clock(void);
-
-/// <summary>
 /// Insert a page vector in the active global page list.
 /// </summary>
 /// <param name=""></param>
@@ -62,6 +56,21 @@ int* remove_best_page_clock(void);
 /// <param name=""></param>
 /// <returns></returns>
 int get_number_mapped_pages_clock(void);
+
+/// <summary>
+/// Check if list is empty.
+/// </summary>
+/// <param name=""></param>
+/// <returns></returns>
+int list_empty(void);
+
+/// <summary>
+/// Find a clock node.
+/// </summary>
+/// <param name=""></param>
+/// <param name=""></param>
+/// <returns></returns>
+clock_node* find_node_clock(page*, clock_node**);
 #pragma endregion
 
 #endif // !CLOCK_H
