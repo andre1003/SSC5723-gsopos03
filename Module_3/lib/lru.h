@@ -14,12 +14,6 @@
 void init_lru(void);
 
 /// <summary>
-/// Update global page list.
-/// </summary>
-/// <param name=""></param>
-void update_global_list_lru(void);
-
-/// <summary>
 /// Insert a page vector in the active global page list.
 /// </summary>
 /// <param name=""></param>
@@ -33,6 +27,13 @@ page* insert_set_pages_lru(page*, int);
 /// <param name=""></param>
 /// <returns></returns>
 page* insert_page_lru(page*);
+
+/// <summary>
+/// Insert a LRU node.
+/// </summary>
+/// <param name=""></param>
+/// <returns></returns>
+int insert_node_lru(lru_node*);
 
 /// <summary>
 /// Remove a page vector in the active global page list.
@@ -62,6 +63,14 @@ int* remove_best_page_lru(void);
 /// <param name=""></param>
 /// <returns></returns>
 int get_number_mapped_pages_lru(void);
+
+/// <summary>
+/// Find a LRU node.
+/// </summary>
+/// <param name=""></param>
+/// <param name=""></param>
+/// <returns></returns>
+lru_node* find_node_lru(page*, lru_node**);
 #pragma endregion
 
 #endif // !LRU_H

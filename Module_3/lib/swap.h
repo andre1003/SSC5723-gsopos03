@@ -8,10 +8,8 @@
 
 
 typedef struct PROCESS_SWAP_AREA {
-    
-    ADDRESS* first_address;
-    
-    ADDRESS* last_address;
+    address* first_address;
+    address* last_address;
 } process_swap_area;
 
 
