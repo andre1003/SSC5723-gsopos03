@@ -77,6 +77,49 @@ Por fim, para selecionar qual algoritmo de substituição de páginas é utiliza
 
 ## 2. Políticas Adotadas
 
+## Políticas Adotadas
+
+Para garantir o correto funcionamento do simulador, de modo a evitar ao máximo falta de páginas, algumas políticas foram adotas, as quais são apresentadas a seguir.
+
+### Substituição de Página
+
+Para a substituição de página, alguns pontos foram definidos, de modo a viabilizar a substituiçõe de páginas no simulador, sendo eles:
+
+- Caso uma página seja solicitada e ao menos um quadro de página estiver disponível, a falta de página ocorrerá. No entanto, não se faz necessária a substituição de página;
+- Caso uma página seja solicitada e não houver página disponível, um algoritmo de substituição é utilizado.
+
+Desse modo, este simulador contempla dois algoritmos de substituição de página, sendo eles o LRU e Clock. É válido observar que a alteração do algoritmo pode ser feito no seguinte trecho de código
+
+```
+#define CURRENT_METHOD <método_a_ser_executado>
+```
+
+Este trecho está localizado no arquivo ```config.h```.
+
+### Alocação Inicial e Wake Up
+
+Em relação à alocação inicial e wake up do processo, é necessário que as seguintes regras sejam atendidas:
+
+- Cada processo deve possuir o mínimo de 15% de suas páginas localizada na RAM em sua criação e/ou retorno de suspensão. Essa porcentagem é calculada a partir da imagem do processo;
+- Não exceder 50% do número total de quadros de páginas;
+- Caso exceda, serão alocadas o máximo possível sem que o limite seja excedido;
+- Pelo menos um quadro de página deve ser atribuído;
+- Se a imagem do processo exceder o limete de espaço permitido para o endereçamento virtual, o processo tem sua criação cancelada;
+- Se não houver espaço disponível na RAM, deve ocorrer a suspensão de processos mapeados atualmente. Assim, a prioridade é por processos que possuam um maior número de páginas mapeadas para serem suspensos. Caso haja empate, o processo mais antigo é escolhido.
+
+No momento de criação do processo, ocorrerá a alocação sequencial das páginas. Já no momento de wake up, deve-se considerar:
+
+- Caso o número de páginas não supere o limite de alocação inicial, todas a páginas mapeadas e mais n páginas em sequência , caso possível, serã realocadas;
+- Caso contrário, as n primeiras páginas serão alocadas.
+
+### Substituição Global
+
+Qualquer página de qualquer processo estão sujeitas a substituições a qualquer momento durante a execução do código. Isso resulta no gerenciamento dinâmico da quantidade de páginas por cada processo.
+
+### SWAP
+
+Na criação do processo, um tamanho equivalente ao de sua imagem é alocado para a área de troca em disco, de modo a copiar sua imagem para lá. Caso a imagem supere o tamaho da SWAP, a criação do processo é cancelada.
+
 -----
 
 
