@@ -17,17 +17,17 @@ typedef struct PROCESS_SWAP_AREA {
 
 #pragma region Functions
 /// <summary>
-/// Get the used swap memory size.
+/// Get the used SWAP memory size.
 /// </summary>
 int get_used_swap(void);
 
 /// <summary>
-/// Create the process swap area.
+/// Create the process SWAP area.
 /// </summary>
 process_swap_area* create_swap_area(int);
 
 /// <summary>
-/// Free the process swap area.
+/// Free the process SWAP area.
 /// </summary>
 void free_swap_area(process_swap_area*, int);
 
@@ -52,7 +52,7 @@ page_table* send_page_table_to_disk(process_swap_area*, page_table*);
 int** get_pages_set_in_disk(process_swap_area*, int**, int);
 
 /// <summary>
-/// Print the swap current situation.
+/// Print the SWAP current situation.
 /// </summary>
 void print_swap_situation(void);
 #pragma endregion

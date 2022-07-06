@@ -13,7 +13,7 @@
 #define FRAME_SIZE VIRTUAL_PAGE_SIZE
 // Total size of main memory
 #define RAM_SIZE (FRAME_SIZE * 6)
-// Secondary memory swap area size
+// Secondary memory SWAP area size
 #define SECONDARY_MEMORY_MAX_SIZE (FRAME_SIZE * 10000)
 // Virtual address size
 #define VIRTUAL_ADDRESS_SIZE bits_len(VIRTUAL_MEMORY_SIZE)

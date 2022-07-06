@@ -41,7 +41,7 @@ process_swap_area* create_swap_area(int image_size) {
     }
     // Else, don't allow process allocation
     else {
-        printf("The process cannot be allocated in the swap area! Not enough space in the SWAP area.\n");
+        printf("The process cannot be allocated in the SWAP area! Not enough space in the SWAP area.\n");
         current_used_swap -= image_size;
     }
 
