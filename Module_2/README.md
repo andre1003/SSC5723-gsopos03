@@ -28,7 +28,7 @@ Portanto, para solucionar este problema, as seguintes condições foram requisit
 - O programa deve ter a capacidade de controlar quando um processo está em espera, para poder "chamar" o mesmo;
 - O programa deve controlar quantos endereços estão livres e quantos endereços estão ocupados.
 
-Finalmente, a biblioteca _pthreads_ (http://www.yolinux.com/TUTORIALS/LinuxTutorialPosixThreads.html) é utilizada para a programação de forma concorrente com as funcionalidades de criação, controle e suspensão de _threads_, além da execução e controle de exclusão mútua por semáforos binários. Além disso, a biblioteca _semaphore_ para a implementação dos semáforos _full_ e _empty_, o qual adiciona algumas funcionalidades extras de semáforo sobre a biblioteca anterior.
+Finalmente, a biblioteca _pthreads_ (http://www.yolinux.com/TUTORIALS/LinuxTutorialPosixThreads.html) é utilizada para a programação de forma concorrente com as funcionalidades de criação, controle e suspensão de _threads_, além da execução e controle de exclusão mútua por semáforos binários. Além disso, a biblioteca _semaphore_ (https://pubs.opengroup.org/onlinepubs/7908799/xsh/semaphore.h.html) para a implementação dos semáforos _full_ e _empty_, o qual adiciona algumas funcionalidades extras de semáforo sobre a biblioteca anterior.
 
 -----
 
