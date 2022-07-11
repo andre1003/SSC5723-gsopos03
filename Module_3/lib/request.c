@@ -94,20 +94,14 @@ void receive_request(request* req) {
         // Execution case
         case EXEC:
             printf("Process '%s' requesting instruction execution - operand - '%d' (%s)...\n",
-                req->id,
-                req->number,
-                bits_to_string_decimal(req->number, VIRTUAL_ADDRESS_SIZE));
+                req->id, req->number, bits_to_string_decimal(req->number, VIRTUAL_ADDRESS_SIZE));
 
             physical_address = exec(req);
 
             if(physical_address != NULL) {
                 printf("Process '%s' instruction executed - operand - '%d' (%s) \n\tin the physical address '%lld' (%s) \n\tin the page frame '%lld' (%s).\n",
-                    req->id,
-                    req->number,
-                    bits_to_string_decimal(req->number, VIRTUAL_ADDRESS_SIZE),
-                    physical_address->decimal,
-                    bits_to_string_address(physical_address),
-                    physical_address->decimal / 1024 / FRAME_SIZE,
+                    req->id, req->number, bits_to_string_decimal(req->number, VIRTUAL_ADDRESS_SIZE), physical_address->decimal,
+                    bits_to_string_address(physical_address), physical_address->decimal / 1024 / FRAME_SIZE,
                     bits_to_string_decimal(physical_address->decimal / 1024 / FRAME_SIZE, FRAMES_NUMBER_LEN));
             }
             break;
@@ -117,9 +111,7 @@ void receive_request(request* req) {
         // I/O case
         case IO:
             printf("Process '%s' requesting I/O for the device '%d' (%s)...\n",
-                req->id,
-                req->number,
-                bits_to_string_decimal(req->number, bits_len(1)));
+                req->id, req->number, bits_to_string_decimal(req->number, bits_len(1)));
 
             proc = find_process(req->id);
 
@@ -136,19 +128,13 @@ void receive_request(request* req) {
         // Read case
         case READ:
             printf("Processo '%s' requesting read in '%d' (%s)...\n",
-                req->id,
-                req->number,
-                bits_to_string_decimal(req->number, VIRTUAL_ADDRESS_SIZE));
+                req->id, req->number, bits_to_string_decimal(req->number, VIRTUAL_ADDRESS_SIZE));
 
             physical_address = exec(req);
 
             printf("Process '%s' read in '%d' (%s) \n\tin the physical address '%lld' (%s) \n\tin the page frame '%lld' (%s).\n",
-                req->id,
-                req->number,
-                bits_to_string_decimal(req->number, VIRTUAL_ADDRESS_SIZE),
-                physical_address->decimal,
-                bits_to_string_address(physical_address),
-                physical_address->decimal / 1024 / FRAME_SIZE,
+                req->id, req->number, bits_to_string_decimal(req->number, VIRTUAL_ADDRESS_SIZE), physical_address->decimal,
+                bits_to_string_address(physical_address), physical_address->decimal / 1024 / FRAME_SIZE,
                 bits_to_string_decimal(physical_address->decimal / 1024 / FRAME_SIZE, FRAMES_NUMBER_LEN));
             break;
         #pragma endregion
@@ -157,19 +143,13 @@ void receive_request(request* req) {
         // Write case
         case WRITE:
             printf("Process '%s' requesting write in '%d' (%s)...\n",
-                req->id,
-                req->number,
-                bits_to_string_decimal(req->number, VIRTUAL_ADDRESS_SIZE));
+                req->id, req->number, bits_to_string_decimal(req->number, VIRTUAL_ADDRESS_SIZE));
 
             physical_address = exec(req);
 
             printf("Process '%s' wrote in '%d' (%s) \n\tin the physical address '%lld' (%s) \n\tin the page frame '%lld' (%s).\n",
-                req->id,
-                req->number,
-                bits_to_string_decimal(req->number, VIRTUAL_ADDRESS_SIZE),
-                physical_address->decimal,
-                bits_to_string_address(physical_address),
-                physical_address->decimal / 1024 / FRAME_SIZE,
+                req->id, req->number, bits_to_string_decimal(req->number, VIRTUAL_ADDRESS_SIZE), physical_address->decimal,
+                bits_to_string_address(physical_address), physical_address->decimal / 1024 / FRAME_SIZE,
                 bits_to_string_decimal(physical_address->decimal / 1024 / FRAME_SIZE, FRAMES_NUMBER_LEN));
             break;
         #pragma endregion

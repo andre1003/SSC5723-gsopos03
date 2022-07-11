@@ -10,6 +10,9 @@
 #include "stdlib.h"
 #pragma endregion
 
+
+
+
 #pragma region Variables
 // Global instruction counter
 // Used when the LRU algorithm is enabled
@@ -226,9 +229,11 @@ void free_page_table(page_table* table) {
                 if(remove_page(&table->pages[i]) == NULL)
                     printf("Could not remove page '%d' (%s) from global page table.\n",
                            i, bits_to_string_decimal(i, PAGES_NUMBER_LEN));
+                           
                 set_frame(table->pages[i].frame_number, FALSE);
             }
         }
+
         free(table->pages);
         free(table);
     }

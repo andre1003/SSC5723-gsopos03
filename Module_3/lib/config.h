@@ -35,23 +35,17 @@
 /// <summary>
 /// Get the bits length in decimal.
 /// </summary>
-/// <param name=""></param>
-/// <returns></returns>
 int bits_len_decimal(int);
 
 /// <summary>
 /// Get the bits length in KB.
 /// </summary>
-/// <param name=""></param>
-/// <returns></returns>
 int bits_len(int);
 
 /// <summary>
 /// Returns the number of page frames that should be reserved for the process
 /// based on the process image size informed as a parameter.
 /// </summary>
-/// <param name=""></param>
-/// <returns></returns>
 int allocation_policy(int);
 #pragma endregion
 #endif // !CONFIG_H
