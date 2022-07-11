@@ -96,7 +96,7 @@ Uma *syscall* é o mecanismo programático pelo qual um programa de computador s
 
 Após a implementação, todos os dados estatísticos das chamadas de sistema foram coletados, sendo armazenados no diretório ```analysis```.
 
-Além das chamadas de sistemas selecionadas listadas acima, outras chamadas também apareceram nas estatísticas dos programas exemplos da primeira parte, como read, write, close, fstat, mprotect, rt_sigaction, rt_sigprocmask, pread64, access, clone, wait4,arch_prctl, openat, arch_prctl, lseek, clock_nanosleep, getpid, clone, getppid e clock_nanosleep.
+Além das chamadas de sistemas selecionadas listadas acima, outras chamadas também apareceram nas estatísticas dos programas exemplos da primeira parte, como read, write, close, fstat, mprotect, rt_sigaction, rt_sigprocmask, pread64, access, clone, wait4, arch_prctl, openat, lseek, clock, nanosleep, getpid, getppid e clock_nanosleep.
 
 -----
 
