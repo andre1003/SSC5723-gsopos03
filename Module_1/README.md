@@ -10,7 +10,7 @@ Foram selecionadas três primitivas de chamada de sistema disponíveis no Linux 
 Ainda, foram criados dois programas para ilustrar o comportamento esperado para processos com características dos tipos CPU-*bound* e I/O-*bound*. A respeito dos programas de CPU-*bound* e I/O-*bound*:
 
 - **CPU-_bound_:** calcula uma aproximação do valor de π (pi) por meio do método de Monte Carlo;
-- **I/O-_bound_:** copia o conteúdo de um arquivo anterior (existente) pra dentro de um novo arquivo, e assim por diante.
+- **I/O-_bound_:** copia o conteúdo de um arquivo anterior já existente para dentro de um novo arquivo, e assim por diante.
 
 
 ### Compilação dos Programas e Execução
@@ -103,7 +103,7 @@ Além das chamadas de sistemas selecionadas listadas acima, outras chamadas tamb
 
 ## 3. Tipos de Processos
 
-Os processos CPU-*bound* são aqueles que utilizam a CPU na maior parte de seu tempo de execução. Assim, esses processos são mais rápidos se o desempenho da CPU for bom. Em contrapartida, os processos I/O-*bound* são os que dependem mais das entradas e saídas do sistema. Dessa forma, quando um certo dispostivo possui um desempenho excelente, como exemplo, o uso de SSD ao invés de disco rígido, os processos I/O-*bound* são mais eficientes.  
+Os processos CPU-*bound* são aqueles que utilizam a CPU na maior parte de seu tempo de execução. Assim, esses processos são mais rápidos se o desempenho da CPU for bom. Em contrapartida, os processos I/O-*bound* são os que dependem mais das entradas e saídas do sistema. Dessa forma, quando um certo dispostivo possui um desempenho excelente, como exemplo, o uso de *Solid State Drive* (SSD) ao invés de disco rígido, os processos I/O-*bound* são mais eficientes.  
 
 **Observação:** todos os dados estatísticos dos programas de CPU-*bound* e I/O-*bound* foram coletados, os quais foram salvos na pasta ```analysis```.
 
@@ -129,7 +129,7 @@ A partir disso, os seguintes dados foram retornados na ferramenta "_time_":
 
 ### 3.2. I/O-*Bound*
 
-No programa de I/O-*bound* é realizada uma cópia de um arquivo anterior (existente) para dentro um novo arquivo (atual), e processo se repete até atingir um número _x_ de arquivos gerados. Ao final da operação, todos os arquivos são removidos, com exceção do primeiro.
+No programa de I/O-bound é feita uma cópia de um arquivo anterior já existente para dentro um novo arquivo, se tornando o arquivo atual, e o processo se repete até um número x de arquivos gerados. Ao final da operação, todos os arquivos são removidos do diretório, com exceção do primeiro arquivo, porque é necessário caso o programa for executado novamente.
 
 Baseado nisso, as seguintes informações foram obtidas na ferramenta "_time_":
 
