@@ -16,7 +16,7 @@ As operações presentes no arquivo ```config.txt``` são inseridas antes da exe
 
 1. **ID do processo:** identificador do processo;
 2. **TAG da operação:** operação que é executada, a qual deve ser uma das definidas antes;
-3. Esse item depende da TAG utilizada, podendo possuir as seguintes variações:
+3. Este item depende da TAG utilizada, podendo possuir as seguintes variações:
    - **Tamanho da imagem do processo** em kB, caso a TAG é utilizado;
    - Valor decimal de um **endereço lógico de memória** em binário na tabela de páginas do processo, se a TAG for R, W ou P;
    - Valor decimal do **identificador de um dispositivo de E/S** em binário, com a TAG I.
@@ -68,9 +68,7 @@ Além disso, o simulador contém opções de configuração de mecanismos relaci
 #define SECONDARY_MEMORY_MAX_SIZE (FRAME_SIZE * 10000)
 ```
 
-É importante destacar a multiplicidade dos valores na configuração, como exemplo, o tamanho da memória física (*RAM_SIZE*) é um múltiplo do tamanho da moldura (**FRAME_SIZE**), e assim por diante.
-
-Por fim, para selecionar qual algoritmo de substituição de páginas é utilizado, basta definir **LRU** (algoritmo *Least Recently Used*) ou **CLOCK** (algoritmo do relógio) na constante ```CURRENT_METHOD```. Assim, o simulador seleciona o conjunto de funções adequado para executar.
+É importante destacar a multiplicidade dos valores na configuração, como exemplo, o tamanho da memória física (*RAM_SIZE*) é um múltiplo do tamanho da moldura (**FRAME_SIZE**), e assim por diante. Por fim, para selecionar qual algoritmo de substituição de páginas é utilizado, basta definir **LRU** (algoritmo *Least Recently Used*) ou **CLOCK** (algoritmo do relógio) na constante ```CURRENT_METHOD```. Assim, o simulador seleciona o conjunto de funções adequado para executar.
 
 -----
 
@@ -88,29 +86,29 @@ Para a substituição de página, alguns pontos foram definidos, de modo a viabi
 - Caso uma página seja solicitada e ao menos um quadro de página estiver disponível, a falta de página ocorrerá. No entanto, não se faz necessária a substituição de página;
 - Caso uma página seja solicitada e não houver página disponível, um algoritmo de substituição é utilizado.
 
-Desse modo, este simulador contempla dois algoritmos de substituição de página, sendo eles o LRU e Clock. É válido observar que a alteração do algoritmo pode ser feito no seguinte trecho de código
+Desse modo, este simulador contempla dois algoritmos de substituição de página, sendo eles o LRU e Clock. É válido observar que a alteração do algoritmo pode ser feito no seguinte trecho de código, como mencionado anteriormente:
 
 ```
-#define CURRENT_METHOD <método_a_ser_executado>
+#define CURRENT_METHOD <method_to_be_executed>
 ```
 
 Este trecho está localizado no arquivo ```config.h```.
 
-### Alocação Inicial e Wake Up
+### Alocação Inicial e *Wake Up*
 
-Em relação à alocação inicial e wake up do processo, é necessário que as seguintes regras sejam atendidas:
+Em relação à alocação inicial e *wake up* do processo, é necessário que as seguintes regras sejam atendidas:
 
 - Cada processo deve possuir o mínimo de 15% de suas páginas localizada na RAM em sua criação e/ou retorno de suspensão. Essa porcentagem é calculada a partir da imagem do processo;
 - Não exceder 50% do número total de quadros de páginas;
 - Caso exceda, serão alocadas o máximo possível sem que o limite seja excedido;
 - Pelo menos um quadro de página deve ser atribuído;
 - Se a imagem do processo exceder o limete de espaço permitido para o endereçamento virtual, o processo tem sua criação cancelada;
-- Se não houver espaço disponível na RAM, deve ocorrer a suspensão de processos mapeados atualmente. Assim, a prioridade é por processos que possuam um maior número de páginas mapeadas para serem suspensos. Caso haja empate, o processo mais antigo é escolhido.
+- Se não houver espaço disponível na RAM, deve ocorrer a suspensão de processos mapeados atualmente. Assim, a prioridade é por processos que possuam um maior número de páginas mapeadas para serem suspensos. Caso haja empate, o processo mais antigo é selecionado.
 
-No momento de criação do processo, ocorrerá a alocação sequencial das páginas. Já no momento de wake up, deve-se considerar:
+No momento de criação do processo, ocorrerá a alocação sequencial das páginas. Por sua vez, no momento de *wake up*, deve-se considerar:
 
-- Caso o número de páginas não supere o limite de alocação inicial, todas a páginas mapeadas e mais n páginas em sequência , caso possível, serã realocadas;
-- Caso contrário, as n primeiras páginas serão alocadas.
+- Caso o número de páginas não supere o limite de alocação inicial, todas a páginas mapeadas e mais *n* páginas em sequência , caso possível, serã realocadas;
+- Caso contrário, as *n* primeiras páginas serão alocadas.
 
 ### Substituição Global
 
@@ -128,7 +126,3 @@ Na criação do processo, um tamanho equivalente ao de sua imagem é alocado par
 Para compilar o programa, execute o comando: ```make```.
 
 **Observação:**  o comando ```make``` possibilita adicionar ```clean``` também para limpar o executável.
-
-[Exemplos de execução]
-
------
